@@ -88,7 +88,7 @@ char *readLine(){
         //     last_ch = size - 1;
         
         size++;
-        line = (char *)realloc(line, size);
+        line = (char *)realloc(line, size * sizeof(char));
     }
 
     line[size - 1] = '\0';
@@ -125,7 +125,7 @@ char** split_spaces(char *line, int *num_pieces){
             { // prepare for the creation of a new piece
                 pieces[*num_pieces - 1][curr_str_size - 1] = '\0';
                 curr_str_size = 1;
-                pieces = (char **)realloc(pieces, ++(*num_pieces));
+                pieces = (char **)realloc(pieces, ++(*num_pieces) * sizeof(char*));
                 pieces[*num_pieces - 1] = (char *)malloc(curr_str_size * sizeof(char));
             }
             single_space = FALSE;
@@ -135,7 +135,7 @@ char** split_spaces(char *line, int *num_pieces){
         single_space = TRUE;
         // start_found = TRUE;
         pieces[*num_pieces - 1][curr_str_size - 1] = line[i];
-        pieces[*num_pieces - 1] = (char *)realloc(pieces[*num_pieces - 1], ++curr_str_size);
+        pieces[*num_pieces - 1] = (char *)realloc(pieces[*num_pieces - 1], ++curr_str_size * sizeof(char));
     }
     pieces[*num_pieces - 1][curr_str_size - 1] = '\0';
     return pieces;
@@ -160,6 +160,12 @@ int *strings_to_nums(char **strings, int num_pieces){
 int main(){
     int line_param_cnt = 0;
     char *line, **pieces;
+
+    // line = readLine();
+    // pieces = split_spaces(line, &line_param_cnt);
+    // exit(0);
+    
+    
     int *dec_pieces;
     bool error_found = FALSE;
 
