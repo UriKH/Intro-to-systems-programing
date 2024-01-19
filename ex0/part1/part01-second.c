@@ -74,8 +74,8 @@ char *readLine(){
     int size = 1;
     char *line = (char *)malloc(size * sizeof(char));
     char curr_ch;
-    // int last_ch = 0;
-    // int first_ch = 0;
+    int last_ch = 0;
+    int first_ch = 0;
 
     while (TRUE){
         scanf("%c", &curr_ch);
@@ -84,20 +84,18 @@ char *readLine(){
             break;
         
         line[size - 1] = curr_ch;
-        // if (!isspace(curr_ch)) // find index of last non space like char in the string
-        //     last_ch = size - 1;
+        if (!isspace(curr_ch)) // find index of last non space like char in the string
+            last_ch = size - 1;
         
         size++;
         line = (char *)realloc(line, size * sizeof(char));
     }
 
-    line[size - 1] = '\0';
+    while (isspace(line[first_ch])) // find index of first non space like char in the string
+        first_ch++;
 
-    // while (isspace(line[first_ch])) // find index of first non space like char in the string
-    //     first_ch++;
-
-    // memcpy(line, line + first_ch, (last_ch - first_ch + 2) * sizeof(char)); // copy only the 
-    // line[last_ch - first_ch + 1] = '\0';
+    memcpy(line, line + first_ch, (last_ch - first_ch + 2) * sizeof(char)); // copy only the 
+    line[last_ch - first_ch + 1] = '\0';
     return line;
 }
 
@@ -107,20 +105,11 @@ char** split_spaces(char *line, int *num_pieces){
     char **pieces = (char **)malloc(*num_pieces * sizeof(char*));
     pieces[*num_pieces - 1] = (char *)malloc(curr_str_size * sizeof(char));
     bool single_space = TRUE; // flag if only one space between inputs have been used
-    // bool start_found = FALSE;
-
-    // int end = strlen(line) - 1;
-    // for (; end >= 0; end--){
-    //     if (!isspace(line[end]))
-    //         break;
-    // }
 
     for (int i = 0; i < strlen(line); i++)
     {
         if (isspace(line[i]))
         {
-            // if (!start_found)
-            //     continue;
             if (single_space)
             { // prepare for the creation of a new piece
                 pieces[*num_pieces - 1][curr_str_size - 1] = '\0';
@@ -212,20 +201,13 @@ int main(){
         free(line);
         free(pieces);
         
-        // continue receiving input even if error occured until all parameters recived
-        if (dec_pieces == NULL || error_found) {
-            if (dec_pieces == NULL)
-                error_found = TRUE;
-            if (error_found) {
-                if (i + line_param_cnt >= inputs_requiered){
-                    free(dec_pieces);
-                    break;
-                }
-                free(dec_pieces);
-            }
-            i += line_param_cnt;
-            continue;
+        if (dec_pieces == NULL){
+            error_found = TRUE;
+            break;
         }
+
+        if (i += line_param_cnt >= inputs_requiered) // make sure excess params are being ignored
+            line_param_cnt = inputs_requiered - i;
 
         // move the decimal parameters from the line to the numbers list
         for (int j = 0; j < line_param_cnt; j++)
