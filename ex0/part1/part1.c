@@ -53,7 +53,6 @@ char **split_spaces(char *, int *);
 int *strings_to_nums(char **, int);
 
 
-
 void free_char_dptr(char **dptr, size_t len){
     for (size_t i = 0; i < len; i++)
         free(dptr[i]);
@@ -62,19 +61,17 @@ void free_char_dptr(char **dptr, size_t len){
 
 int is_log2(double num)
 {
-    static int power = 0;
+    int power = 0;
 
-    if (num == 1){
-        int temp = power;
-        power = 0;
-        return temp;
+    while (TRUE)
+    {
+        if (num == 1)
+            return power;
+        if (num < 2)
+            return -1;
+        power++;
+        num /= 2;
     }
-    if (num < 2){
-        power = 0;
-        return -1;
-    }
-    power++;
-    return is_log2(num / 2);
 }
 
 bool is_empty_line(char *line){
@@ -164,7 +161,7 @@ int *strings_to_nums(char **strings, int num_pieces){
 
 int main(){
     int line_param_cnt = 0;
-    char *line, **pieces;    
+    char *line, **pieces;
     
     int *dec_pieces;
     bool error_found = FALSE;
@@ -217,7 +214,7 @@ int main(){
             break;
         }
 
-        if (i += line_param_cnt >= inputs_requiered) // make sure excess params are being ignored
+        if (i + line_param_cnt >= inputs_requiered) // make sure excess params are being ignored
             line_param_cnt = inputs_requiered - i;
 
         // move the decimal parameters from the line to the numbers list
