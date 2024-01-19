@@ -9,6 +9,13 @@ typedef enum {
 } bool;
 
 /**
+ * Free a char type double pointer
+ * @param dptr: double pointer to free
+ * @param len: len of array the double pointer represents 
+*/
+void free_char_dptr(char **, size_t);
+
+/**
  * Calculate the power (n) of a number that is in the format: num = 2^n
  * @param num: the number to calculate its log2
  * @returns -1 for non positive numbers or numbers not in format else n
@@ -44,6 +51,14 @@ char **split_spaces(char *, int *);
  * @return the list of integers if successful, else NULL
  */
 int *strings_to_nums(char **, int);
+
+
+
+void free_char_dptr(char **dptr, size_t len){
+    for (size_t i = 0; i < len; i++)
+        free(dptr[i]);
+    free(dptr);
+}
 
 int is_log2(double num)
 {
@@ -122,7 +137,6 @@ char** split_spaces(char *line, int *num_pieces){
         }
         // add a character to the piece
         single_space = TRUE;
-        // start_found = TRUE;
         pieces[*num_pieces - 1][curr_str_size - 1] = line[i];
         pieces[*num_pieces - 1] = (char *)realloc(pieces[*num_pieces - 1], ++curr_str_size * sizeof(char));
     }
@@ -136,8 +150,10 @@ int *strings_to_nums(char **strings, int num_pieces){
     for (int i = 0, j; i < num_pieces; i++){
         j = 0;
         while (strings[i][j] != '\0'){
-            if (!isdigit(strings[i][j]) && !(strings[i][j] == '-' && j == 0))
+            if (!isdigit(strings[i][j]) && !(strings[i][j] == '-' && j == 0)){
+                free(nums);
                 return NULL;
+            }
             j++;
         }
         
@@ -148,12 +164,7 @@ int *strings_to_nums(char **strings, int num_pieces){
 
 int main(){
     int line_param_cnt = 0;
-    char *line, **pieces;
-
-    // line = readLine();
-    // pieces = split_spaces(line, &line_param_cnt);
-    // exit(0);
-    
+    char *line, **pieces;    
     
     int *dec_pieces;
     bool error_found = FALSE;
@@ -169,7 +180,7 @@ int main(){
     } while (is_empty_line(line));
 
     free(line);
-    free(pieces);
+    free_char_dptr(pieces, line_param_cnt);
 
     // if a non positive number received -> error
     if (dec_pieces == NULL || dec_pieces[0] < 1)
@@ -199,8 +210,8 @@ int main(){
         pieces = split_spaces(line, &line_param_cnt);
         dec_pieces = strings_to_nums(pieces, line_param_cnt);
         free(line);
-        free(pieces);
-        
+        free_char_dptr(pieces, line_param_cnt);
+
         if (dec_pieces == NULL){
             error_found = TRUE;
             break;
