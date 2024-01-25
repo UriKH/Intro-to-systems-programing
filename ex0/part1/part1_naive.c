@@ -80,10 +80,6 @@ int sumExponentsOf2Powers(int size, int* numbers, bool print){
     int power, sum = 0;
 
     for (int i = 0; i < size; i++){
-        // if (numbers[i] < 1){
-        //     continue;
-        // }
-
         power = isPowerOf2(numbers[i]);
         if (power != -1){
             if (print){
