@@ -216,7 +216,6 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     while (currentNode != NULL){
         string[previousSize - 1] = currentNode->value;
         itoa(currentNode->repetitions, repetitionsString, 10);
-        // sprintf(repetitionsString, "%d", currentNode->repetitions);
         size += strlen(repetitionsString) + 2;
 
         string = (char*)realloc(string, size * sizeof(char));
