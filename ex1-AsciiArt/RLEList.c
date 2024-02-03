@@ -121,8 +121,7 @@ RLEListResult RLEListAppend(RLEList list, char value){
         return RLE_LIST_NULL_ARGUMENT;
 
     RLEList endNode = list;
-    // go to end of list
-    while (endNode->next != NULL){
+    while (endNode->next != NULL){ // go to end of list
         endNode = endNode->next;
     }
 
@@ -204,18 +203,20 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
 
     int size = 1, previousSize = 1;
     char* string = (char*)malloc(sizeof(char) * size); // the return string
-    // buffer for itoa usage
+    // buffer for sprintf usage
     char* repetitionsString = (char*)malloc(calculateSize(INT_MAX) + 1);
 
     if (repetitionsString == NULL || string == NULL){
         *result = RLE_LIST_OUT_OF_MEMORY;
+        free(repetitionsString);
+        free(string);
         return NULL;
     }
 
     RLEList currentNode = list;
     while (currentNode != NULL){
         string[previousSize - 1] = currentNode->value;
-        itoa(currentNode->repetitions, repetitionsString, 10);
+        sprintf(repetitionsString, "%d", currentNode->repetitions);
         size += strlen(repetitionsString) + 2;
 
         string = (char*)realloc(string, size * sizeof(char));
@@ -223,6 +224,8 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
             if (result != NULL){
                 *result = RLE_LIST_OUT_OF_MEMORY;
             }
+            free(string);
+            free(repetitionsString);
             return NULL;
         }
 
@@ -236,6 +239,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     if (result != NULL){
         *result = RLE_LIST_SUCCESS;
     }
+    free(repetitionsString);
     return string;
 }
 

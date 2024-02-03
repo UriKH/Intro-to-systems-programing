@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "RLEList.h"
 
 
@@ -14,5 +15,8 @@ int main(){
     for (int i = 0; i < 12; i++)
         RLEListAppend(list, 'd');
 
-    printf("list is:\n%s", RLEListExportToString(list, NULL));
+    char* string = RLEListExportToString(list, NULL);
+    printf("list is:\n%s", string);
+    free(string);
+    RLEListDestroy(list);
 }
