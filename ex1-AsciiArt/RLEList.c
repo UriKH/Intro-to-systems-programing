@@ -25,7 +25,7 @@ static int convertToNodeIndex(RLEList list, int index){
         return -1;
     }
 
-    while (currentNode != NULL){
+    while (currentNode){
         accumulatedSize += currentNode->repetitions;
         if (accumulatedSize-1 >= index){
             return iterator;
@@ -47,7 +47,7 @@ static int convertToNodeIndex(RLEList list, int index){
 static RLEList RLEGetNodeAt(RLEList list, int index){
     int length = 0;
     RLEList temporary = list;
-    while (temporary != NULL){
+    while (temporary){
         if (index == length){
             return temporary;
         }
@@ -85,7 +85,7 @@ static int calculateSize(int number){
 
 RLEList RLEListCreate(){
     RLEList newList = (RLEList)malloc(sizeof(struct RLEList_t));
-    if (newList != NULL){
+    if (newList){
         newList->repetitions = 0;
         newList->next = NULL;
     }
@@ -95,7 +95,7 @@ RLEList RLEListCreate(){
 void RLEListDestroy(RLEList list){
     RLEList temporaryListHead;
 
-    while (list != NULL){
+    while (list){
         temporaryListHead = list;
         list = list->next;
         free(temporaryListHead);
@@ -103,13 +103,13 @@ void RLEListDestroy(RLEList list){
 }
 
 int RLEListSize(RLEList list){
-    if (list == NULL){
+    if (!list){
         return -1;
     }
 
     int size = 0;
     RLEList temporary = list;
-    while (temporary != NULL){
+    while (temporary){
         size += temporary->repetitions;
         temporary = temporary->next;
     }
@@ -117,11 +117,11 @@ int RLEListSize(RLEList list){
 }
 
 RLEListResult RLEListAppend(RLEList list, char value){
-    if (list == NULL)
+    if (!list)
         return RLE_LIST_NULL_ARGUMENT;
 
     RLEList endNode = list;
-    while (endNode->next != NULL){ // go to end of list
+    while (endNode->next){ // go to end of list
         endNode = endNode->next;
     }
 
@@ -134,7 +134,7 @@ RLEListResult RLEListAppend(RLEList list, char value){
     }
     else{ // create new node
         endNode->next = (RLEList)malloc(sizeof(struct RLEList_t));
-        if (endNode->next == NULL)
+        if (!endNode->next)
             return RLE_LIST_OUT_OF_MEMORY;
         endNode->next->value = value;
         endNode->next->repetitions = 1;
@@ -144,7 +144,7 @@ RLEListResult RLEListAppend(RLEList list, char value){
 }
 
 RLEListResult RLEListRemove(RLEList list, int index){
-    if (list == NULL){
+    if (!list){
         return RLE_LIST_NULL_ARGUMENT;
     }
 
@@ -172,30 +172,30 @@ RLEListResult RLEListRemove(RLEList list, int index){
 }
 
 char RLEListGet(RLEList list, int index, RLEListResult* result){
-    if (list == NULL){
-        if (result != NULL){
+    if (!list){
+        if (result){
             *result = RLE_LIST_NULL_ARGUMENT;
         }
         return 0;
     }
 
     if (index < 0 || index >= RLEListSize(list)){
-        if (result != NULL){
+        if (result){
             *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
         }
         return 0;
     }
 
     index = convertToNodeIndex(list, index);
-    if (result != NULL){
+    if (result){
         *result = RLE_LIST_SUCCESS;
     }
     return RLEGetNodeAt(list, index)->value;
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result){
-    if (list == NULL){
-        if (result != NULL){
+    if (!list){
+        if (result){
             *result = RLE_LIST_NULL_ARGUMENT;
         }
         return NULL;
@@ -206,22 +206,24 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     // buffer for sprintf usage
     char* repetitionsString = (char*)malloc(calculateSize(INT_MAX) + 1);
 
-    if (repetitionsString == NULL || string == NULL){
-        *result = RLE_LIST_OUT_OF_MEMORY;
+    if (!repetitionsString || !string){
+        if (result){
+            *result = RLE_LIST_OUT_OF_MEMORY;
+        }
         free(repetitionsString);
         free(string);
         return NULL;
     }
 
     RLEList currentNode = list;
-    while (currentNode != NULL){
+    while (currentNode){
         string[previousSize - 1] = currentNode->value;
         sprintf(repetitionsString, "%d", currentNode->repetitions);
         size += strlen(repetitionsString) + 2;
 
         string = (char*)realloc(string, size * sizeof(char));
-        if (string == NULL){
-            if (result != NULL){
+        if (!string){
+            if (result){
                 *result = RLE_LIST_OUT_OF_MEMORY;
             }
             free(string);
@@ -236,7 +238,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     }
 
     string[size - 1] = '\0';
-    if (result != NULL){
+    if (result){
         *result = RLE_LIST_SUCCESS;
     }
     free(repetitionsString);
@@ -244,12 +246,12 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function){
-    if (list == NULL){
+    if (!list){
         return RLE_LIST_NULL_ARGUMENT;
     }
 
     RLEList currentNode = list;
-    while (currentNode != NULL){
+    while (currentNode){
         currentNode->value = map_function(currentNode->value);
         currentNode = currentNode->next;
     }
