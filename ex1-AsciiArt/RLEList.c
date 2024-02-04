@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h> // for using INT_MAX number of digits for buffer size
 #include "RLEList.h"
 
 struct RLEList_t{
