@@ -13,9 +13,9 @@
 RLEList asciiArtRead(FILE* in_stream);
 
 /**
-*   asciiArtPrint: writes data from RLEList to the given file.
+*   asciiArtPrint: writes decoded data from RLEList to the given file.
 *
-* @param list - RLE list, containing data for the file.
+* @param list - RLE list, containing compressed data for the file.
 * @param out_stream - The file the function will update.
 * @return
 * 	RLE_LIST_NULL_ARGUMENT if a NULL was sent as one of the parameters.
