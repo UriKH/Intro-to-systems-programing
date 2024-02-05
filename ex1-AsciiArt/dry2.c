@@ -66,47 +66,7 @@ Node mergeSortedLists(Node list1, Node list2){
         }
         currentHead = currentHead->next;
     }
-
+    
     currentHead->next = other;
     return head;
-}
-
-
-int main(){
-    Node list1 = createList(2);
-    append(list1, 4);
-    append(list1, 6);
-    append(list1, 8);
-    Node list2 = createList(1);
-    append(list2, 3);
-    append(list2, 5);
-    append(list2, 7);
-    printList(list1);
-    printList(list2);
-    printList(mergeSortedLists(list1, list2));
-
-    printf("\n\n");
-    Node list3 = createList(2);
-    append(list3, 3);
-    append(list3, 4);
-    append(list3, 7);
-    Node list4 = createList(2);
-    append(list4, 4);
-    append(list4, 7);
-    append(list4, 8);
-    printList(list3);
-    printList(list4);
-    printList(mergeSortedLists(list3, list4));
-
-    printf("\n\n");
-    Node list5 = createList(1);
-    append(list5, 4);
-    append(list5, 9);
-    Node list6 = createList(2);
-    append(list6, 4);
-    append(list6, 8);
-    printList(list5);
-    printList(list6);
-    printList(mergeSortedLists(list5, list6));
-    return 0;
 }

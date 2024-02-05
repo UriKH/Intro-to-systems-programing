@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h> // for using INT_MAX number of digits for buffer size
 #include "RLEList.h"
 
 struct RLEList_t{
@@ -201,47 +200,52 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         return NULL;
     }
 
-    int size = 1, previousSize = 1;
-    char* string = (char*)malloc(sizeof(char) * size); // the return string
-    // buffer for sprintf usage
-    char* repetitionsString = (char*)malloc(calculateSize(INT_MAX) + 1);
+    RLEList currentNode = list;
+    int sumDigits = 0, nodes = 0;
+    while (currentNode){
+        currentNode = currentNode->next;
+        nodes++;
+    }
 
-    if (!repetitionsString || !string){
+    int* numberOfDigits = (int*)malloc(sizeof(int) * nodes);
+    if (!numberOfDigits){
         if (result){
             *result = RLE_LIST_OUT_OF_MEMORY;
         }
-        free(repetitionsString);
-        free(string);
         return NULL;
     }
 
-    RLEList currentNode = list;
-    while (currentNode){
-        string[previousSize - 1] = currentNode->value;
-        sprintf(repetitionsString, "%d", currentNode->repetitions);
-        size += strlen(repetitionsString) + 2;
-
-        string = (char*)realloc(string, size * sizeof(char));
-        if (!string){
-            if (result){
-                *result = RLE_LIST_OUT_OF_MEMORY;
-            }
-            free(string);
-            free(repetitionsString);
-            return NULL;
-        }
-
-        strcpy(string + previousSize, repetitionsString);
-        previousSize = size;
-        string[size - 2] = '\n';
+    currentNode = list;
+    for (int i = 0; i < nodes; i++){
+        numberOfDigits[i] = calculateSize(currentNode->repetitions);
+        sumDigits += numberOfDigits[i];
         currentNode = currentNode->next;
     }
 
-    string[size - 1] = '\0';
+    char* string = (char*)malloc(sizeof(char) * (sumDigits + 2 * nodes + 1));
+    if (!string){
+        if (result){
+            *result = RLE_LIST_OUT_OF_MEMORY;
+        }
+        free(numberOfDigits);
+        return NULL;
+    }
+
+    int i = 0, j = 0;
+    currentNode = list;
+    while (currentNode){
+        string[i] = currentNode->value;
+        sprintf(string + i + 1, "%d", currentNode->repetitions);
+        i += 1 + numberOfDigits[j++];
+        string[i++] = '\n';
+        currentNode = currentNode->next;
+    }
+
+    string[i] = '\0';
     if (result){
         *result = RLE_LIST_SUCCESS;
     }
-    free(repetitionsString);
+    free(numberOfDigits);
     return string;
 }
 
