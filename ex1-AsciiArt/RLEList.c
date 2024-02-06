@@ -3,7 +3,7 @@
 #include "RLEList.h"
 
 struct RLEList_t{
-    char value;
+    char val;
     int repetitions;
     struct RLEList_t* next;
 };
@@ -125,17 +125,17 @@ RLEListResult RLEListAppend(RLEList list, char value){
     }
 
     if (endNode->repetitions == 0){ // first append 
-        endNode->value = value;
+        endNode->val = value;
         endNode->repetitions++;
     }
-    else if (value == endNode->value){ // update node
+    else if (value == endNode->val){ // update node
         endNode->repetitions += 1;
     }
     else{ // create new node
         endNode->next = (RLEList)malloc(sizeof(struct RLEList_t));
         if (!endNode->next)
             return RLE_LIST_OUT_OF_MEMORY;
-        endNode->next->value = value;
+        endNode->next->val = value;
         endNode->next->repetitions = 1;
         endNode->next->next = NULL;
     }
@@ -189,7 +189,7 @@ char RLEListGet(RLEList list, int index, RLEListResult* result){
     if (result){
         *result = RLE_LIST_SUCCESS;
     }
-    return RLEGetNodeAt(list, index)->value;
+    return RLEGetNodeAt(list, index)->val;
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result){
@@ -222,8 +222,8 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         currentNode = currentNode->next;
     }
 
-    char* string = (char*)malloc(sizeof(char) * (sumDigits + 2 * nodes + 1));
-    if (!string){
+    char* str = (char*)malloc(sizeof(char) * (sumDigits + 2 * nodes + 1));
+    if (!str){
         if (result){
             *result = RLE_LIST_OUT_OF_MEMORY;
         }
@@ -234,19 +234,19 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     int i = 0, j = 0;
     currentNode = list;
     while (currentNode){
-        string[i] = currentNode->value;
-        sprintf(string + i + 1, "%d", currentNode->repetitions);
+        str[i] = currentNode->val;
+        sprintf(str + i + 1, "%d", currentNode->repetitions);
         i += 1 + numberOfDigits[j++];
-        string[i++] = '\n';
+        str[i++] = '\n';
         currentNode = currentNode->next;
     }
 
-    string[i] = '\0';
+    str[i] = '\0';
     if (result){
         *result = RLE_LIST_SUCCESS;
     }
     free(numberOfDigits);
-    return string;
+    return str;
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function){
@@ -256,7 +256,7 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function){
 
     RLEList currentNode = list;
     while (currentNode){
-        currentNode->value = map_function(currentNode->value);
+        currentNode->val = map_function(currentNode->val);
         currentNode = currentNode->next;
     }
     return RLE_LIST_SUCCESS;
