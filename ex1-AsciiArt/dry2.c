@@ -53,6 +53,9 @@ Node mergeSortedLists(Node list1, Node list2){
     if (!list1 || !list2){
         return NULL;
     }
+    if (!isListSorted(list1) || !isListSorted(list2)){
+        return NULL;
+    }
 
     Node head = (list1->val < list2->val) ? list1 : list2;
     Node other = (head == list1) ? list2 : list1;
