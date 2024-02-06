@@ -235,7 +235,14 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     currentNode = list;
     while (currentNode){
         str[i] = currentNode->val;
-        sprintf(str + i + 1, "%d", currentNode->repetitions);
+        int repetitions = currentNode->repetitions;
+        
+        for (int k = numberOfDigits[j] - 1; k >= 0; k--){
+            str[i + k + 1] = (k == 0) ? repetitions + '0' :
+                (repetitions % (10 * k)) + '0';
+            repetitions /= 10;
+        }
+
         i += 1 + numberOfDigits[j++];
         str[i++] = '\n';
         currentNode = currentNode->next;
