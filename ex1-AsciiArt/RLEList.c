@@ -8,6 +8,7 @@ struct RLEList_t{
     struct RLEList_t* next;
 };
 
+
 /**
  * Utility function for convertion between the index as used by the user
  * and the actual index in the RLE list.
@@ -17,6 +18,26 @@ struct RLEList_t{
  * -1 if index is out of boundes.
  * The converted index in case of success.
 */
+static int convertToNodeIndex(RLEList list, int index);
+
+/**
+ * Utility function that returns a RLE list node at a specified index
+ * @param list: The RLE list
+ * @param index: Index of the requested node
+ * @returns
+ * NULL if index is out of boundes.
+ * The node in case of success.
+*/
+static RLEList RLEGetNodeAt(RLEList list, int index);
+
+/**
+ * Utility function that calculates the number of digits of an integer
+ * @param number: The integer to check
+ * @returns
+ * The number of digits in the given number
+*/
+static int calculateSize(int num);
+
 static int convertToNodeIndex(RLEList list, int index){
     int accumulatedSize = 0, iterator = 0;
     RLEList currentNode = list;
@@ -35,14 +56,6 @@ static int convertToNodeIndex(RLEList list, int index){
     return -1;
 }
 
-/**
- * Utility function that returns a RLE list node at a specified index
- * @param list: The RLE list
- * @param index: Index of the requested node
- * @returns
- * NULL if index is out of boundes.
- * The node in case of success.
-*/
 static RLEList RLEGetNodeAt(RLEList list, int index){
     int len = 0;
     RLEList temp = list;
@@ -56,12 +69,6 @@ static RLEList RLEGetNodeAt(RLEList list, int index){
     return NULL;
 }
 
-/**
- * Utility function that calculates the number of digits of an integer
- * @param number: The integer to check
- * @returns
- * The number of digits in the given number
-*/
 static int calculateSize(int num){
     int size = 0;
     if (num == 0){
