@@ -44,14 +44,14 @@ static int convertToNodeIndex(RLEList list, int index){
  * The node in case of success.
 */
 static RLEList RLEGetNodeAt(RLEList list, int index){
-    int length = 0;
-    RLEList temporary = list;
-    while (temporary){
-        if (index == length){
-            return temporary;
+    int len = 0;
+    RLEList temp = list;
+    while (temp){
+        if (index == len){
+            return temp;
         }
-        temporary = temporary->next;
-        length++;
+        temp = temp->next;
+        len++;
     }
     return NULL;
 }
@@ -62,20 +62,20 @@ static RLEList RLEGetNodeAt(RLEList list, int index){
  * @returns
  * The number of digits in the given number
 */
-static int calculateSize(int number){
+static int calculateSize(int num){
     int size = 0;
-    if (number == 0){
+    if (num == 0){
         return 1;
     }
-    if (number > 0){
-        while (number >= 1){
-            number /= 10;
+    if (num > 0){
+        while (num >= 1){
+            num /= 10;
             size++;
         }
     }
     else{
-        while (number <= -1){
-            number /= 10;
+        while (num <= -1){
+            num /= 10;
             size++;
         }
     }
@@ -92,12 +92,12 @@ RLEList RLEListCreate(){
 }
 
 void RLEListDestroy(RLEList list){
-    RLEList temporaryListHead;
+    RLEList tempHead;
 
     while (list){
-        temporaryListHead = list;
+        tempHead = list;
         list = list->next;
-        free(temporaryListHead);
+        free(tempHead);
     }
 }
 
@@ -107,10 +107,10 @@ int RLEListSize(RLEList list){
     }
 
     int size = 0;
-    RLEList temporary = list;
-    while (temporary){
-        size += temporary->repetitions;
-        temporary = temporary->next;
+    RLEList tempHead = list;
+    while (tempHead){
+        size += tempHead->repetitions;
+        tempHead = tempHead->next;
     }
     return size;
 }
@@ -158,9 +158,9 @@ RLEListResult RLEListRemove(RLEList list, int index){
     // delete null node
     if (nodeAtIndex->repetitions == 0){
         if (index == 0){
-            RLEList temporary = list;
+            RLEList tempHead = list;
             list = list->next;
-            free(temporary);
+            free(tempHead);
         }
         else{
             RLEGetNodeAt(list, index - 1)->next = RLEGetNodeAt(list, index + 1);
