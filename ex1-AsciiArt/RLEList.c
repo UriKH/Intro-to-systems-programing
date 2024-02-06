@@ -231,24 +231,28 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         return NULL;
     }
 
-    int i = 0, j = 0;
+    int strPosition = 0;
     currentNode = list;
-    while (currentNode){
-        str[i] = currentNode->val;
+    for (int i = 0; i < nodes; i++){
+        str[strPosition] = currentNode->val;
         int repetitions = currentNode->repetitions;
         
-        for (int k = numberOfDigits[j] - 1; k >= 0; k--){
-            str[i + k + 1] = (k == 0) ? repetitions + '0' :
-                (repetitions % (10 * k)) + '0';
+        for (int j = numberOfDigits[i] - 1; j >= 0; j--){
+            if (j == 0){
+                str[strPosition + j + 1] = repetitions + '0';
+            }
+            else{
+                str[strPosition + j + 1] = (repetitions % (10 * j)) + '0';
+            }
             repetitions /= 10;
         }
 
-        i += 1 + numberOfDigits[j++];
-        str[i++] = '\n';
+        strPosition += 1 + numberOfDigits[i];
+        str[strPosition++] = '\n';
         currentNode = currentNode->next;
     }
 
-    str[i] = '\0';
+    str[strPosition] = '\0';
     if (result){
         *result = RLE_LIST_SUCCESS;
     }
