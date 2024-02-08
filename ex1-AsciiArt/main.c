@@ -4,9 +4,22 @@
 #include "AsciiArtTool.h"
 
 
-RLEListResult runCommand(char flag, FILE* source, FILE* target);
+/**
+ * Swap space -> @ and @ -> space.
+ * @param character: The character to invert
+ * @returns at. if was space, space if was at., otherwise returns the input
+*/
+char invertSpace(char character);
 
-char invertCharacter(char character){
+/**
+ * Encode an ascii art file or inverts the spaces and @ symbols
+ * @param flag: e or i for encode or invert.
+ * @param source: pointer to the source file
+ * @param target: pointer to the target file
+*/
+void runCommand(char flag, FILE* source, FILE* target);
+
+char invertSpace(char character){
     if (character == ' '){
         return '@';
     }
@@ -16,51 +29,44 @@ char invertCharacter(char character){
     return character;
 }
 
-RLEListResult runCommand(char flag, FILE* source, FILE* target){
+void runCommand(char flag, FILE* source, FILE* target){
     if (!source || !target){
-        return RLE_LIST_NULL_ARGUMENT;
+        return;
     }
 
     RLEList list = asciiArtRead(source);
     if (!list){
-        return RLE_LIST_ERROR; // -- ISSUE --
+        return;
     }
 
-    RLEListResult result;
     switch (flag){
     case 'e':
-        result = asciiArtPrintEncoded(list, target);
+        asciiArtPrintEncoded(list, target);
         break;
     case 'i':
-        result = RLEListMap(list, invertCharacter);
+        RLEListResult result = RLEListMap(list, invertSpace);
         if (result != RLE_LIST_SUCCESS){
             break;
         }
-        result = asciiArtPrint(list, target);
+        asciiArtPrint(list, target);
         break;
     }
     RLEListDestroy(list);
-    return result;
+    return;
 }
 
 int main(int argc, char* argv[]){
     if (argc != 4){
-        fprintf(stderr, "number of arguments must be 4\n"); // -- ISSUE --
         return 0;
     }
 
     char flag = argv[1][0];
-    if (flag != 'e' && flag != 'i'){
-        fprintf(stderr, "flags can be only i [inverted] or e [endocded]\n"); // -- ISSUE --
+    if (strlen(argv[1]) != 1 || (flag != 'e' && flag != 'i')){
         return 0;
     }
 
-    FILE* source = fopen(argv[2], "rt");
+    FILE* source = fopen(argv[2], "r");
     FILE* target = fopen(argv[3], "w"); 
-
-    RLEListResult result = runCommand(flag, source, target);
-    if (result != RLE_LIST_SUCCESS){
-        fprintf(stderr, "command didn't finish successfully - exit code: %d\n", result); // -- ISSUE --
-    }
+    runCommand(flag, source, target);
     return 0;
 }
