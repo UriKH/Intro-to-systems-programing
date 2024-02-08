@@ -169,8 +169,9 @@ RLEListResult RLEListRemove(RLEList list, int index){
             list = list->next;
             free(tempHead);
         }
-        else{
-            RLEGetNodeAt(list, index - 1)->next = RLEGetNodeAt(list, index + 1);
+        else {
+            RLEGetNodeAt(list, index - 1)->next =
+                RLEGetNodeAt(list, index + 1);
             free(nodeAtIndex);
         }
     }
@@ -279,14 +280,32 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function){
-    if (!list){
+    if (!list || !map_function){
         return RLE_LIST_NULL_ARGUMENT;
     }
 
     RLEList currentNode = list;
+    RLEList mappedList = RLEListCreate();
+
+    if (mappedList == NULL){
+        return RLE_LIST_OUT_OF_MEMORY; // is this ok?
+    }
+
+    RLEListResult result;
+    char val;
     while (currentNode){
-        currentNode->val = map_function(currentNode->val);
+        val = currentNode->val;
+
+        for (int i = 0; i < currentNode->repetitions; i++){
+            result = RLEListAppend(mappedList, map_function(val));
+            if (result != RLE_LIST_SUCCESS){
+                return result;
+            }
+        }
         currentNode = currentNode->next;
     }
+    
+    RLEListDestroy(list);
+    list = mappedList;
     return RLE_LIST_SUCCESS;
 }
