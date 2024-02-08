@@ -288,7 +288,7 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function){
     RLEList mappedList = RLEListCreate();
 
     if (mappedList == NULL){
-        return RLE_LIST_OUT_OF_MEMORY; // is this ok?
+        return RLE_LIST_OUT_OF_MEMORY; // -- ISSUE --
     }
 
     RLEListResult result;
@@ -299,12 +299,12 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function){
         for (int i = 0; i < currentNode->repetitions; i++){
             result = RLEListAppend(mappedList, map_function(val));
             if (result != RLE_LIST_SUCCESS){
-                return result;
+                return result; // -- ISSUE --
             }
         }
         currentNode = currentNode->next;
     }
-    
+
     RLEListDestroy(list);
     list = mappedList;
     return RLE_LIST_SUCCESS;

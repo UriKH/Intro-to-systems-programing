@@ -23,7 +23,7 @@ RLEListResult runCommand(char flag, FILE* source, FILE* target){
 
     RLEList list = asciiArtRead(source);
     if (!list){
-        return RLE_LIST_ERROR; // maybe?
+        return RLE_LIST_ERROR; // -- ISSUE --
     }
 
     RLEListResult result;
@@ -45,13 +45,13 @@ RLEListResult runCommand(char flag, FILE* source, FILE* target){
 
 int main(int argc, char* argv[]){
     if (argc != 4){
-        fprintf(stderr, "number of arguments must be 4\n");
+        fprintf(stderr, "number of arguments must be 4\n"); // -- ISSUE --
         return 0;
     }
 
     char flag = argv[1][0];
     if (flag != 'e' && flag != 'i'){
-        fprintf(stderr, "flags can be only i [inverted] or e [endocded]\n");
+        fprintf(stderr, "flags can be only i [inverted] or e [endocded]\n"); // -- ISSUE --
         return 0;
     }
 
@@ -60,7 +60,7 @@ int main(int argc, char* argv[]){
 
     RLEListResult result = runCommand(flag, source, target);
     if (result != RLE_LIST_SUCCESS){
-        fprintf(stderr, "command didn't finish successfully - exit code: %d\n", result);
+        fprintf(stderr, "command didn't finish successfully - exit code: %d\n", result); // -- ISSUE --
     }
     return 0;
 }

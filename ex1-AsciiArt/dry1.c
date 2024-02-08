@@ -7,12 +7,13 @@ char* stringDuplicator(char* string, int times){
     assert(times > 0);
     int length = strlen(string);
     char* out = malloc(length * times + 1);
-    assert(out); // ask
-    
+    assert(out); // -- ISSUE --
+
+    // -- ISSUE --
     // replace by?
-    // if (!out){
-    // 		return NULL;
-    // }
+    if (!out){
+    		return NULL;
+    }
 
     for (int i = 0; i < times; i++){
         strcpy(out + i * length, string);
