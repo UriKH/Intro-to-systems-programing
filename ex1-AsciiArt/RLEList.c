@@ -8,7 +8,6 @@ struct RLEList_t{
     struct RLEList_t* next;
 };
 
-
 /**
  * Utility function for convertion between the index as used by the user
  * and the actual index in the RLE list.
@@ -164,21 +163,20 @@ RLEListResult RLEListRemove(RLEList list, int index){
 
     // delete null node
     if (nodeAtIndex->repetitions == 0){
-        if (index == 0){
-            RLEList tempHead = list;
-            list = list->next;
-            free(tempHead);
-        }
-        else {
+        if (index != 0){
             RLEGetNodeAt(list, index - 1)->next =
                 RLEGetNodeAt(list, index + 1);
             free(nodeAtIndex);
         }
+        else if (list->next){
+            RLEList temp = list->next;
+            list->val = temp->val;
+            list->repetitions = temp->repetitions;
+            list->next = temp->next;
+            free(temp);
+        }
     }
 
-    if (list == NULL){
-        list = RLEListCreate();
-    }
     return RLE_LIST_SUCCESS;
 }
 
@@ -284,28 +282,31 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function){
         return RLE_LIST_NULL_ARGUMENT;
     }
 
-    RLEList currentNode = list;
-    RLEList mappedList = RLEListCreate();
-
-    if (mappedList == NULL){
-        return RLE_LIST_OUT_OF_MEMORY; // -- ISSUE --
+    RLEList tempList = RLEListCreate();
+    for (int i = 0; i < RLEListSize(list); i++){
+        RLEListAppend(tempList, RLEListGet(list, i, NULL));
     }
 
+    for (int i = RLEListSize(list); i > 0; i--){
+        RLEListRemove(list, 0);
+    }
+    list->repetitions = 0;
+
+    RLEList currentNode = tempList;
     RLEListResult result;
     char val;
     while (currentNode){
         val = currentNode->val;
 
         for (int i = 0; i < currentNode->repetitions; i++){
-            result = RLEListAppend(mappedList, map_function(val));
+            result = RLEListAppend(list, map_function(val));
             if (result != RLE_LIST_SUCCESS){
+                RLEListDestroy(tempList);
                 return result; // -- ISSUE --
             }
         }
         currentNode = currentNode->next;
     }
-
-    RLEListDestroy(list);
-    list = mappedList;
+    RLEListDestroy(tempList);
     return RLE_LIST_SUCCESS;
 }

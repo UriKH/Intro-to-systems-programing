@@ -39,7 +39,6 @@ void runCommand(char flag, char* sourcePath, char* targetPath){
         target = fopen(targetPath, "w");
     }
     
-
     switch (flag){
     case 'e':
         asciiArtPrintEncoded(list, target);
@@ -50,6 +49,7 @@ void runCommand(char flag, char* sourcePath, char* targetPath){
         }
         break;
     }
+
     RLEListDestroy(list);
     fclose(source);
     fclose(target);

@@ -21,13 +21,23 @@ RLEList asciiArtRead(FILE* in_stream){
     return fileData;
 }
 
-RLEListResult asciiArtPrint(RLEList list, FILE *out_stream){
+RLEListResult asciiArtPrint(RLEList list, FILE* out_stream){
     if (out_stream == NULL || RLEListSize(list) <= 0){ // -- ISSUE --
         return RLE_LIST_NULL_ARGUMENT;
     }
 
+    char character;
+    RLEListResult result;
+
     for (int i = 0; i < RLEListSize(list); i++){
-        fputc(RLEListGet(list, i, NULL), out_stream);
+        character = RLEListGet(list, i, &result); // not sure what the function should get
+        if (result != RLE_LIST_SUCCESS){
+            return result;
+        }
+
+        if (fputc(character, out_stream) == EOF){
+            return RLE_LIST_NULL_ARGUMENT;
+        }
     }
     return RLE_LIST_SUCCESS;
 }
