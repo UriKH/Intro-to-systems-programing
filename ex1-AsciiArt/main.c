@@ -31,14 +31,7 @@ char invertSpace(char character){
 }
 
 void runCommand(char flag, FILE* source, FILE* target){
-    if (!source || !target){
-        return;
-    }
-
     RLEList list = asciiArtRead(source);
-    if (!list){
-        return;
-    }
 
     switch (flag){
     case 'e':

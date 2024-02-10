@@ -205,7 +205,7 @@ char RLEListGet(RLEList list, int index, RLEListResult* result){
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result){
-    if (!list){
+    if (RLEListSize(list) <= 0){ // -- ISSUE --
         if (result){
             *result = RLE_LIST_NULL_ARGUMENT;
         }
@@ -280,7 +280,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function){
-    if (!list || !map_function){
+    if (RLEListSize(list) <= 0 || !map_function){ // -- ISSUE --
         return RLE_LIST_NULL_ARGUMENT;
     }
 
