@@ -7,6 +7,18 @@
 
 
 /**
+* ASCII Art Tool
+*
+* Implements an ASCII art tool.
+*
+* The following functions are available:
+*   - asciiArtRead: reads and compresses the given file using RLE.
+*   - asciiArtPrint: writes decoded data from RLEList to the given file.
+*   - asciiArtPrintEncoded: writes compressed data from RLEList to the given file.
+*/
+
+
+/**
 *   asciiArtRead: reads and compresses the given file using RLE.
 *
 * @param in_stream - The file containing the ACII image.
