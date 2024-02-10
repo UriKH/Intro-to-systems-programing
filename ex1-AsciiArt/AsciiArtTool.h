@@ -22,8 +22,9 @@ RLEList asciiArtRead(FILE* in_stream);
 * @param list - RLE list, containing compressed data for the file.
 * @param out_stream - The file the function will update.
 * @return
-* 	RLE_LIST_NULL_ARGUMENT if a NULL was sent as one of the parameters.
-* 	RLE_LIST_SUCCESS If the function wrote to the file successfully.
+* 	RLE_LIST_NULL_ARGUMENT if a NULL was sent as one of the parameters or the
+*   list was empty.
+* 	RLE_LIST_SUCCESS if the function wrote to the file successfully.
 */
 RLEListResult asciiArtPrint(RLEList list, FILE *out_stream);
 
