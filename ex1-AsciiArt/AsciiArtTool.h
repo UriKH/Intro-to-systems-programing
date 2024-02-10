@@ -1,3 +1,6 @@
+#ifndef ASCII_ART_TOOL_H
+#define ASCII_ART_TOOL_H
+
 #include <stdio.h>
 #include <stdbool.h>
 #include "RLEList.h"
@@ -32,4 +35,6 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream);
 * 	RLE_LIST_NULL_ARGUMENT if a NULL was sent as one of the parameters.
 * 	RLE_LIST_SUCCESS if the function wrote to the file successfully. 
 */
-RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream);
+RLEListResult asciiArtPrintEncoded(RLEList list, FILE* out_stream);
+
+#endif

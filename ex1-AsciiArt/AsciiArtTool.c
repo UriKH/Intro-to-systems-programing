@@ -10,11 +10,9 @@ RLEList asciiArtRead(FILE* in_stream){
 
     int character;
     RLEList fileData = RLEListCreate();
-    RLEListResult result;
 
     while ((character = fgetc(in_stream)) != EOF){
-        result = RLEListAppend(fileData, character);
-        if (result != RLE_LIST_SUCCESS){ // unsuccessful append
+        if (RLEListAppend(fileData, character) != RLE_LIST_SUCCESS){
             RLEListDestroy(fileData);
             return NULL;
         }
@@ -28,9 +26,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream){
     }
 
     for (int i = 0; i < RLEListSize(list); i++){
-        if (fputc(RLEListGet(list, i, NULL), out_stream) == EOF){
-            return RLE_LIST_NULL_ARGUMENT;
-        }
+        fputc(RLEListGet(list, i, NULL), out_stream);
     }
     return RLE_LIST_SUCCESS;
 }

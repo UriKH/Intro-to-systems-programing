@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "RLEList.h"
 #include "AsciiArtTool.h"
 
@@ -44,8 +45,7 @@ void runCommand(char flag, FILE* source, FILE* target){
         asciiArtPrintEncoded(list, target);
         break;
     case 'i':
-        RLEListResult result = RLEListMap(list, invertSpace);
-        if (result != RLE_LIST_SUCCESS){
+        if (RLEListMap(list, invertSpace) != RLE_LIST_SUCCESS){
             break;
         }
         asciiArtPrint(list, target);
@@ -60,13 +60,16 @@ int main(int argc, char* argv[]){
         return 0;
     }
 
-    char flag = argv[1][0];
-    if (strlen(argv[1]) != 1 || (flag != 'e' && flag != 'i')){
+    if (argv[1][0] != '-'){
         return 0;
     }
 
-    FILE* source = fopen(argv[2], "r");
-    FILE* target = fopen(argv[3], "w"); 
-    runCommand(flag, source, target);
+    if (strlen(argv[1]) == 2){
+        FILE* source = fopen(argv[2], "r");
+        FILE* target = fopen(argv[3], "w");
+        runCommand(argv[1][1], source, target);
+        fclose(source);
+        fclose(target);
+    }
     return 0;
 }
