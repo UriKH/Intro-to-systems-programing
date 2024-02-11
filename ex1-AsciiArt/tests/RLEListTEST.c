@@ -94,17 +94,35 @@ void test_append(){
     RLEListDestroy(list);
 }
 
-static char invertfunc(char c){
-    return c + 1;    
+static char addfunc(char c){
+    if (c == ' ')
+    	return '@';
+    else if (c == '@')
+    	return ' ';
+    return c;
 }
 
-void test_map(){
+char univalentFunction(char input) {
+    // A slightly more complex univalent function
+    // It converts lowercase letters to uppercase and vice versa
+    // All other characters remain unchanged
+
+    if (input >= 'a' && input <= 'z') {
+        return input - 'a' + 'A'; // Convert lowercase to uppercase
+    } else if (input >= 'A' && input <= 'Z') {
+        return input - 'A' + 'a'; // Convert uppercase to lowercase
+    } else {
+        return input; // Return unchanged for non-alphabetic characters
+    }
+}
+
+void test_map(char (*func)(char)){
 	RLEList list = init_list();
     RLEList second = init_list();
     RLEList inverted = RLEListMap(second, invertfunc);
     
     for (int i = 0; i < RLEListSize(list); i++){
-        assert(invertfunc(RLEListGet(list, i, NULL)) == RLEListGet(second, i, NULL))
+        assert(func(RLEListGet(list, i, NULL)) == RLEListGet(second, i, NULL))
     }
     
     RLEListDestroy(list);
@@ -118,5 +136,6 @@ int main(){
     test_append();
     test_remove();
     test_exporttostring();
-    test_map();
+    test_map(addfunc);
+    test_map(univalentFunction);
 }
