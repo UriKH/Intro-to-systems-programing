@@ -118,4 +118,5 @@ int main(){
     test_append();
     test_remove();
     test_exporttostring();
+    test_map();
 }
