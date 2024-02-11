@@ -203,16 +203,9 @@ char RLEListGet(RLEList list, int index, RLEListResult* result){
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result){
-    if (RLEListSize(list) <= 0){ // -- ISSUE --
+    if ((int size = RLEListSize(list)) <= 0){
         if (result){
-            *result = RLE_LIST_NULL_ARGUMENT;
-        }
-        return NULL;
-    }
-
-    if (RLEListSize(list) == 0){
-        if (result){
-            *result = RLE_LIST_NULL_ARGUMENT;
+            *result = (size == -1) ? RLE_LIST_NULL_ARGUMENT : RLE_LIST_SUCCESS;
         }
         return NULL;
     }
@@ -278,8 +271,12 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function){
-    if (RLEListSize(list) <= 0 || !map_function){ // -- ISSUE --
+    if (!list || !map_function){ // -- ISSUE --
         return RLE_LIST_NULL_ARGUMENT;
+    }
+    
+    if (RLEListSize(list) == 0){
+        return RLE_LIST_SUCCESS;
     }
 
     RLEList tempList = RLEListCreate();
