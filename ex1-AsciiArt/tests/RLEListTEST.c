@@ -17,7 +17,7 @@ RLEList init_list(){
     return list;
 }
 
-void test_create_destroy(){
+void test_create(){
     RLEList list = init_list();
     assert<list != NULL>;
    	RLEListDestroy(list);
@@ -52,12 +52,23 @@ void test_remove(){
     RLEListDestroy(list);
 }
 
+void test_append(){
+    RLEList list = RLEListCreate();
+	RLEListAppend('A');
+    assert(RLEListGet(list, RLEListSize(list)-1, NULL) == 'A');
+    
+    RLEListAppend(NULL);
+    assert(RLEListGet(list, RLEListSize(list)-1, NULL) == 'A');
+    
+    RLEListAppend(-1);
+    assert(RLEListGet(list, RLEListSize(list)-1, NULL) == 'A');
+    
+    RLEListDestroy(list);
+}
 
 int main(){
     test_create();
     test_destroy();
     test_remove();
     test_append();
-    test_empty_list();
-    
 }
