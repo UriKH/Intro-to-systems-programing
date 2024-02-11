@@ -24,10 +24,38 @@ void test_create_destroy(){
     assert<list == NULL>;
 }
 
+void test_destroy(){
+    RLEList list = RLEListCreate();
+    RLEListDestroy(list);
+    
+    list = init_list();
+    RLEListDestroy(list);
+    
+    list = NULL;
+    RLEListDestroy(list);
+}
+
+void test_remove(){
+    RLEList list = RLEListCreate();
+    assert<RLEListRemove(list, 20) == RLE_LIST_NULL_ARGUMENT>;
+    RLEListDestroy(list);
+    
+    list = init_list();
+    assert<RLEListRemove(list, 20) == RLE_LIST_SUCCESS>;
+    RLEListDestroy(list);
+    
+    list = NULL;
+    assert<RLEListRemove(list, 0) == RLE_LIST_NULL_ARGUMENT>;
+    
+    list = init_list();
+    assert<RLEListRemove(list, 1000) == RLE_LIST_INDEX_OUT_OF_BOUNDS>;
+    RLEListDestroy(list);
+}
+
 
 int main(){
     test_create();
-    test_delete();
+    test_destroy();
     test_remove();
     test_append();
     test_empty_list();
