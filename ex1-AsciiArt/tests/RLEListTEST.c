@@ -102,7 +102,7 @@ static char addfunc(char c){
     return c;
 }
 
-char univalentFunction(char input) {
+static char univalentFunction(char input) {
     // A slightly more complex univalent function
     // It converts lowercase letters to uppercase and vice versa
     // All other characters remain unchanged
@@ -114,6 +114,13 @@ char univalentFunction(char input) {
     } else {
         return input; // Return unchanged for non-alphabetic characters
     }
+}
+
+static char abcrun(char c){
+    static int call = 0;
+	c = 'a' + i % 26;
+    call++;
+    return c;
 }
 
 void test_map(char (*func)(char)){
@@ -138,4 +145,5 @@ int main(){
     test_exporttostring();
     test_map(addfunc);
     test_map(univalentFunction);
+    test_map(abcrun);
 }
