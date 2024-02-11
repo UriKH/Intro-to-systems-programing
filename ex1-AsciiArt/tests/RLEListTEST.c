@@ -94,6 +94,22 @@ void test_append(){
     RLEListDestroy(list);
 }
 
+static char invertfunc(char c){
+    return c + 1;    
+}
+
+void test_map(){
+	RLEList list = init_list();
+    RLEList second = init_list();
+    RLEList inverted = RLEListMap(second, invertfunc);
+    
+    for (int i = 0; i < RLEListSize(list); i++){
+        assert(invertfunc(RLEListGet(list, i, NULL)) == RLEListGet(second, i, NULL))
+    }
+    
+    RLEListDestroy(list);
+    RLEListDestroy(second);
+}
 
 int main(){
     test_create();
