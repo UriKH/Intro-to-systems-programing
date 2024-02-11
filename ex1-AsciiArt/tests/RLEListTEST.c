@@ -24,6 +24,22 @@ void test_create(){
     assert<list == NULL>;
 }
 
+vodi test_exporttostring(){
+    char *str = RLEListExportToString(NULL);
+	assert(str == NULL);
+    
+    RLEList list = init_list();
+    str = RLEListExportToString(list);
+	assert(str != NULL);
+    free(str);
+    RLEListDestroy(list);
+    
+    list = RLEListCreate();
+    str = RLEListExportToString();
+	assert(str == NULL);
+    RLEListDestroy(list);
+}
+
 void test_destroy(){
     RLEList list = RLEListCreate();
     RLEListDestroy(list);
@@ -52,6 +68,18 @@ void test_remove(){
     RLEListDestroy(list);
 }
 
+vodi test_get(){
+    RLEList list = RLEListCreate();
+    assert(RLEListGet(list, 0, NULL) == NULL);
+    RLEListDestroy(list);
+    
+    assert(RLEListGet(NULL, 0, NULL) == NULL);
+	
+    list = init_list();    
+    assert(RLEListGet(list, 0, NULL) == 'A');
+    RLEListDestroy(list);
+}
+
 void test_append(){
     RLEList list = RLEListCreate();
 	RLEListAppend('A');
@@ -66,9 +94,12 @@ void test_append(){
     RLEListDestroy(list);
 }
 
+
 int main(){
     test_create();
     test_destroy();
-    test_remove();
+    test_get();
     test_append();
+    test_remove();
+    test_exporttostring();
 }
