@@ -5,7 +5,7 @@
 
 
 RLEList asciiArtRead(FILE* in_stream){
-    if (in_stream == NULL){
+    if (!in_stream){
         return NULL;
     }
 
@@ -22,15 +22,19 @@ RLEList asciiArtRead(FILE* in_stream){
 }
 
 RLEListResult asciiArtPrint(RLEList list, FILE* out_stream){
-    if (out_stream == NULL || RLEListSize(list) <= 0){ // -- ISSUE --
+    if (!out_stream || !list){
         return RLE_LIST_NULL_ARGUMENT;
+    }
+
+    if (RLEListSize(list) == 0){ // -- ISSUE --
+        return RLE_LIST_SUCCESS;
     }
 
     char character;
     RLEListResult result;
 
     for (int i = 0; i < RLEListSize(list); i++){
-        character = RLEListGet(list, i, &result); // not sure what the function should get
+        character = RLEListGet(list, i, &result);
         if (result != RLE_LIST_SUCCESS){
             return result;
         }
@@ -43,8 +47,12 @@ RLEListResult asciiArtPrint(RLEList list, FILE* out_stream){
 }
 
 RLEListResult asciiArtPrintEncoded(RLEList list, FILE* out_stream){
-    if (out_stream == NULL || RLEListSize(list) <= 0){ // -- ISSUE --
+    if (!out_stream || !list){ 
         return RLE_LIST_NULL_ARGUMENT;
+    }
+
+    if (RLEListSize(list) == 0){ // -- ISSUE --
+        return RLE_LIST_SUCCESS;
     }
 
     RLEListResult result;
@@ -54,7 +62,7 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE* out_stream){
         return result;
     }
     
-    fprintf(out_stream, string);
+    fprintf(out_stream, "%s", string);
     free(string);
     return RLE_LIST_SUCCESS;
 }

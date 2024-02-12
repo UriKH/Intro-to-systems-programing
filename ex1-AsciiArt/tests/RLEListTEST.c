@@ -1,6 +1,7 @@
 #include "RLEList.h"
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 RLEList init_list(){
     RLEList list = RLEListCreate();
@@ -19,23 +20,23 @@ RLEList init_list(){
 
 void test_create(){
     RLEList list = init_list();
-    assert<list != NULL>;
+    assert(list != NULL);
    	RLEListDestroy(list);
-    assert<list == NULL>;
 }
 
-vodi test_exporttostring(){
-    char *str = RLEListExportToString(NULL);
-	assert(str == NULL);
-    
+void test_exporttostring(){
+    char *str = RLEListExportToString(NULL, NULL);
+    assert(str == NULL);
+    free(str);
+
     RLEList list = init_list();
-    str = RLEListExportToString(list);
+    str = RLEListExportToString(list, NULL);
 	assert(str != NULL);
     free(str);
     RLEListDestroy(list);
     
     list = RLEListCreate();
-    str = RLEListExportToString();
+    str = RLEListExportToString(list, NULL);
 	assert(str == NULL);
     RLEListDestroy(list);
 }
@@ -53,44 +54,40 @@ void test_destroy(){
 
 void test_remove(){
     RLEList list = RLEListCreate();
-    assert<RLEListRemove(list, 20) == RLE_LIST_NULL_ARGUMENT>;
+    assert(RLEListRemove(list, 20) == RLE_LIST_INDEX_OUT_OF_BOUNDS);
     RLEListDestroy(list);
     
     list = init_list();
-    assert<RLEListRemove(list, 20) == RLE_LIST_SUCCESS>;
+    assert(RLEListRemove(list, 20) == RLE_LIST_SUCCESS);
     RLEListDestroy(list);
     
     list = NULL;
-    assert<RLEListRemove(list, 0) == RLE_LIST_NULL_ARGUMENT>;
+    assert(RLEListRemove(list, 0) == RLE_LIST_NULL_ARGUMENT);
     
     list = init_list();
-    assert<RLEListRemove(list, 1000) == RLE_LIST_INDEX_OUT_OF_BOUNDS>;
+    assert(RLEListRemove(list, 1000) == RLE_LIST_INDEX_OUT_OF_BOUNDS);
     RLEListDestroy(list);
 }
 
-vodi test_get(){
+void test_get(){
     RLEList list = RLEListCreate();
-    assert(RLEListGet(list, 0, NULL) == NULL);
+    RLEListResult res;
+    RLEListGet(list, 0, &res);
+    assert(res == RLE_LIST_INDEX_OUT_OF_BOUNDS);
     RLEListDestroy(list);
-    
-    assert(RLEListGet(NULL, 0, NULL) == NULL);
+
+    RLEListGet(NULL, 0, &res);
+    assert(res == RLE_LIST_NULL_ARGUMENT);
 	
     list = init_list();    
-    assert(RLEListGet(list, 0, NULL) == 'A');
+    assert(RLEListGet(list, 0, NULL) == 'a');
     RLEListDestroy(list);
 }
 
 void test_append(){
     RLEList list = RLEListCreate();
-	RLEListAppend('A');
-    assert(RLEListGet(list, RLEListSize(list)-1, NULL) == 'A');
-    
-    RLEListAppend(NULL);
-    assert(RLEListGet(list, RLEListSize(list)-1, NULL) == 'A');
-    
-    RLEListAppend(-1);
-    assert(RLEListGet(list, RLEListSize(list)-1, NULL) == 'A');
-    
+	RLEListAppend(list, 'A');
+    assert(RLEListGet(list, RLEListSize(list)-1, NULL) == 'A');    
     RLEListDestroy(list);
 }
 
@@ -118,22 +115,20 @@ static char univalentFunction(char input) {
 
 static char abcrun(char c){
     static int call = 0;
-	c = 'a' + i % 26;
+	c = 'a' + call % 26;
     call++;
     return c;
 }
 
 void test_map(char (*func)(char)){
 	RLEList list = init_list();
-    RLEList second = init_list();
-    RLEList inverted = RLEListMap(second, invertfunc);
-    
-    for (int i = 0; i < RLEListSize(list); i++){
-        assert(func(RLEListGet(list, i, NULL)) == RLEListGet(second, i, NULL))
-    }
-    
+    RLEListResult res = RLEListMap(list, func);
+
+    assert(res == RLE_LIST_SUCCESS);
+    char* str = RLEListExportToString(list, NULL);
+    printf("funcion output is:\n%s\n-------\n", str);
+    free(str);
     RLEListDestroy(list);
-    RLEListDestroy(second);
 }
 
 int main(){

@@ -122,8 +122,9 @@ int RLEListSize(RLEList list){
 }
 
 RLEListResult RLEListAppend(RLEList list, char value){
-    if (!list)
+    if (!list){
         return RLE_LIST_NULL_ARGUMENT;
+    }
 
     RLEList endNode = list;
     while (endNode->next){ // go to end of list
@@ -164,8 +165,7 @@ RLEListResult RLEListRemove(RLEList list, int index){
     // delete null node
     if (nodeAtIndex->repetitions == 0){
         if (index != 0){
-            RLEGetNodeAt(list, index - 1)->next =
-                RLEGetNodeAt(list, index + 1);
+            RLEGetNodeAt(list, index - 1)->next = RLEGetNodeAt(list, index + 1);
             free(nodeAtIndex);
         }
         else if (list->next){
@@ -203,7 +203,8 @@ char RLEListGet(RLEList list, int index, RLEListResult* result){
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result){
-    if ((int size = RLEListSize(list)) <= 0){
+    int size;
+    if ((size = RLEListSize(list)) <= 0){
         if (result){
             *result = (size == -1) ? RLE_LIST_NULL_ARGUMENT : RLE_LIST_SUCCESS;
         }
@@ -246,7 +247,8 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     for (int i = 0; i < nodes; i++){
         str[strPosition] = currentNode->val;
         int repetitions = currentNode->repetitions;
-        
+
+        // convert every digit in the integer to the corresponding character 
         for (int j = numberOfDigits[i] - 1; j >= 0; j--){
             if (j == 0){
                 str[strPosition + j + 1] = repetitions + '0';
@@ -271,11 +273,11 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function){
-    if (!list || !map_function){ // -- ISSUE --
+    if (!list || !map_function){ 
         return RLE_LIST_NULL_ARGUMENT;
     }
     
-    if (RLEListSize(list) == 0){
+    if (RLEListSize(list) == 0){ // -- ISSUE --
         return RLE_LIST_SUCCESS;
     }
 
@@ -299,7 +301,7 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function){
             result = RLEListAppend(list, map_function(val));
             if (result != RLE_LIST_SUCCESS){
                 RLEListDestroy(tempList);
-                return result; // -- ISSUE --
+                return result;
             }
         }
         currentNode = currentNode->next;

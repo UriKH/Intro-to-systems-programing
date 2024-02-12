@@ -12,7 +12,7 @@ char* stringDuplicator(char* string, int times){
     // -- ISSUE --
     // replace by?
     if (!out){
-    		return NULL;
+    	return NULL;
     }
 
     for (int i = 0; i < times; i++){

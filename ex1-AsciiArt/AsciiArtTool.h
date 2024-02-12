@@ -14,7 +14,8 @@
 * The following functions are available:
 *   - asciiArtRead: reads and compresses the given file using RLE.
 *   - asciiArtPrint: writes decoded data from RLEList to the given file.
-*   - asciiArtPrintEncoded: writes compressed data from RLEList to the given file.
+*   - asciiArtPrintEncoded: writes compressed data from RLEList to the
+*     given file.
 */
 
 

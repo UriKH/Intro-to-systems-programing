@@ -73,3 +73,22 @@ Node mergeSortedLists(Node list1, Node list2){
     currentHead->next = other;
     return head;
 }
+
+int main(){
+    Node head = createList(1);
+    append(head, 2);
+    append(head, 4);
+    append(head, 8);
+
+
+    Node head2 = createList(1);
+    append(head2, 3);
+    append(head2, 5);
+    append(head2, 7);
+
+    printList(head);
+    printList(head2);
+    Node merge = mergeSortedLists(head, head2);
+    printList(merge);
+    // free(merge);
+}
