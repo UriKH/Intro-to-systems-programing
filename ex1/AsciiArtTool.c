@@ -26,7 +26,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE* out_stream){
         return RLE_LIST_NULL_ARGUMENT;
     }
 
-    if (RLEListSize(list) == 0){ // -- ISSUE --
+    if (RLEListSize(list) == 0){
         return RLE_LIST_SUCCESS;
     }
 
@@ -51,7 +51,7 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE* out_stream){
         return RLE_LIST_NULL_ARGUMENT;
     }
 
-    if (RLEListSize(list) == 0){ // -- ISSUE --
+    if (RLEListSize(list) == 0){
         return RLE_LIST_SUCCESS;
     }
 

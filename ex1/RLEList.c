@@ -277,7 +277,7 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function){
         return RLE_LIST_NULL_ARGUMENT;
     }
     
-    if (RLEListSize(list) == 0){ // -- ISSUE --
+    if (RLEListSize(list) == 0){
         return RLE_LIST_SUCCESS;
     }
 
