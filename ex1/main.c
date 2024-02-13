@@ -31,13 +31,19 @@ char invertFunction(char character){
 }
 
 void runCommand(char flag, char* sourcePath, char* targetPath){
-    FILE* source = fopen(sourcePath, "r"), *target = NULL;
+    FILE* source = fopen(sourcePath, "r");
     RLEList list = asciiArtRead(source);
 
-    if (RLEListSize(list) > 0){
-        target = fopen(targetPath, "w");
+    if (RLEListSize(list) <= 0){
+        if (source){
+            fclose(source);
+        }
+        RLEListDestroy(list);
+        return;
     }
-    
+    FILE* target = fopen(targetPath, "w");
+
+
     switch (flag){
     case 'e':
         asciiArtPrintEncoded(list, target);
@@ -51,7 +57,9 @@ void runCommand(char flag, char* sourcePath, char* targetPath){
 
     RLEListDestroy(list);
     fclose(source);
-    fclose(target);
+    if (target){
+        fclose(target);
+    }
     return;
 }
 
