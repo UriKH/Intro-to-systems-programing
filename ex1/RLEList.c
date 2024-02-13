@@ -37,6 +37,30 @@ static RLEList RLEGetNodeAt(RLEList list, int index);
 */
 static int calculateSize(int num);
 
+/**
+ * Utility function that creates an empty null terminated string
+ * @param result: The pointer to the result argument
+ * @returns
+ * The null terminated empty string
+*/
+static char* initializeNullString(RLEListResult* result);
+
+static char* initializeNullString(RLEListResult* result){
+    char* string = (char*)malloc(sizeof(char));
+    if (result){
+        if (string){
+            *result = RLE_LIST_SUCCESS;
+        }
+        else{
+            *result = RLE_LIST_OUT_OF_MEMORY;
+        }
+    }
+    if (string){
+        string[0] = '\0';
+    }
+    return string;
+}
+
 static int convertToNodeIndex(RLEList list, int index){
     int accumulatedSize = 0, iterator = 0;
     RLEList currentNode = list;
@@ -46,7 +70,7 @@ static int convertToNodeIndex(RLEList list, int index){
 
     while (currentNode){
         accumulatedSize += currentNode->repetitions;
-        if (accumulatedSize-1 >= index){
+        if (accumulatedSize - 1 >= index){
             return iterator;
         }
         currentNode = currentNode->next;
@@ -203,12 +227,15 @@ char RLEListGet(RLEList list, int index, RLEListResult* result){
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result){
-    int size;
-    if ((size = RLEListSize(list)) <= 0){
+    if (!list){
         if (result){
-            *result = (size == -1) ? RLE_LIST_NULL_ARGUMENT : RLE_LIST_SUCCESS;
+            *result = RLE_LIST_NULL_ARGUMENT;
         }
         return NULL;
+    }
+
+    if (RLEListSize(list) == 0){
+        return initializeNullString(result);
     }
 
     RLEList currentNode = list;
@@ -273,10 +300,10 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function){
-    if (!list || !map_function){ 
+    if (!list || !map_function){
         return RLE_LIST_NULL_ARGUMENT;
     }
-    
+
     if (RLEListSize(list) == 0){
         return RLE_LIST_SUCCESS;
     }
