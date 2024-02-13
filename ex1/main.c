@@ -18,7 +18,7 @@ char invertFunction(char character);
  * @param source: pointer to the source file
  * @param target: pointer to the target file
 */
-void runCommand(char flag, char* sourcePath, char* targetPath);
+void runCommand(char flag, FILE* sourcePath, FILE* targetPath);
 
 char invertFunction(char character){
     if (character == ' '){
@@ -30,19 +30,17 @@ char invertFunction(char character){
     return character;
 }
 
-void runCommand(char flag, char* sourcePath, char* targetPath){
-    FILE* source = fopen(sourcePath, "r");
+void runCommand(char flag, FILE* source, FILE* target){
+    if (!source || !target){
+        return;
+    }
+
     RLEList list = asciiArtRead(source);
 
     if (RLEListSize(list) <= 0){
-        if (source){
-            fclose(source);
-        }
         RLEListDestroy(list);
         return;
     }
-    FILE* target = fopen(targetPath, "w");
-
 
     switch (flag){
     case 'e':
@@ -56,10 +54,6 @@ void runCommand(char flag, char* sourcePath, char* targetPath){
     }
 
     RLEListDestroy(list);
-    fclose(source);
-    if (target){
-        fclose(target);
-    }
     return;
 }
 
@@ -73,7 +67,15 @@ int main(int argc, char* argv[]){
     }
 
     if (strlen(argv[1]) == 2){
-        runCommand(argv[1][1], argv[2], argv[3]);
+        FILE* source = fopen(argv[2], "r");
+        FILE* target = fopen(argv[3], "w");
+        runCommand(argv[1][1], source, target);
+        if (source){
+            fclose(source);
+        }
+        if (target){
+            fclose(target);
+        }
     }
     return 0;
 }

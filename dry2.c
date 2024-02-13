@@ -25,18 +25,6 @@ void append(Node list, int val){
 }
 
 bool isListSorted(Node list){
-    if (!list){
-        return true;
-    }
-
-    int current = list->val;
-    Node temporary = list->next;
-
-    while (temporary){
-        if (temporary->val < current){
-            return false;
-        }
-    }
     return true;
 }
 
@@ -63,9 +51,9 @@ Node mergeSortedLists(Node list1, Node list2){
 
     while (other->next || currentHead->next){
         if (other->val < currentHead->next->val){
-            Node temporary = currentHead->next;
+            Node temp = currentHead->next;
             currentHead->next = other;
-            other = temporary;
+            other = temp;
         }
         currentHead = currentHead->next;
     }
@@ -88,7 +76,6 @@ int main(){
 
     printList(head);
     printList(head2);
-    Node merge = mergeSortedLists(head, head2);
-    printList(merge);
+    printList(mergeSortedLists(head, head2));
     // free(merge);
 }
