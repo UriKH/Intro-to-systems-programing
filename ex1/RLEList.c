@@ -280,6 +280,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         return initializeNullString(result);
     }
 
+    // count nodes in list
     RLEList currentNode = list;
     int sumDigits = 0, nodes = 0;
     while (currentNode){
@@ -295,6 +296,8 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
         return NULL;
     }
 
+    // populate numberOfDigits array with the number of digits needed to represent the 
+    // number of repetitions of a value in each node
     currentNode = list;
     for (int i = 0; i < nodes; i++){
         numberOfDigits[i] = calculateSize(currentNode->repetitions);
@@ -359,9 +362,10 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function){
     RLEList currentNode = tempList;
     RLEListResult result;
     char val;
+    // create the new list as a mapped list
     while (currentNode){
         val = currentNode->val;
-
+        
         for (int i = 0; i < currentNode->repetitions; i++){
             result = RLEListAppend(list, map_function(val));
             if (result != RLE_LIST_SUCCESS){
