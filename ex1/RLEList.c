@@ -41,7 +41,7 @@ static int calculateSize(int num);
  * Utility function that creates an empty null terminated string
  * @param result: The pointer to the result argument
  * @returns
- * The null terminated empty string
+ * The null terminated empty string 
 */
 static char* initializeNullString(RLEListResult* result);
 
@@ -53,6 +53,28 @@ static char* initializeNullString(RLEListResult* result);
  * The result of the exponentiation
 */
 static int raiseInPositivePower(int number, int power);
+
+/**
+ * Utility function that minimizes the list to the smalles number of nodes possible
+ * by uniting same value nodes.
+ * @param list: pointer to the head of the list
+*/
+static void minimizeList(RLEList list);
+
+static void minimizeList(RLEList list){
+    RLEList temp = list;
+    while (temp && temp->next){
+        if (temp->val == temp->next->val){
+            RLEList toRemove = temp->next;
+            temp->repetitions += temp->next->repetitions;
+            temp->next = temp->next->next;
+            free(toRemove);
+        }
+        else{
+            temp = temp->next;
+        }
+    }
+}
 
 static int raiseInPositivePower(int number, int power){
     int result = number;
@@ -220,7 +242,7 @@ RLEListResult RLEListRemove(RLEList list, int index){
             free(temp);
         }
     }
-
+    minimizeList(list);
     return RLE_LIST_SUCCESS;
 }
 
