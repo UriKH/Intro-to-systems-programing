@@ -45,6 +45,26 @@ static int calculateSize(int num);
 */
 static char* initializeNullString(RLEListResult* result);
 
+/**
+ * Utility function that raises a number in a given power
+ * @param number: number to raise
+ * @param power: power toraise the number in
+ * @returns
+ * The result of the exponentiation
+*/
+static int raiseInPositivePower(int number, int power);
+
+static int raiseInPositivePower(int number, int power){
+    int result = number;
+    if (power <= 0){
+        return 1;
+    }
+    for (int i = 0; i < power - 1; i++){
+        result *= number;
+    }
+    return result;
+}
+
 static char* initializeNullString(RLEListResult* result){
     char* string = (char*)malloc(sizeof(char));
     if (result){
@@ -151,7 +171,7 @@ RLEListResult RLEListAppend(RLEList list, char value){
     }
 
     RLEList endNode = list;
-    while (endNode->next){ // go to end of list
+    while (endNode && endNode->next){ // go to end of list
         endNode = endNode->next;
     }
 
@@ -274,16 +294,12 @@ char* RLEListExportToString(RLEList list, RLEListResult* result){
     for (int i = 0; i < nodes; i++){
         str[strPosition] = currentNode->val;
         int repetitions = currentNode->repetitions;
-
+        int digit;
         // convert every digit in the integer to the corresponding character 
         for (int j = numberOfDigits[i] - 1; j >= 0; j--){
-            if (j == 0){
-                str[strPosition + j + 1] = repetitions + '0';
-            }
-            else{
-                str[strPosition + j + 1] = (repetitions % (10 * j)) + '0';
-            }
-            repetitions /= 10;
+            digit = repetitions / raiseInPositivePower(10, j);
+            repetitions %= raiseInPositivePower(10, j);
+            str[strPosition + numberOfDigits[i] - j] = digit + '0';
         }
 
         strPosition += 1 + numberOfDigits[i];
