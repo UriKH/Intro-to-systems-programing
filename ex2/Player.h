@@ -1,7 +1,6 @@
 #ifndef EX2_PLAYER_H
 #define EX2_PLAYER_H
-#include "Card.h"
-#include "utilities.h"
+
 #include <string>
 
 class Player{

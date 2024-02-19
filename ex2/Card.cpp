@@ -1,5 +1,4 @@
 #include "Card.h"
-#include "utilities.h"
 
 
 Card::Card(CardType type, const CardStats& stats) : m_effect(type), m_stats(stats){}
@@ -7,6 +6,7 @@ Card::Card(CardType type, const CardStats& stats) : m_effect(type), m_stats(stat
 void Card::applyEncounter(Player& player) const{
     switch (this->m_effect){
     case CardType::Battle:
+    {
         bool battleResult = player.getAttackStrength() >= this->m_stats.force;
 
         if (battleResult){
@@ -19,19 +19,25 @@ void Card::applyEncounter(Player& player) const{
 
         printBattleResult(battleResult);
         break;
-    case CardType::Buff:
+    }
+    case CardType::Buff:{
         if (player.pay(this->m_stats.cost)){
             player.buff(this->m_stats.buff);
         }
         break;
+    }
     case CardType::Heal:
+    {
         if (player.pay(this->m_stats.cost)){
             player.heal(this->m_stats.heal);
         }
         break;
+    }
     case CardType::Treasure:
+    {
         player.addCoins(this->m_stats.loot);
         break;
+    }
     }
 }
 
