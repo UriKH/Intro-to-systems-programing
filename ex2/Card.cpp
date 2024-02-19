@@ -5,40 +5,38 @@
 Card::Card(CardType type, const CardStats& stats) : m_effect(type), m_stats(stats){}
 
 void Card::applyEncounter(Player& player) const{
-    switch (m_type){
+    switch (this->m_effect){
     case CardType::Battle:
-        bool battleResult = player.getAttackStrength() >= m_stats->force;
+        bool battleResult = player.getAttackStrength() >= this->m_stats.force;
 
         if (battleResult){
-            player.levelUp(1);
-            player.addCoins(m_stats->loot);
+            player.levelUp();
+            player.addCoins(this->m_stats.loot);
         }
         else{
-            player.demage(m_stats->hpLoss);
+            player.damage(this->m_stats.hpLossOnDefeat);
         }
 
         printBattleResult(battleResult);
         break;
-    case CardType::Buff || CardType::Heal:
-        if (!player.pay(m_stats->cost)){
-            break;
+    case CardType::Buff:
+        if (player.pay(this->m_stats.cost)){
+            player.buff(this->m_stats.buff);
         }
-
-        if (CardType::Heal){
-            player.heal(m_stats->heal);
-        }
-        else{
-            player.buff(m_stats->buff);
+        break;
+    case CardType::Heal:
+        if (player.pay(this->m_stats.cost)){
+            player.heal(this->m_stats.heal);
         }
         break;
     case CardType::Treasure:
-        player.addCoins(m_stats->loot);
+        player.addCoins(this->m_stats.loot);
         break;
     }
 }
 
 void Card::printInfo() const{
-    switch (m_type){
+    switch (this->m_effect){
     case CardType::Battle:
         printBattleCardInfo(m_stats);
         break;
