@@ -69,8 +69,11 @@ void Player::addCoins(const int coinsIncrease){
 }
 
 bool Player::pay(const int price){
-    m_coins = (price > m_coins) ? m_coins : m_coins - price;
-    return (price > m_coins);
+    if(price > m_coins){
+        m_coins -= price;
+        return true;
+    }
+    return false;
 }
 
 int Player::getAttackStrength() const{
