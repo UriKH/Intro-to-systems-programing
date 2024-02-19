@@ -3,15 +3,19 @@
 #include <iostream>
 #include <string>
 
-Player::Player(std::string name, int maxHP, int force) : m_name(name), m_maxHP(maxHP), m_force(force){
+Player::Player(std::string name, int maxHP, int force) : m_name(name){
+    m_force = (force >= 0) ? force : DEFAULT_FORCE;
     m_level = DEFAULT_LEVEL;
+    m_maxHP = (maxHP > 0) ? maxHP : DEFAULT_MAX_HP;
     m_HP = m_maxHP;
     m_coins = MIN_COINS;
+    
 }
 
-Player::Player(std::string name, int maxHP) : m_name(name), m_maxHP(maxHP){
+Player::Player(std::string name, int maxHP) : m_name(name){
     m_force = DEFAULT_FORCE;
     m_level = DEFAULT_LEVEL;
+    m_maxHP = (maxHP > 0) ? maxHP : DEFAULT_MAX_HP;
     m_HP = m_maxHP;
     m_coins = MIN_COINS;
 }
