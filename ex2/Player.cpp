@@ -19,9 +19,9 @@ Player::Player(std::string name, int maxHP) : m_name(name), m_maxHP(maxHP){
 Player::Player(std::string name) : m_name(name){
     m_force = DEFAULT_FORCE;
     m_level = DEFAULT_LEVEL;
+    m_maxHP = DEFAULT_MAX_HP;
     m_HP = m_maxHP;
     m_coins = MIN_COINS;
-    m_maxHP = DEFAULT_MAX_HP;
 }
 
 void Player::printInfo() const{
