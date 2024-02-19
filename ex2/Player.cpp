@@ -52,7 +52,7 @@ void Player::heal(const int healthIncrease){
 
 void Player::damage(const int damagePoints){
     if(damagePoints > 0){
-        if((m_HP -= damagePoints) > MIN_HP){
+        if((m_HP -= damagePoints) < MIN_HP){
             m_HP = MIN_HP;
         }
     }
@@ -69,7 +69,7 @@ void Player::addCoins(const int coinsIncrease){
 }
 
 bool Player::pay(const int price){
-    if(price > m_coins){
+    if(price <= m_coins){
         m_coins -= price;
         return true;
     }

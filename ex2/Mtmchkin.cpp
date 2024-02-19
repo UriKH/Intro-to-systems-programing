@@ -3,7 +3,7 @@
 
 Mtmchkin::Mtmchkin(const char* playerName, const Card* cardsArray, int numOfCards) :
     m_player(Player(playerName, 150, 5)){
-    m_cardsArray = copyCardsArray(cardsArray, m_numberOfCards);;
+    m_cardsArray = copyCardsArray(cardsArray, numOfCards);
     m_numberOfCards = numOfCards;
     m_status = GameStatus::MidGame;
     m_cardIndex = 0;
