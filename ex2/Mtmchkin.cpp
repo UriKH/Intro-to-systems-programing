@@ -1,8 +1,9 @@
 #include "Mtmchkin.h"
+#include "Player.h"
 
 
 Mtmchkin::Mtmchkin(const char* playerName, const Card* cardsArray, int numOfCards) :
-    m_player(Player(playerName, 150, 5)){
+    m_player(Player(playerName)){
     m_cardsArray = copyCardsArray(cardsArray, numOfCards);
     m_numberOfCards = numOfCards;
     m_status = GameStatus::MidGame;

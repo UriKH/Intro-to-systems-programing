@@ -9,7 +9,6 @@ Player::Player(std::string name, int maxHP, int force) : m_name(name){
     m_maxHP = (maxHP > 0) ? maxHP : DEFAULT_MAX_HP;
     m_HP = m_maxHP;
     m_coins = MIN_COINS;
-    
 }
 
 Player::Player(std::string name, int maxHP) : m_name(name){
@@ -43,7 +42,9 @@ int Player::getLevel() const{
 }
 
 void Player::buff(const int powerIncrease){
-    m_force += powerIncrease;
+    if (powerIncrease > 0){
+        m_force += powerIncrease;
+    }
 }
 
 void Player::heal(const int healthIncrease){
@@ -73,7 +74,7 @@ void Player::addCoins(const int coinsIncrease){
 }
 
 bool Player::pay(const int price){
-    if(price <= m_coins){
+    if(price <= m_coins && price >= 0){
         m_coins -= price;
         return true;
     }
