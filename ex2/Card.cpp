@@ -21,14 +21,14 @@ void Card::applyEncounter(Player& player) const{
         break;
     }
     case CardType::Buff:{
-        if (player.pay(m_stats.cost)){
+        if (m_stats.cost <= 0 || player.pay(m_stats.cost)){
             player.buff(m_stats.buff);
         }
         break;
     }
     case CardType::Heal:
-    {
-        if (player.pay(m_stats.cost)){
+    {   
+        if (m_stats.cost <= 0 || player.pay(m_stats.cost)){
             player.heal(m_stats.heal);
         }
         break;

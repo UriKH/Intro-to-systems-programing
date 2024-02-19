@@ -175,8 +175,29 @@ void run_test(std::function<bool()> test, std::string test_name){
 
 }
 
+bool annoying_test10(){
+    Card cards[11];
+    cards[0] = Card(CardType::Heal, CardStats(-1, -1, -1, -1, -1, -1));
+    cards[1] = Card(CardType::Battle, CardStats(9999, 2, -1, -1, -1, -1));
+    cards[2] = Card(CardType::Buff, CardStats(-1, -1, -1, -1, 9999, -1));
+    cards[3] = Card(CardType::Buff, CardStats(-1, -1, 9999, -1, -1, -1));
+    cards[4] = Card(CardType::Heal, CardStats(-1, -1, -1, 1, -1, -1));
+    cards[5] = Card(CardType::Heal, CardStats(-1, -1, -1, 9999, -1, -1));
+    cards[6] = Card(CardType::Heal, CardStats(-1, -1, 9999, -1, -1, -1));
+    cards[7] = Card(CardType::Treasure, CardStats(-1, -1, -1, -1, -1, -1));
+    cards[8] = Card(CardType::Treasure, CardStats(-1, -1, -1, -1, -1, 9999));
+    cards[9] = Card(CardType::Battle, CardStats(-1, -1, -1, -1, -1, -1));
+    cards[10] = Card(CardType::Battle, CardStats(-1, -1, -1, -1, -1, 9999));
+    Mtmchkin game("Don'tBeNegative-BePositive-:)", cards, 11);
+    for (int i = 0; i < 11; i++)
+        game.playNextCard();
+    if (!game.isOver())
+        return true;
+    return false;
+}
+
 int main(int argc, char *argv[]) {
-    const int NUMBER_OF_TESTS = 8;
+    const int NUMBER_OF_TESTS = 9;
     std::function<bool()> tests[NUMBER_OF_TESTS] = {
         testPlayer,
         testCard,
@@ -186,7 +207,8 @@ int main(int argc, char *argv[]) {
         testCopyOfCardDeck,
         testHealUpToMaxHP,
         testStatusOfGame,
-        testNotEnoughCoins
+        testNotEnoughCoins,
+        annoying_test10
     };
 
     if (argc < 2) {
