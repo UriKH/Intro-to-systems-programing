@@ -143,7 +143,7 @@ bool testCopyOfCardDeck(){  // test number 5
 }
 
 bool testPlayerStuff(){ // test number 4
-    Player player1("Daniel",1024);
+    Player player1("Daniel", 1024);
     player1.levelUp();
     player1.levelUp();
     player1.levelUp();

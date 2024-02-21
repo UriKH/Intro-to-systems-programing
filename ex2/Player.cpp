@@ -11,22 +11,6 @@ Player::Player(std::string name, int maxHP, int force) : m_name(name){
     m_coins = MIN_COINS;
 }
 
-Player::Player(std::string name, int maxHP) : m_name(name){
-    m_force = DEFAULT_FORCE;
-    m_level = DEFAULT_LEVEL;
-    m_maxHP = (maxHP > 0) ? maxHP : DEFAULT_MAX_HP;
-    m_HP = m_maxHP;
-    m_coins = MIN_COINS;
-}
-
-Player::Player(std::string name) : m_name(name){
-    m_force = DEFAULT_FORCE;
-    m_level = DEFAULT_LEVEL;
-    m_maxHP = DEFAULT_MAX_HP;
-    m_HP = m_maxHP;
-    m_coins = MIN_COINS;
-}
-
 void Player::printInfo() const{
     printPlayerInfo(m_name.c_str(), m_level, m_force, m_HP, m_coins);
 }
