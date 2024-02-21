@@ -48,7 +48,8 @@ Mtmchkin& Mtmchkin::operator=(const Mtmchkin& other){
     if (this == &other){
         return *this;
     }
-
+	
+	delete[] m_cardsArray;
     m_player = Player(other.m_player);
     m_numberOfCards = other.m_numberOfCards;
     m_cardsArray = copyCardsArray(other.m_cardsArray, m_numberOfCards);
