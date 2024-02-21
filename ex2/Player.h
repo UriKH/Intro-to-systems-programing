@@ -3,9 +3,11 @@
 
 #include <string>
 
+/**
+ * Representation of a player
+*/
 class Player{
 private:
-
     // class fields
     std::string m_name;
     int m_level;
@@ -24,24 +26,72 @@ private:
 
 public:
     
-    // Constructors and destroyer
-    Player(std::string name, int maxHP, int force);
-    Player(std::string name, int maxHP);
-    Player(std::string name);
-    Player(const Player&) = default;
-    ~Player() = default;
-
-    // Class functions
+    /**
+     * Constructor for Player
+     * @param name: name of the player
+     * @param maxHP: optional - maximum HP of the player
+     * @param foce: optional - starting force of the player
+    */
+    Player(std::string name, int maxHP = DEFAULT_MAX_HP, int force = DEFAULT_FORCE);
+    
+    /**
+     * Printing info of the palyer
+    */
     void printInfo() const;
-    void levelUp();
-    int getLevel() const;
-    void buff(const int powerIncrease);
-    void heal(const int healthIncrease);
-    void damage(const int damagePoints);
-    bool isKnockedOut() const;
-    void addCoins(const int coinsIncrease);
-    bool pay(const int price);
-    int getAttackStrength() const;
 
+    /**
+     * Level up the player
+    */
+    void levelUp();
+
+    /**
+     * Get the current player level
+     * @returns level of the player
+    */
+    int getLevel() const;
+
+    /**
+     * Increase force of the player by given amount
+     * @param powerIncrease: amount of force to buff the player with
+    */
+    void buff(const int powerIncrease);
+
+    /**
+     * Heal the player by some HP amount
+     * @param healthIncrease: amount of hp to add to the player
+    */
+    void heal(const int healthIncrease);
+
+    /**
+     * Remove HP amount from player HP
+     * @param damagePoints: HP points to remove from the player
+    */
+    void damage(const int damagePoints);
+
+    /**
+     * Check if the player is knocked-out
+     * @return true if the player is knocked-out else false 
+    */
+    bool isKnockedOut() const;
+
+    /**
+     * Give the player an amount of coins
+     * @param coinsIncrease: amount of coins to give to the player
+    */
+    void addCoins(const int coinsIncrease);
+
+    /**
+     * Make the player pay a given amount of coins
+     * @param price: the given price to ask the palyer to pay
+     * @return true if player paid the price. false otherwise.
+    */
+    bool pay(const int price);
+
+    /**
+     * Get the attak strength of the player
+     * @return the attak strngth of the player
+    */
+    int getAttackStrength() const;
 };
+
 #endif //EX2_PLAYER_H

@@ -41,10 +41,7 @@ Mtmchkin::~Mtmchkin(){
 }
 
 Mtmchkin::Mtmchkin(const Mtmchkin& mtmchkin) : m_player(Player(mtmchkin.m_player)){
-    m_numberOfCards = mtmchkin.m_numberOfCards;
-    m_cardsArray = copyCardsArray(mtmchkin.m_cardsArray, m_numberOfCards);
-    m_status = mtmchkin.m_status;
-    m_cardIndex = mtmchkin.m_cardIndex;
+    *this = mtmchkin;
 }
 
 Mtmchkin& Mtmchkin::operator=(const Mtmchkin& other){
