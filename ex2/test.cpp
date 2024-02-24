@@ -189,6 +189,8 @@ bool annoying_test10(){
     cards[9] = Card(CardType::Battle, CardStats(-1, -1, -1, -1, -1, -1));
     cards[10] = Card(CardType::Battle, CardStats(-1, -1, -1, -1, -1, 9999));
     Mtmchkin game("Don'tBeNegative-BePositive-:)", cards, 11);
+    Mtmchkin x("num2", cards, 11);
+    game = x;
     for (int i = 0; i < 11; i++)
         game.playNextCard();
     if (!game.isOver())
