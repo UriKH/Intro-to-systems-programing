@@ -41,13 +41,16 @@ void testIterator(){
         q.pushBack(i);
     }
 
+    // test begin and *
     assert(*q.begin() == 0);
 
+    // test ++
     int index = 0;
-    for (Queue<int>::Iterator it = q.begin(); it != q.end(); it++){
+    for (Queue<int>::Iterator it = q.begin(); it != q.end(); ++it){
         assert(*it == index);
         index++;
     }
+    assert(index == 5);
 }
 int main(){
     runTest("testing Queue size", testQSize);

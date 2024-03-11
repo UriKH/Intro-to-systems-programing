@@ -9,7 +9,7 @@ struct Node{
     Node* m_next;
 
     Node() = default;
-    Node(T data, Node* next = nullptr) : m_data(data), m_next(next){};
+    Node(T data, Node* next = nullptr);
 };
 
 template <typename T>
@@ -28,8 +28,7 @@ public:
     Iterator begin() const;
     Iterator end() const;
     
-    class EmptyQueue{};
-
+    class EmptyQueue{}; // empty queue error
 private:
     Node<T>* m_rearNode, * m_frontNode;
     int m_length;
@@ -44,11 +43,16 @@ class Queue<T>::Iterator{
     friend class Queue<T>;
 public:
     const T& operator*() const;
-    Iterator operator++(int);
+    Iterator operator++();
     bool operator!=(const Iterator& it) const;
 
-    class InvalidOperation{};
+    class InvalidOperation{}; // empty invalid operation error
 };
+
+// ------- Implemntation -------
+
+template <typename T>
+Node<T>::Node(T data, Node* next = nullptr) : m_data(data), m_next(next){};
 
 template <typename T>
 Queue<T>::Queue() : m_rearNode(nullptr), m_frontNode(nullptr), m_length(0){}
@@ -153,7 +157,7 @@ const T& Queue<T>::Iterator::operator*() const{
 }
 
 template <typename T>
-typename Queue<T>::Iterator Queue<T>::Iterator::operator++(int){
+typename Queue<T>::Iterator Queue<T>::Iterator::operator++(){
     if (m_node == nullptr){
         throw InvalidOperation();
     }
