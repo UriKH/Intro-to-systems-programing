@@ -1,5 +1,15 @@
 #include "queue.h"
 #include <assert.h>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+void runTest(string msg, void (*func)()){
+    cout << msg << endl;
+    func();
+    cout << "---- finished successfully ----" << endl;
+}
 
 void testQSize(){
     Queue<int> q;
@@ -9,6 +19,7 @@ void testQSize(){
         q.pushBack(i);
     }
     assert(q.size() == 5);
+    
 }
 
 void testQtop(){
@@ -18,14 +29,28 @@ void testQtop(){
     for (int i = 0; i < 5; i++){
         q.pushBack(i);
     }
-    assert(q.front() == 4);
+    assert(q.front() == 0);
 
     q.popFront();
-    assert(q.front() == 3);
+    assert(q.front() == 1);
 }
 
+void testIterator(){
+    Queue<int> q;
+    for (int i = 0; i < 5; i++){
+        q.pushBack(i);
+    }
 
+    assert(*q.begin() == 0);
+
+    int index = 0;
+    for (Queue<int>::Iterator it = q.begin(); it != q.end(); it++){
+        assert(*it == index);
+        index++;
+    }
+}
 int main(){
-    testQSize();
-    testQtop();
+    runTest("testing Queue size", testQSize);
+    runTest("testing Queue push front and pop", testQtop);
+    runTest("testing Iterator", testIterator);
 }

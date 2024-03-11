@@ -4,52 +4,61 @@
 #include <stdexcept>
 
 template <typename T>
-class Node {
-public:
-    Node() = default;
-    Node(T data, Node* next = nullptr) : m_data(data), m_next(next){};
-
-private:
+struct Node{
     T m_data;
     Node* m_next;
-    void popNode(Node* previous); // removes the node
-};
 
-template <typename T>
-void Node<T>::popNode(Node* previous) {
-    if(previous != nullptr){
-        previous->m_next = m_next;
-    }
-    delete this;
-}
+    Node() = default;
+    Node(T data, Node* next = nullptr) : m_data(data), m_next(next){};
+};
 
 template <typename T>
 class Queue {
-    public:
-        Queue();
-        ~Queue();
-        void pushBack(T data); // should put new node at the rear of the queue
-        void popFront(); // removes the front node from the queue
-        T front(); // return the first nodes data in the queue
-        int size(); // return the size of the queue
+public:
+    Queue();
+    ~Queue();
 
-        class EmptyQueue{};
+    // should put new node at the rear of the queue
+    void pushBack(T data);
+    void popFront(); // removes the front node from the queue
+    T front(); // return the first nodes data in the queue
+    int size(); // return the size of the queue
+
+    class Iterator;
+    Iterator begin() const;
+    Iterator end() const;
+    
+    class EmptyQueue{};
 
 private:
-        Node<T>* m_rearNode, *m_frontNode;
-        int m_length;
+    Node<T>* m_rearNode, * m_frontNode;
+    int m_length;
 };
 
 template <typename T>
-Queue<T>::Queue() : m_length(0), m_rearNode(nullptr), m_frontNode(nullptr){}
+class Queue<T>::Iterator{
+    const Queue* m_queue;
+    Node<T>* m_node;
+
+    Iterator(const Queue* queue, Node<T>* Node);
+    friend class Queue<T>;
+public:
+    const T& operator*() const;
+    Iterator operator++(int);
+    bool operator!=(const Iterator& it) const;
+
+    class InvalidOperation{};
+};
+
+template <typename T>
+Queue<T>::Queue() : m_rearNode(nullptr), m_frontNode(nullptr), m_length(0){}
 
 template <typename T>
 Queue<T>::~Queue(){
-    while (size > 0){
+    while (m_length > 0){
         this->popFront();
     }
 }
-
 
 template <typename T>
 void Queue<T>::pushBack(T data){
@@ -61,13 +70,15 @@ void Queue<T>::pushBack(T data){
         throw;
     }
 
-    if (m_frontNode == nullptr) {
+    if (m_frontNode == nullptr){
         m_frontNode = newNode;
-    } else {
-        if(m_rearNode == nullptr){
+    }
+    else{
+        if (m_rearNode == nullptr){
             m_rearNode = newNode;
             m_frontNode->m_next = m_rearNode;
-        } else {
+        }
+        else{
             m_rearNode->m_next = newNode;
             m_rearNode = newNode;
         }
@@ -84,12 +95,18 @@ T Queue<T>::front(){
 }
 
 template <typename T>
-void Queue<T>::popFront() {
-    if (m_frontNode != nullptr) {
-        Node<T>* temp = m_frontNode;
-        m_frontNode->popNode(nullptr);
-        m_frontNode = temp->m_next;
-        delete temp;
+void Queue<T>::popFront(){
+    if (m_frontNode != nullptr){
+        if (m_frontNode->m_next == nullptr){
+            delete m_frontNode;
+        }
+        else{
+            Node<T>* temp = m_frontNode->m_next;
+
+            m_frontNode->m_data = m_frontNode->m_next->m_data;
+            m_frontNode->m_next = m_frontNode->m_next->m_next;
+            delete temp;
+        }
         m_length--;
     }
 }
@@ -112,6 +129,46 @@ Queue<T> filter(const Queue<T>& source, Predicate predicate) {
     }
 
     return result;
+}
+
+template <typename T>
+typename Queue<T>::Iterator Queue<T>::begin() const{
+    return Queue<T>::Iterator(this, m_frontNode);
+}
+
+template <typename T>
+typename Queue<T>::Iterator Queue<T>::end() const{
+    return Queue<T>::Iterator(this, nullptr);
+}
+
+template <typename T>
+Queue<T>::Iterator::Iterator(const Queue* queue, Node<T>* node) : m_queue(queue), m_node(node){}
+
+template <typename T>
+const T& Queue<T>::Iterator::operator*() const{
+    if (m_node == nullptr){
+        throw InvalidOperation();
+    }
+    return m_node->m_data;
+}
+
+template <typename T>
+typename Queue<T>::Iterator Queue<T>::Iterator::operator++(int){
+    if (m_node == nullptr){
+        throw InvalidOperation();
+    }
+
+    Iterator result = *this;
+    m_node = m_node->m_next;
+    return result;
+}
+
+template <typename T>
+bool Queue<T>::Iterator::operator!=(const Iterator& it) const{
+    if (m_queue != it.m_queue){
+        throw InvalidOperation();
+    }
+    return m_node != it.m_node;
 }
 
 #endif // QUEUE_H
