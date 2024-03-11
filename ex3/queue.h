@@ -52,7 +52,7 @@ public:
 // ------- Implemntation -------
 
 template <typename T>
-Node<T>::Node(T data, Node* next = nullptr) : m_data(data), m_next(next){};
+Node<T>::Node(T data, Node* next = nullptr) : m_data(data), m_next(next){}
 
 template <typename T>
 Queue<T>::Queue() : m_rearNode(nullptr), m_frontNode(nullptr), m_length(0){}
