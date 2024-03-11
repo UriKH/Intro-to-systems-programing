@@ -5,30 +5,20 @@ template <typename T>
 class Node {
 public:
     Node() = default;
-    Node(T data);
-    Node(T data, Node* previous);
+    Node(T data, Node* next) : data(data), next(next) {};
 
 private:
     T data;
-    Node* next, *previous;
-    void popNode(); // removes the node
+    Node* next;
+    void popNode(Node* previous); // removes the node
 };
 
 template <typename T>
-Node<T>::Node(T data) : data(data), previous(nullptr){}
-
-template <typename T>
-Node<T>::Node(T data, Node *previous) : data(data), previous(previous){}
-
-template <typename T>
-void Node<T>::popNode() {
-    if (previous != nullptr) {
+void Node<T>::popNode(Node* previous) {
+    if(previous != nullptr){
         previous->next = next;
-        if (next != nullptr) {
-            next->previous = previous;
-        }
-        delete this;
     }
+    delete this;
 }
 
 template <typename T>
@@ -42,25 +32,30 @@ class Queue {
 
     private:
         Node<T>* rearNode, *frontNode;
+        int length;
 };
 
 template <typename T>
 void Queue<T>::pushBack(T data) {
-    Node<T>* newNode = new Node<T>(data);
+    Node<T>* newNode = new Node<T>(data, nullptr);
 
-    if (rearNode == nullptr) {
-        rearNode = newNode; // not sure how to implement corrcetly if the queue size is 1
-        frontNode = newNode; // maybe like this?
+    if (frontNode == nullptr) {
+        frontNode = newNode;
     } else {
-        rearNode->next = newNode;
-        newNode->previous = rearNode;
-        rearNode = newNode;
+        if(rearNode == nullptr){
+            rearNode = newNode;
+            frontNode->next = rearNode;
+        } else {
+            rearNode->next = newNode;
+            rearNode = newNode;
+        }
     }
+    length++;
 }
 
 template <typename T>
 T Queue<T>::front() {
-    if (front != nullptr) {
+    if (frontNode != nullptr) {
         return frontNode->data;
     } else {
     // nee to handle this correfctly, not sure how to do that yet
@@ -71,31 +66,22 @@ template <typename T>
 void Queue<T>::popFront() {
     if (frontNode != nullptr) {
         Node<T>* temp = frontNode;
-        frontNode = frontNode->next;
-        if (frontNode != nullptr) {
-            frontNode->previous = nullptr;
-        } else {
-            rearNode = nullptr;
-        }
-        temp->popNode(); // Use the popNode function to safely delete the node
+        frontNode->popNode(nullptr);
+        frontNode = temp->next;
+        delete temp;
+        length--;
     }
 }
 
 template <typename T>
 int Queue<T>::size() {
-    int count = 0;
-    Node<T>* current = frontNode;
-    while (current != nullptr) { // need to find a way to make sure it isnt infinite loop
-        count++;
-        current = current->next;
-    }
-    return count;
+    return length;
 }
 
 template <typename T, typename Predicate>
 Queue<T> filter(const Queue<T>& source, Predicate pred) {
     Queue<T> result;
-    Node<T>* current = source.front;
+    Node<T>* current = source.frontNode;
 
     while (current != nullptr) {
         if (pred(current->data)) {
@@ -105,12 +91,6 @@ Queue<T> filter(const Queue<T>& source, Predicate pred) {
     }
 
     return result;
-}
-
-
-template <typename T>
-Queue<T>* filter(){ // should filter out the nodes that doesn not statisfy the condition
-
 }
 
 #endif // QUEUE_H
