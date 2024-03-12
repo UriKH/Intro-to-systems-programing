@@ -41,13 +41,23 @@ void testTransform(){
         q.pushBack(i);
     }
 
-    int x = 2;
-    transform(q, [x](int i){return i * 2;});
+    transform(q, [](int i){return i * 2;});
     int index = 0;
     for (Queue<int>::Iterator it = q.begin(); it != q.end(); ++it){
         assert(*it == index * 2);
         index++;
     }
+}
+
+void testReduce(){
+    Queue<int> q;
+    int sum = 0;
+    for (int i = 0; i < 5; i++){
+        q.pushBack(i);
+        sum += i;
+    }
+
+    assert(reduce(q, 0, [](int a, int b){return a + b;}) == sum);
 }
 
 void testIterator(){
@@ -61,9 +71,12 @@ void testIterator(){
 
     // test ++
     int index = 0;
-    for (Queue<int>::Iterator it = q.begin(); it != q.end(); ++it){
+    Queue<int>::Iterator it = q.begin();
+
+    for (; it != q.end();){
         assert(*it == index);
         index++;
+        ++it;
     }
     assert(index == 5);
 }
@@ -74,4 +87,5 @@ int main(){
     runTest("testing Queue push front and pop", testQtop);
     runTest("testing Iterator", testIterator);
     runTest("testing transform", testTransform);
+    runTest("testing reduce", testReduce);
 }
