@@ -82,7 +82,7 @@ template <typename T>
 Queue<T>::Queue() : m_rearNode(nullptr), m_frontNode(nullptr), m_length(0){}
 
 template <typename T>
-Queue<T>::Queue(const Queue<T>& other) : m_rearNode(nullptr), m_frontNode(nullptr), m_length(other.m_length){
+Queue<T>::Queue(const Queue<T>& other) : m_rearNode(nullptr), m_frontNode(nullptr), m_length(0){
     for (typename Queue<T>::ConstIterator it = other.begin(); it != other.end(); ++it){
         this->pushBack(*it);
     }
@@ -283,4 +283,5 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& other){
 
     *this = Queue(other);
 }
+
 #endif // QUEUE_H
