@@ -16,6 +16,7 @@ template <typename T>
 class Queue {
 public:
     Queue();
+    Queue(const Queue<T>& other);
     ~Queue();
 
     // should put new node at the rear of the queue
@@ -33,9 +34,13 @@ public:
     Iterator end();
 
     class EmptyQueue{}; // empty queue error
+
+    Queue<T>& operator=(const Queue<T>& other);
 private:
     Node<T>* m_rearNode, *m_frontNode;
     int m_length;
+
+    static void removeNode(Node<T>* node);
 };
 
 template <typename T>
@@ -77,9 +82,17 @@ template <typename T>
 Queue<T>::Queue() : m_rearNode(nullptr), m_frontNode(nullptr), m_length(0){}
 
 template <typename T>
+Queue<T>::Queue(const Queue<T>& other) : m_rearNode(nullptr), m_frontNode(nullptr), m_length(other.m_length){
+    for (typename Queue<T>::ConstIterator it = other.begin(); it != other.end(); ++it){
+        this->pushBack(*it);
+    }
+}
+
+template <typename T>
 Queue<T>::~Queue(){
     while (m_length > 0){
-        this->popFront();
+        removeNode(m_frontNode);
+        m_length--;
     }
 }
 
@@ -120,16 +133,7 @@ T& Queue<T>::front() const{
 template <typename T>
 void Queue<T>::popFront(){
     if (m_frontNode != nullptr){
-        if (m_frontNode->m_next == nullptr){
-            delete m_frontNode;
-            
-        }
-        else{
-            Node<T>* temp = m_frontNode->m_next;
-            m_frontNode->m_data = m_frontNode->m_next->m_data;
-            m_frontNode->m_next = m_frontNode->m_next->m_next;
-            delete temp;
-        }
+        removeNode(m_frontNode);
         m_length--;
         
         if (m_length == 0){
@@ -142,6 +146,19 @@ void Queue<T>::popFront(){
 template <typename T>
 int Queue<T>::size() const{
     return m_length;
+}
+
+template <typename T>
+void Queue<T>::removeNode(Node<T>* node){
+    if (node->m_next == nullptr){
+        delete node;
+    }
+    else{
+        Node<T>* temp = node->m_next;
+        node->m_data = node->m_next->m_data;
+        node->m_next = node->m_next->m_next;
+        delete temp;
+    }
 }
 
 template <typename T, typename Predicate>
@@ -200,7 +217,7 @@ Queue<T>::ConstIterator::ConstIterator(const Queue* queue, Node<T>* node) : m_qu
 template <typename T>
 const T& Queue<T>::ConstIterator::operator*() const{
     if (m_node == nullptr){
-        throw InvalidOperation();
+        throw ConstIterator::InvalidOperation();
     }
     return m_node->m_data;
 }
@@ -208,7 +225,7 @@ const T& Queue<T>::ConstIterator::operator*() const{
 template <typename T>
 typename Queue<T>::ConstIterator Queue<T>::ConstIterator::operator++(){
     if (m_node == nullptr){
-        throw InvalidOperation();
+        throw ConstIterator::InvalidOperation();
     }
 
     ConstIterator result = *this;
@@ -219,7 +236,7 @@ typename Queue<T>::ConstIterator Queue<T>::ConstIterator::operator++(){
 template <typename T>
 bool Queue<T>::ConstIterator::operator!=(const ConstIterator& it) const{
     if (m_queue != it.m_queue){
-        throw InvalidOperation();
+        throw ConstIterator::InvalidOperation();
     }
     return m_node != it.m_node;
 }
@@ -230,7 +247,7 @@ Queue<T>::Iterator::Iterator(Queue* queue, Node<T>* node) : m_queue(queue), m_no
 template <typename T>
 T& Queue<T>::Iterator::operator*() const{
     if (m_node == nullptr){
-        throw InvalidOperation();
+        throw Iterator::InvalidOperation();
     }
     return m_node->m_data;
 }
@@ -238,7 +255,7 @@ T& Queue<T>::Iterator::operator*() const{
 template <typename T>
 typename Queue<T>::Iterator Queue<T>::Iterator::operator++(){
     if (m_node == nullptr){
-        throw InvalidOperation();
+        throw Iterator::InvalidOperation();
     }
 
     Iterator result = *this;
@@ -249,9 +266,21 @@ typename Queue<T>::Iterator Queue<T>::Iterator::operator++(){
 template <typename T>
 bool Queue<T>::Iterator::operator!=(const Iterator& it) const{
     if (m_queue != it.m_queue){
-        throw InvalidOperation();
+        throw Iterator::InvalidOperation();
     }
     return m_node != it.m_node;
 }
 
+template <typename T>
+Queue<T>& Queue<T>::operator=(const Queue<T>& other){
+    if (this == &other){
+        return *this;
+    }
+
+    ~Queue();
+    m_frontNode = nullptr;
+    m_rearNode = nullptr;
+
+    *this = Queue(other);
+}
 #endif // QUEUE_H
