@@ -21,8 +21,8 @@ public:
     // should put new node at the rear of the queue
     void pushBack(T data);
     void popFront(); // removes the front node from the queue
-    T front(); // return the first nodes data in the queue
-    int size(); // return the size of the queue
+    T& front() const; // return the first nodes data in the queue
+    int size() const; // return the size of the queue
 
     class Iterator;
     Iterator begin() const;
@@ -91,7 +91,7 @@ void Queue<T>::pushBack(T data){
 }
 
 template <typename T>
-T Queue<T>::front(){
+T& Queue<T>::front() const{
     if (m_length == 0){
         throw EmptyQueue();
     }
@@ -107,7 +107,6 @@ void Queue<T>::popFront(){
         }
         else{
             Node<T>* temp = m_frontNode->m_next;
-
             m_frontNode->m_data = m_frontNode->m_next->m_data;
             m_frontNode->m_next = m_frontNode->m_next->m_next;
             delete temp;
@@ -122,7 +121,7 @@ void Queue<T>::popFront(){
 }
 
 template <typename T>
-int Queue<T>::size() {
+int Queue<T>::size() const{
     return m_length;
 }
 
@@ -158,7 +157,7 @@ void transform(Queue<T>& source, Predicate predicate){
 }
 
 template <typename T, typename Function>
-T reduce(Queue<T>& source, T startValue, Function function){
+T reduce(const Queue<T>& source, const T& startValue, Function function){
     T result = startValue;
     for (typename Queue<T>::Iterator it = source.begin(); it != source.end(); ++it){
         result = function(result, *it);
