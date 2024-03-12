@@ -135,6 +135,26 @@ Queue<T> filter(const Queue<T>& source, Predicate predicate) {
     return result;
 }
 
+template <typename T, typename Function>
+void transform(Queue<T>& source, Function function){
+    typename Queue<T>::Iterator it = source.begin();
+    while (it != source.end()) {
+        *it = function(*it);
+        ++it;
+    }
+}
+
+template <typename T, typename Function>
+T reduce(Queue<T>& source, T startValue, Function function){
+    typename Queue<T>::Iterator it = source.begin();
+    T result = startValue;
+    while (it != source.end()){
+        result = function(result, *it);
+        ++it;
+    }
+    return result;
+}
+
 template <typename T>
 typename Queue<T>::Iterator Queue<T>::begin() const{
     return Queue<T>::Iterator(this, m_frontNode);
