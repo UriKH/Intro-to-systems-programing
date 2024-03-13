@@ -19,7 +19,6 @@ void testQSize(){
         q.pushBack(i);
     }
     assert(q.size() == 5);
-    
 }
 
 void testQtop(){
@@ -80,7 +79,6 @@ void testIterator(){
     }
     assert(index == 5);
 }
-
 
 int main(){
     runTest("testing Queue size", testQSize);
