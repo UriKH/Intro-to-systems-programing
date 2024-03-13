@@ -85,7 +85,15 @@ Queue<T>::Queue() : m_rearNode(nullptr), m_frontNode(nullptr), m_length(0){}
 template <typename T>
 Queue<T>::Queue(const Queue<T>& other) : m_rearNode(nullptr), m_frontNode(nullptr), m_length(0){
     for (typename Queue<T>::ConstIterator it = other.begin(); it != other.end(); ++it){
-        this->pushBack(*it);
+        try{
+            this->pushBack(*it);
+        }
+        catch (const std::bad_alloc& e){
+            while (m_length > 0){
+                removeNode(m_frontNode);
+            }
+            throw;
+        }
     }
 }
 
@@ -288,13 +296,24 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& other){
         return *this;
     }
 
+    // try{
+    Queue<T> temp = Queue(other);
+    // }
+    // catch (const std::bad_alloc& e){
+    //     throw;
+    // }
+
     while (m_length > 0){
         removeNode(m_frontNode);
     }
 
-    for (typename Queue::ConstIterator it = other.begin(); it != other.end(); ++it){
-        this->pushBack(*it);
-    }
+    m_frontNode = temp.m_frontNode;
+    m_rearNode = temp.m_rearNode;
+    m_length = temp.m_length;
+
+    temp.m_length = 0;
+    temp.m_rearNode = nullptr;
+    temp.m_frontNode = nullptr;
     return *this;
 }
 
