@@ -22,7 +22,8 @@ public:
     // should put new node at the rear of the queue
     void pushBack(T data);
     void popFront(); // removes the front node from the queue
-    T& front() const; // return the first nodes data in the queue
+    T& front(); // return the first nodes data in the queue
+    const T& front() const;
     int size() const; // return the size of the queue
 
     class ConstIterator;
@@ -123,7 +124,15 @@ void Queue<T>::pushBack(T data){
 }
 
 template <typename T>
-T& Queue<T>::front() const{
+T& Queue<T>::front(){
+    if (m_length == 0){
+        throw EmptyQueue();
+    }
+    return m_frontNode->m_data;
+}
+
+template <typename T>
+const T& Queue<T>::front() const{
     if (m_length == 0){
         throw EmptyQueue();
     }
@@ -213,7 +222,6 @@ typename Queue<T>::ConstIterator Queue<T>::end() const{
     return Queue<T>::ConstIterator(this, nullptr);
 }
 
-
 template <typename T>
 Queue<T>::ConstIterator::ConstIterator(const Queue* queue, Node<T>* node) : m_queue(queue), m_node(node){}
 
@@ -283,7 +291,10 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& other){
     while (m_length > 0){
         removeNode(m_frontNode);
     }
-    *this = Queue(other);
+
+    for (typename Queue::ConstIterator it = other.begin(); it != other.end(); ++it){
+        this->pushBack(*it);
+    }
     return *this;
 }
 
