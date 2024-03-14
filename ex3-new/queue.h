@@ -31,19 +31,23 @@ public:
     }
 
     ~Queue(){
-        // while (m_head != nullptr){
-        //     this->popFront();
+
+        Node<T>* temp;
+        while (m_head != nullptr){
+            temp = m_head;
+            m_head = m_head->m_next;
+            delete temp;
+        }
+        // m_head = nullptr;
+        // Node<T>* current = m_head;
+        // Node<T>* next;
+
+        // while (current != nullptr){
+        //     next = current->m_next;
+        //     delete current;
+        //     current = next;
         // }
         // m_head = nullptr;
-        Node<T>* current = m_head;
-        Node<T>* next;
-
-        while (current != nullptr){
-            next = current->m_next;
-            delete current;
-            current = next;
-        }
-        m_head = nullptr;
     }
 
     void pushBack(const T& data){
