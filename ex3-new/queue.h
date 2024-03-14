@@ -22,20 +22,17 @@ public:
     explicit Queue() : m_head(nullptr), m_size(0){}
 
     Queue(const Queue& other) : m_head(nullptr), m_size(0){
-        if (this == &other){
-            return;
-        }
-
-        Node<T>* tempHead = other.m_head;
-        while (tempHead != nullptr){
-            this->pushBack(tempHead->m_data);
-            tempHead = tempHead->m_next;
-        }
+        *this = other;
+        // Node<T>* tempHead = other.m_head;
+        // while (tempHead != nullptr){
+        //     this->pushBack(tempHead->m_data);
+        //     tempHead = tempHead->m_next;
+        // }
     }
 
     ~Queue(){
         // while (m_head != nullptr){
-            this->popFront();
+        //     this->popFront();
         // }
         // m_head = nullptr;
         Node<T>* current = m_head;
@@ -71,8 +68,8 @@ public:
         }
         Node<T>* temp = m_head;
         m_head = m_head->m_next;
-        delete temp;
         m_size--;
+        delete temp;
     }
 
     int size() const{
