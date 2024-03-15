@@ -68,8 +68,8 @@ public:
         }
         Node<T>* temp = m_head;
         m_head = m_head->m_next;
-        m_size--;
         delete temp;
+        m_size--;
     }
 
     int size() const{

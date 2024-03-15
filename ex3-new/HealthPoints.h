@@ -16,8 +16,8 @@ public:
     HealthPoints operator-(const int) const;
 
 private:
-    int m_currentHp;
-    int m_maxHp;
+    int m_currentHP;
+    int m_maxHP;
 
     static const int MAX_DEFAULT_HP = 100;
 
