@@ -1,255 +1,236 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include <stdexcept>
+
+// ---------------------------------------------------------------------------------------------
+// ------------------------------ DECLERATIONS AND PROTOTYPES ----------------------------------
+// ---------------------------------------------------------------------------------------------
 
 template <typename T>
 struct Node{
     T m_data;
     Node* m_next;
-
-    Node() = default;
-    Node(T data, Node* next = nullptr);
+    explicit Node(const T& data) : m_data(data), m_next(nullptr){}
 };
 
 template <typename T>
-class Queue {
+class Queue{
+    Node<T>* m_head;
+    int m_size;
+
 public:
-    Queue();
-    Queue(const Queue<T>& other);
+    explicit Queue() : m_head(nullptr), m_size(0){}
+
+    Queue(const Queue& other) : m_head(nullptr), m_size(0){
+        *this = other;
+    }
+
     ~Queue();
 
-    // should put new node at the rear of the queue
-    void pushBack(T data);
-    void popFront(); // removes the front node from the queue
-    T& front(); // return the first nodes data in the queue
+    void pushBack(const T& data);
+    void popFront();
+    int size() const;
+    T& front();
     const T& front() const;
-    int size() const; // return the size of the queue
 
-    class ConstIterator;
-    ConstIterator begin() const;
-    ConstIterator end() const;
-    
+    class EmptyQueue{};
     class Iterator;
+    class ConstIterator;
     Iterator begin();
     Iterator end();
+    ConstIterator begin() const;
+    ConstIterator end() const;
 
-    class EmptyQueue{}; // empty queue error
-
-    Queue<T>& operator=(const Queue<T>& other);
-private:
-    Node<T>* m_rearNode, *m_frontNode;
-    int m_length;
-
-    static void removeNode(Node<T>* node);
-};
-
-template <typename T>
-class Queue<T>::ConstIterator{
-    const Queue<T>* m_queue;
-    Node<T>* m_node;
-
-    ConstIterator(const Queue<T>* queue, Node<T>* Node);
-    friend class Queue<T>;
-public:
-    const T& operator*() const;
-    ConstIterator operator++();
-    bool operator!=(const ConstIterator& it) const;
-
-    class InvalidOperation{}; // empty invalid operation error
+    Queue& operator=(const Queue& other);
 };
 
 template <typename T>
 class Queue<T>::Iterator{
-    const Queue<T>* m_queue;
+    const Queue<T>* const m_queue;
     Node<T>* m_node;
 
-    Iterator(Queue<T>* queue, Node<T>* Node);
-    friend class Queue<T>;
+    explicit Iterator(Queue* queue, Node<T>* node) : m_queue(queue), m_node(node){}
+    friend class Queue;
 public:
-    T& operator*() const;
-    Iterator operator++();
+    T& operator*();
+    Iterator& operator++();
     bool operator!=(const Iterator& it) const;
 
-    class InvalidOperation{}; // empty invalid operation error
+    class InvalidOperation{};
 };
 
-// ------- Implemntation -------
-
 template <typename T>
-Node<T>::Node(T data, Node* next) : m_data(data), m_next(next){}
+class Queue<T>::ConstIterator{
+    const Queue<T>* const m_queue;
+    const Node<T>* m_node;
 
-template <typename T>
-Queue<T>::Queue() : m_rearNode(nullptr), m_frontNode(nullptr), m_length(0){}
+    explicit ConstIterator(const Queue* queue, Node<T>* node) : m_queue(queue), m_node(node){}
+    friend class Queue;
+public:
+    const T& operator*() const;
+    ConstIterator& operator++();
+    bool operator!=(const ConstIterator& it) const;
 
-template <typename T>
-Queue<T>::Queue(const Queue<T>& other) : m_rearNode(nullptr), m_frontNode(nullptr), m_length(0){
-    for (typename Queue<T>::ConstIterator it = other.begin(); it != other.end(); ++it){
-        try{
-            this->pushBack(*it);
-        }
-        catch (const std::bad_alloc& e){
-            while (m_length > 0){
-                removeNode(m_frontNode);
-            }
-            throw;
-        }
-    }
-}
+    class InvalidOperation{};
+};
+
+template <typename T, typename Predicate>
+Queue<T> filter(const Queue<T>& source, Predicate predicate);
+
+template <typename T, typename Function>
+void transform(Queue<T>& source, Function function);
+
+template <typename T, typename V, typename Function>
+V reduce(const Queue<T>& source, const V& startValue, Function function);
+
+// ---------------------------------------------------------------------------------------------
+// ------------------------------------- IMPLEMENTATION ----------------------------------------
+// ---------------------------------------------------------------------------------------------
+
+// ___________________________________________ Queue ___________________________________________
 
 template <typename T>
 Queue<T>::~Queue(){
-    while (m_length > 0){
-        removeNode(m_frontNode);
-        m_length--;
-    }
-}
-
-template <typename T>
-void Queue<T>::pushBack(T data){
-    Node<T>* newNode;
-    try{
-        newNode = new Node<T>(data);
-    }
-    catch (std::bad_alloc& exception){
-        throw;
-    }
-
-    if (m_frontNode == nullptr){
-        m_frontNode = newNode;
-    }
-    else{
-        if (m_rearNode == nullptr){
-            m_rearNode = newNode;
-            m_frontNode->m_next = m_rearNode;
-        }
-        else{
-            m_rearNode->m_next = newNode;
-            m_rearNode = newNode;
-        }
-    }
-    m_length++;
-}
-
-template <typename T>
-T& Queue<T>::front(){
-    if (m_length == 0){
-        throw EmptyQueue();
-    }
-    return m_frontNode->m_data;
-}
-
-template <typename T>
-const T& Queue<T>::front() const{
-    if (m_length == 0){
-        throw EmptyQueue();
-    }
-    return m_frontNode->m_data;
-}
-
-template <typename T>
-void Queue<T>::popFront(){
-    if (m_length == 0){
-        throw EmptyQueue();
-    }
-    if (m_frontNode != nullptr){
-        removeNode(m_frontNode);
-        m_length--;
-        
-        if (m_length == 0){
-            m_frontNode = nullptr;
-            m_rearNode = nullptr;
-        }
-    }
-}
-
-template <typename T>
-int Queue<T>::size() const{
-    return m_length;
-}
-
-template <typename T>
-void Queue<T>::removeNode(Node<T>* node){
-    if (node->m_next == nullptr){
-        delete node;
-    }
-    else{
-        Node<T>* temp = node->m_next;
-        node->m_data = node->m_next->m_data;
-        node->m_next = node->m_next->m_next;
+    Node<T>* temp;
+    while (m_head != nullptr){
+        temp = m_head;
+        m_head = m_head->m_next;
         delete temp;
     }
 }
 
-template <typename T, typename Predicate>
-Queue<T> filter(const Queue<T>& source, Predicate predicate) {
-    Queue<T> result;
-    for (typename Queue<T>::ConstIterator it = source.begin(); it != source.end(); ++it){
-        if (predicate(*it)){
-            result.pushBack(*it);
+template <typename T>
+void Queue<T>::pushBack(const T& data){
+    Node<T>* newNode = new Node<T>(data);
+
+    if (m_head == nullptr){
+        m_head = newNode;
+    }
+    else{
+        Node<T>* temp = m_head;
+        while (temp->m_next != nullptr){
+            temp = temp->m_next;
         }
+        temp->m_next = newNode;
     }
-
-    return result;
+    m_size++;
 }
 
-template <typename T, typename Function>
-void transform(Queue<T>& source, Function function){
-    Queue<T> copy;
-    for (typename Queue<T>::Iterator it = source.begin(); it != source.end(); ++it){
-        *it = function(*it);
+template <typename T>
+void Queue<T>::popFront(){
+    if (m_size == 0){
+        throw EmptyQueue();
     }
+    Node<T>* temp = m_head;
+    m_head = m_head->m_next;
+    m_size--;
+    delete temp;
 }
 
-template <typename T, typename Function>
-T reduce(const Queue<T>& source, const T& startValue, Function function){
-    T result = startValue;
-    for (typename Queue<T>::ConstIterator it = source.begin(); it != source.end(); ++it){
-        result = function(result, *it);
+template <typename T>
+int Queue<T>::size() const{
+    return m_size;
+}
+
+template <typename T>
+T& Queue<T>::front(){
+    if (m_size == 0){
+        throw EmptyQueue();
     }
-    return result;
+    return m_head->m_data;
+}
+
+template <typename T>
+const T& Queue<T>::front() const{
+    if (m_size == 0){
+        throw EmptyQueue();
+    }
+    return m_head->m_data;
+}
+
+template <typename T>
+Queue<T>& Queue<T>::operator=(const Queue& other){
+    if (this == &other){
+        return *this;
+    }
+
+    Queue<T> tempQueue;
+    Node<T>* tempHead = other.m_head;
+
+    while (tempHead != nullptr){
+        tempQueue.pushBack(tempHead->m_data);
+        tempHead = tempHead->m_next;
+    }
+
+    tempHead = m_head;
+    m_head = tempQueue.m_head;
+    m_size = tempQueue.m_size;
+    tempQueue.m_head = tempHead;
+    return *this;
 }
 
 template <typename T>
 typename Queue<T>::Iterator Queue<T>::begin(){
-    return Queue<T>::Iterator(this, m_frontNode);
+    return Iterator(this, m_head);
 }
 
 template <typename T>
 typename Queue<T>::Iterator Queue<T>::end(){
-    return Queue<T>::Iterator(this, nullptr);
+    return Iterator(this, nullptr);
 }
 
 template <typename T>
 typename Queue<T>::ConstIterator Queue<T>::begin() const{
-    return Queue<T>::ConstIterator(this, m_frontNode);
+    return ConstIterator(this, m_head);
 }
 
 template <typename T>
 typename Queue<T>::ConstIterator Queue<T>::end() const{
-    return Queue<T>::ConstIterator(this, nullptr);
+    return ConstIterator(this, nullptr);
 }
 
-template <typename T>
-Queue<T>::ConstIterator::ConstIterator(const Queue* queue, Node<T>* node) : m_queue(queue), m_node(node){}
+// ___________________________________________ Iterators ___________________________________________
 
 template <typename T>
-const T& Queue<T>::ConstIterator::operator*() const{
+T& Queue<T>::Iterator::operator*(){
     if (m_node == nullptr){
-        throw ConstIterator::InvalidOperation();
+        throw InvalidOperation();
     }
     return m_node->m_data;
 }
 
 template <typename T>
-typename Queue<T>::ConstIterator Queue<T>::ConstIterator::operator++(){
+typename Queue<T>::Iterator& Queue<T>::Iterator::operator++(){
     if (m_node == nullptr){
         throw InvalidOperation();
     }
-
-    ConstIterator result = *this;
     m_node = m_node->m_next;
-    return result;
+    return *this;
+}
+
+template <typename T>
+bool Queue<T>::Iterator::operator!=(const Iterator& it) const{
+    if (m_queue != it.m_queue){
+        throw InvalidOperation();
+    }
+    return m_node != it.m_node;
+}
+
+template <typename T>
+const T& Queue<T>::ConstIterator::operator*() const{
+    if (m_node == nullptr){
+        throw InvalidOperation();
+    }
+    return m_node->m_data;
+}
+
+template <typename T>
+typename Queue<T>::ConstIterator& Queue<T>::ConstIterator::operator++(){
+    if (m_node == nullptr){
+        throw InvalidOperation();
+    }
+    m_node = m_node->m_next;
+    return *this;
 }
 
 template <typename T>
@@ -260,61 +241,34 @@ bool Queue<T>::ConstIterator::operator!=(const ConstIterator& it) const{
     return m_node != it.m_node;
 }
 
-template <typename T>
-Queue<T>::Iterator::Iterator(Queue* queue, Node<T>* node) : m_queue(queue), m_node(node){}
-
-template <typename T>
-T& Queue<T>::Iterator::operator*() const{
-    if (m_node == nullptr){
-        throw InvalidOperation();
+// ___________________________________________ filter, transform, reduce ___________________________________________
+template <typename T, typename Predicate>
+Queue<T> filter(const Queue<T>& source, Predicate predicate){
+    Queue<T> result;
+    for (const T& value : source){
+        if (predicate(value)){
+            result.pushBack(value);
+        }
     }
-    return m_node->m_data;
-}
-
-template <typename T>
-typename Queue<T>::Iterator Queue<T>::Iterator::operator++(){
-    if (m_node == nullptr){
-        throw InvalidOperation();
-    }
-
-    Iterator result = *this;
-    m_node = m_node->m_next;
     return result;
 }
 
-template <typename T>
-bool Queue<T>::Iterator::operator!=(const Iterator& it) const{
-    if (m_queue != it.m_queue){
-        throw Iterator::InvalidOperation();
+template <typename T, typename Function>
+void transform(Queue<T>& source, Function function){
+    Queue<T> copy;
+    for (T& value : source){
+        copy.pushBack(function(value));
     }
-    return m_node != it.m_node;
+    source = copy;
 }
 
-template <typename T>
-Queue<T>& Queue<T>::operator=(const Queue<T>& other){
-    if (this == &other){
-        return *this;
+template <typename T, typename V, typename Function>
+V reduce(const Queue<T>& source, const V& startValue, Function function){
+    V result = startValue;
+    for (const T& value : source){
+        result = function(result, value);
     }
-
-    // try{
-    Queue<T> temp = Queue(other);
-    // }
-    // catch (const std::bad_alloc& e){
-    //     throw;
-    // }
-
-    while (m_length > 0){
-        removeNode(m_frontNode);
-    }
-
-    m_frontNode = temp.m_frontNode;
-    m_rearNode = temp.m_rearNode;
-    m_length = temp.m_length;
-
-    temp.m_length = 0;
-    temp.m_rearNode = nullptr;
-    temp.m_frontNode = nullptr;
-    return *this;
+    return result;
 }
 
-#endif // QUEUE_H
+#endif

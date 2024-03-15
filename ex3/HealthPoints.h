@@ -5,9 +5,6 @@
 
 class HealthPoints{
 public:
-    // error classes
-    class InvalidArgument{};
-
     HealthPoints(int hp = MAX_DEFAULT_HP);
 
     HealthPoints& operator+=(const int);
@@ -15,9 +12,10 @@ public:
     HealthPoints operator+(const int) const;
     HealthPoints operator-(const int) const;
 
+    class InvalidArgument{};
 private:
-    int m_currentHp;
-    int m_maxHp;
+    int m_currentHP;
+    int m_maxHP;
 
     static const int MAX_DEFAULT_HP = 100;
 
