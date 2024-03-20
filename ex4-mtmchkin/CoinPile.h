@@ -1,5 +1,4 @@
-#ifndef COIN_PILE_H
-#define COIN_PILE_H
+#pragma once
 
 class CoinPile{
     int m_coins;
@@ -14,5 +13,3 @@ public:
 
     class InvalidArgument{};
 };
-
-#endif
