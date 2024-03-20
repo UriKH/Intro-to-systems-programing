@@ -13,6 +13,7 @@ public:
     bool isDead() const;
     void heal(int hp);
     void damage(int hp);
+    bool healthMaxed() const;
 
     class InvalidArgument{};
 };

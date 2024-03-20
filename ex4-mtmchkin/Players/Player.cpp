@@ -15,7 +15,7 @@ Player::Player(const std::string& name, int hp, int level, int force, int coins)
     }
 }
 
-const std::string& Player::getName() const{
+std::string Player::getName() const{
     return m_name;
 }
 
@@ -37,4 +37,12 @@ int Player::getCoins() const{
 
 const char* Player::NameTooLong::what() const {
     return "Name of player is too long";
+}
+
+HealthPoints& Player::getHealthPointsAsObject(){
+    return m_hp;
+}
+
+const HealthPoints& Player::getHealthPointsAsObject() const{
+    return m_hp;
 }

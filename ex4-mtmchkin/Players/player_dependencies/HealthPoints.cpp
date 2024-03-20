@@ -36,3 +36,7 @@ void HealthPoints::damage(int hp){
         m_hp = MIN_HP;
     }
 }
+
+bool HealthPoints::healthMaxed() const{
+    return m_hp == m_maxHP;
+}

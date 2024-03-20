@@ -2,8 +2,8 @@
 
 #include <string>
 #include <stdexcept>
-#include "HealthPoints.h"
-#include "CoinPile.h"
+#include "player_dependencies\HealthPoints.h"
+#include "player_dependencies\CoinPile.h"
 
 class Player{
     std::string m_name;
@@ -60,6 +60,9 @@ public:
      * @return - description of the player
     */
     virtual std::string getDescription() const = 0;
+
+    virtual HealthPoints& getHealthPointsAsObject();
+    virtual const HealthPoints& getHealthPointsAsObject() const;
 
     class NameTooLong;
 };
