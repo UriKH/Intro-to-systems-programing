@@ -1,0 +1,96 @@
+Game is about to start!
+These are the players:
+
+1. Daniel, Warrior with Responsible behavior (level 1, force 5)
+2. Regev, Sorcerer with RiskTaking behavior (level 1, force 5)
+3. Baraa, Warrior with RiskTaking behavior (level 1, force 5)
+
+----------------------------------------
+
+New round starts!
+
+Turn: 1
+Player: Daniel, Warrior with Responsible behavior (level 1, force 5)
+Card: Goblin (power 5, loot 2, damage 10)
+Daniel won the encounter, gained 2 coins and leveled up!
+
+Turn: 2
+Player: Regev, Sorcerer with RiskTaking behavior (level 1, force 5)
+Card: Gang of 2 members (power 24, loot 10, damage 50)
+Regev lost the encounter and took 50 damage!
+
+Turn: 3
+Player: Baraa, Warrior with RiskTaking behavior (level 1, force 5)
+Card: Dragon (power 17, loot 100, damage 9001)
+Baraa lost the encounter and took 9001 damage!
+
+Round has ended!
+Leader board is as follows:
+Ranking    Player Name     Level     Force HP    Coins
+1          Daniel          2         5     100   12
+2          Baraa           1         5     0     10
+3          Regev           1         5     50    10
+
+----------------------------------------
+
+New round starts!
+
+Turn: 4
+Player: Daniel, Warrior with Responsible behavior (level 2, force 5)
+Card: SolarEclipse
+Daniel was affected by a solar eclipse! their force has changed by -1!
+
+Turn: 5
+Player: Regev, Sorcerer with RiskTaking behavior (level 1, force 5)
+Card: PotionsMerchant
+Regev bought 0 potions!
+
+Round has ended!
+Leader board is as follows:
+Ranking    Player Name     Level     Force HP    Coins
+1          Daniel          2         4     100   12
+2          Baraa           1         5     0     10
+3          Regev           1         5     50    10
+
+----------------------------------------
+
+New round starts!
+
+Turn: 6
+Player: Daniel, Warrior with Responsible behavior (level 2, force 4)
+Card: Goblin (power 5, loot 2, damage 10)
+Daniel won the encounter, gained 2 coins and leveled up!
+
+Turn: 7
+Player: Regev, Sorcerer with RiskTaking behavior (level 1, force 5)
+Card: Gang of 2 members (power 24, loot 10, damage 50)
+Regev lost the encounter and took 50 damage!
+
+Round has ended!
+Leader board is as follows:
+Ranking    Player Name     Level     Force HP    Coins
+1          Daniel          3         4     100   14
+2          Baraa           1         5     0     10
+3          Regev           1         5     0     10
+
+----------------------------------------
+
+New round starts!
+
+Turn: 8
+Player: Daniel, Warrior with Responsible behavior (level 3, force 4)
+Card: Dragon (power 17, loot 100, damage 9001)
+Daniel lost the encounter and took 9001 damage!
+
+Round has ended!
+Leader board is as follows:
+Ranking    Player Name     Level     Force HP    Coins
+1          Daniel          3         4     0     14
+2          Baraa           1         5     0     10
+3          Regev           1         5     0     10
+
+----------------------------------------
+
+Game is over!
+There are no winners in this game.
+Better luck next time!

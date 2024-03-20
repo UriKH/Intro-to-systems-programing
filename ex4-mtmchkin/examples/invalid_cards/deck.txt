@@ -1,0 +1,4 @@
+Goblin
+Goblin
+InvalidCard
+Goblin
