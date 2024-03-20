@@ -1,5 +1,4 @@
-#ifndef HEALTHPOINTS_H
-#define HEALTHPOINTS_H
+#pragma once
 
 class HealthPoints{
     int m_hp;
@@ -17,5 +16,3 @@ public:
 
     class InvalidArgument{};
 };
-
-#endif
