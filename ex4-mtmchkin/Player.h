@@ -1,5 +1,4 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#pragma once
 
 #include <string>
 #include <stdexcept>
@@ -34,5 +33,3 @@ public:
 class Player::NameTooLong : std::exception{
     const char* what() const override;
 };
-
-#endif
