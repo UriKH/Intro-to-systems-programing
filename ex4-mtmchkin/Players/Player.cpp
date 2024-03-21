@@ -1,10 +1,10 @@
 #include "Player.h"
 
 #include <string>
+#include <sstream>
 #include <stdexcept>
 
 using std::string;
-using std::to_string;
 using std::shared_ptr;
 using std::invalid_argument;
 
@@ -15,7 +15,7 @@ Player::Player(const string& name, int hp, int level, int force, int coins, shar
     }
 
     if (name.size() > MAX_NAME_SIZE){
-        throw invalid_argument("Name is longer than " + to_string(MAX_NAME_SIZE) + "characters");
+        throw invalid_argument("Name is longer than " + std::to_string(MAX_NAME_SIZE) + "characters");
     }
 
     if (m_level > MAX_LEVEL || m_level < MIN_LEVEL){
@@ -86,5 +86,7 @@ void Player::levelUp(){
 }
 
 string Player::getDescription() const{
-    return m_name + ", Unemployed with" + m_behavior->getName() + " behavior (level " + to_string(m_level) + ", force " + to_string(m_force) + ")";
+    std::stringstream ss;
+    ss << m_name << ", Unemployed with" << m_behavior->getName() << " behavior (level " << m_level << ", force " << m_force << ")";
+    return ss.str();
 }
