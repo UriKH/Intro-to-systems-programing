@@ -10,10 +10,8 @@ public:
     explicit HealthPoints(int maxHP = MAX_HP);
 
     int getCurrentHP() const;
-    bool isDead() const;
+    bool isAlive() const;
     void heal(int hp);
     void damage(int hp);
     bool healthMaxed() const;
-
-    class InvalidArgument{};
 };

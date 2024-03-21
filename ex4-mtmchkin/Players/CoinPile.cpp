@@ -1,14 +1,15 @@
 #include "CoinPile.h"
+#include <stdexcept>
 
 CoinPile::CoinPile(int coins) : m_coins(coins){
     if (coins < MIN_COINS){
-        throw InvalidArgument();
+        throw std::invalid_argument("Starting coin amount must be positive");
     }
 }
 
 bool CoinPile::pay(int amount){
     if (amount < 0){
-        throw InvalidArgument();
+        throw std::invalid_argument("Can not pay negative prices");
     }
 
     if (m_coins - amount < MIN_COINS){
@@ -20,7 +21,7 @@ bool CoinPile::pay(int amount){
 
 void CoinPile::add(int amount){
     if (amount < 0){
-        throw InvalidArgument();
+        throw std::invalid_argument("Can not add negative amount");
     }
     m_coins += amount;
 }

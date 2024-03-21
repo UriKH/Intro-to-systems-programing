@@ -10,6 +10,4 @@ public:
     bool pay(int);
     void add(int);
     int getCoins() const;
-
-    class InvalidArgument{};
 };
