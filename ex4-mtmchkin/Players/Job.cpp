@@ -1,6 +1,10 @@
 #include "Job.h"
 
-Job::Job(const std::string& name, int hp, int level, int force, int coins, Behavior* behavior, const std::string& jobTitle)
+using std::shared_ptr;
+using std::string;
+using std::to_string;
+
+Job::Job(const std::string& name, int hp, int level, int force, int coins, shared_ptr<Behavior> behavior, const string& jobTitle)
     : Player(name, hp, level, force, coins, behavior), m_jobTitle(jobTitle){}
 
 int Job::calculateCombatPower() const{
@@ -23,6 +27,6 @@ void Job::applyPotionsMerchant(){
     }
 }
 
-std::string Job::getDescription() const {
-    return getName() + ", Unemployed with" + getBehavior().getName() + " behavior (level " + std::to_string(getLevel()) + ", force " + std::to_string(getForce()) + ")";
+string Job::getDescription() const {
+    return getName() + ", Unemployed with" + getBehavior().getName() + " behavior (level " + to_string(getLevel()) + ", force " + to_string(getForce()) + ")";
 }

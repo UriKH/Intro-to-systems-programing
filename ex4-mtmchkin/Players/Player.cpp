@@ -3,14 +3,19 @@
 #include <string>
 #include <stdexcept>
 
-Player::Player(const std::string& name, int hp, int level, int force, int coins, Behavior* behavior)
+using std::string;
+using std::to_string;
+using std::shared_ptr;
+using std::invalid_argument;
+
+Player::Player(const string& name, int hp, int level, int force, int coins, shared_ptr<Behavior> behavior)
     : m_name(name), m_hp(HealthPoints(hp)), m_level(level), m_force(force), m_coins(CoinPile(coins)), m_behavior(behavior){
     if (m_behavior == nullptr){
-        throw std::invalid_argument("behavior must not be nullptr");
+        throw invalid_argument("behavior must not be nullptr");
     }
 
     if (name.size() > MAX_NAME_SIZE){
-        throw std::invalid_argument("Name is longer than " + std::to_string(MAX_NAME_SIZE) + "characters");
+        throw invalid_argument("Name is longer than " + to_string(MAX_NAME_SIZE) + "characters");
     }
 
     if (m_level > MAX_LEVEL || m_level < MIN_LEVEL){
@@ -22,7 +27,7 @@ Player::Player(const std::string& name, int hp, int level, int force, int coins,
     }
 }
 
-std::string Player::getName() const{
+string Player::getName() const{
     return m_name;
 }
 
@@ -60,14 +65,14 @@ const Behavior& Player::getBehavior() const{
 
 void Player::buff(int buff){
     if (buff < 0){
-        throw std::invalid_argument("buff gets only positive values");
+        throw invalid_argument("buff gets only positive values");
     }
     m_force += buff;
 }
 
 void Player::debuff(int debuff){
     if (debuff < 0){
-        throw std::invalid_argument("debuff gets only positive values");
+        throw invalid_argument("debuff gets only positive values");
     }
 
     m_force -= debuff;
@@ -80,6 +85,6 @@ void Player::levelUp(){
     m_level += 1;
 }
 
-std::string Player::getDescription() const{
-    return m_name + ", Unemployed with" + m_behavior->getName() + " behavior (level " + std::to_string(m_level) + ", force " + std::to_string(m_force) + ")";
+string Player::getDescription() const{
+    return m_name + ", Unemployed with" + m_behavior->getName() + " behavior (level " + to_string(m_level) + ", force " + to_string(m_force) + ")";
 }

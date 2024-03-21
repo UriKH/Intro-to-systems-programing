@@ -6,7 +6,7 @@
 class Job : public Player{
 protected:
     std::string m_jobTitle;
-    Job(const std::string& name, int hp, int level, int force, int coins, Behavior* behavior, const std::string& jobTitle);
+    Job(const std::string& name, int hp, int level, int force, int coins, std::shared_ptr<Behavior> behavior, const std::string& jobTitle);
 public:
     virtual int calculateCombatPower() const;
     virtual void applyEncounter();

@@ -2,7 +2,9 @@
 #include <vector>
 #include "LeadBoard.h"
 
-bool compare_players(const Player* const player1, const Player* const player2){
+using std::shared_ptr;
+
+bool compare_players(const shared_ptr<Player> player1, const shared_ptr<Player> player2){
     if (player1->getLevel() != player2->getLevel()){
         return player1->getLevel() > player2->getLevel();
     }
@@ -18,10 +20,10 @@ void LeadBoard::refresh(){
     std::sort(m_players.begin(), m_players.end(), compare_players);
 }
 
-void LeadBoard::insert(const Player* const player){
+void LeadBoard::insert(const shared_ptr<Player> player){
     m_players.push_back(player);
 }
 
-std::vector<const Player*> LeadBoard::getPlayers(){
+std::vector<shared_ptr<Player>> LeadBoard::getPlayers(){
     return m_players;
 }

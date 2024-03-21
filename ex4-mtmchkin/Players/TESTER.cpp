@@ -11,6 +11,8 @@
 using std::cout;
 using std::endl;
 using std::string;
+using std::make_shared;
+using std::shared_ptr;
 
 #define TEST_ERROR_CATCHING(function_call, exception_type, except_fail)\
 {\
@@ -89,15 +91,15 @@ void test_CoinPile(){
 }
 
 void test_Player(){
-    Player p("Moshe", 100, 5, 2, 10, new RiskTaking());
-    TEST_ERROR_CATCHING(Player p1("Moshasnjcsakjcsajcanksncjae", 100, 5, 2, 10, new RiskTaking()), const std::invalid_argument&, true)
+    Player p("Moshe", 100, 5, 2, 10, std::make_shared<RiskTaking>());
+    TEST_ERROR_CATCHING(Player p1("Moshasnjcsakjcsajcanksncjae", 100, 5, 2, 10, std::make_shared<RiskTaking>()), const std::invalid_argument&, true)
     TEST_ERROR_CATCHING(Player p1("a", 100, 5, 2, 10, nullptr), const std::invalid_argument&, true)
 
     assert(p.getCoins() == 10);
 }
 
 void test_Behavior(){
-    Player p1("Moshe", 100, 5, 2, 10, new RiskTaking());
+    Player p1("Moshe", 100, 5, 2, 10, std::make_shared<RiskTaking>());
     Behavior& b1 = p1.getBehavior();
     assert(b1.buyPotion(p1) == false);
     assert(b1.getName() == "RiskTaking");
@@ -105,7 +107,7 @@ void test_Behavior(){
     p1.getHealthPoints().damage(51);
     assert(b1.buyPotion(p1) == true);
 
-    Player p2("Moshe", 100, 5, 2, 10, new Responsible());
+    Player p2("Moshe", 100, 5, 2, 10, std::make_shared<Responsible>());
     Behavior& b2 = p2.getBehavior();
     assert(b2.buyPotion(p2) == false);
     assert(b2.getName() == "Responsible");
@@ -115,8 +117,8 @@ void test_Behavior(){
 }
 
 void test_Jobs(){
-    Warrior w("Moshe", 100, 5, 2, 10, new Responsible());
-    Sorcerer s("Itzik", 100, 5, 2, 10, new Responsible());
+    Warrior w("Moshe", 100, 5, 2, 10, std::make_shared<Responsible>());
+    Sorcerer s("Itzik", 100, 5, 2, 10, std::make_shared<Responsible>());
 
     w.applySolarEclipse();
     assert(w.getForce() == 1);
@@ -127,18 +129,18 @@ void test_Jobs(){
 
 void test_LeadBoard(){
     LeadBoard b, b2;
-    Player* p1, * p2, * p3, * p4, * p5, * p6, * p7, * p8, * p9, * p10;
+    std::shared_ptr<Player> p1, p2, p3, p4, p5, p6, p7, p8, p9, p10;
 
-    p1 = new Player("AMoshe1", 100, 2, 1, 10, new RiskTaking());
-    p2 = new Player("Moshe2", 100, 2, 1, 10, new RiskTaking());
-    p3 = new Player("Moshe3", 100, 2, 1, 10, new RiskTaking());
-    p4 = new Player("Moshe4", 100, 4, 1, 10, new RiskTaking());
-    p5 = new Player("Moshe5", 100, 7, 1, 10, new RiskTaking());
-    p6 = new Player("Moshe6", 100, 7, 2, 10, new RiskTaking());
-    p7 = new Player("Moshe7", 100, 7, 3, 10, new RiskTaking());
-    p8 = new Player("Moshe8", 100, 7, 4, 11, new RiskTaking());
-    p9 = new Player("Moshe9", 100, 7, 4, 12, new RiskTaking());
-    p10 = new Player("Moshe10", 100, 7, 4, 13, new RiskTaking());
+    p1 = std::make_shared<Player>("AMoshe1", 100, 2, 1, 10, std::make_shared<RiskTaking>());
+    p2 = std::make_shared<Player>("Moshe2", 100, 2, 1, 10, std::make_shared<RiskTaking>());
+    p3 = std::make_shared<Player>("Moshe3", 100, 2, 1, 10, std::make_shared<RiskTaking>());
+    p4 = std::make_shared<Player>("Moshe4", 100, 4, 1, 10, std::make_shared<RiskTaking>());
+    p5 = std::make_shared<Player>("Moshe5", 100, 7, 1, 10, std::make_shared<RiskTaking>());
+    p6 = std::make_shared<Player>("Moshe6", 100, 7, 2, 10, std::make_shared<RiskTaking>());
+    p7 = std::make_shared<Player>("Moshe7", 100, 7, 3, 10, std::make_shared<RiskTaking>());
+    p8 = std::make_shared<Player>("Moshe8", 100, 7, 4, 11, std::make_shared<RiskTaking>());
+    p9 = std::make_shared<Player>("Moshe9", 100, 7, 4, 12, std::make_shared<RiskTaking>());
+    p10 = std::make_shared<Player>("Moshe10", 100, 7, 4, 13, std::make_shared<RiskTaking>());
     b2.insert(p10);
     b2.insert(p9);
     b2.insert(p8);
