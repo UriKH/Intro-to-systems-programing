@@ -1,7 +1,5 @@
-#include "HealthPoints.h"
-#include "Behavior.h"
-#include "CoinPile.h"
-#include "Job.h"
+#include "Warrior.h"
+#include "Sorcerer.h"
 #include "Player.h"
 
 #include <iostream>
@@ -60,6 +58,10 @@ void test_HP(){
     hp.damage(1000);
     assert(hp.isAlive() == false);
     assert(hp.getCurrentHP() == 0);
+
+    // int convertion operator
+    int coins = hp;
+    assert(coins == 0);
 }
 
 void test_CoinPile(){
@@ -79,12 +81,18 @@ void test_CoinPile(){
     assert(p1.getCoins() == 0);
     assert(p1.pay(0) == true);
     assert(p1.pay(1) == false);
+
+    // int convertion operator
+    int coins = p1;
+    assert(coins == 0);
 }
 
 void test_Player(){
     Player p("Moshe", 100, 5, 2, 10, new RiskTaking());
     TEST_ERROR_CATCHING(Player p1("Moshasnjcsakjcsajcanksncjae", 100, 5, 2, 10, new RiskTaking()), const std::invalid_argument&, true)
     TEST_ERROR_CATCHING(Player p1("a", 100, 5, 2, 10, nullptr), const std::invalid_argument&, true)
+
+    assert(p.getCoins() == 10);
 }
 
 void test_Behavior(){
@@ -93,7 +101,7 @@ void test_Behavior(){
     assert(b1.buyPotion(p1) == false);
     assert(b1.getName() == "RiskTaking");
 
-    p1.getHealthPointsAsObject().damage(51);
+    p1.getHealthPoints().damage(51);
     assert(b1.buyPotion(p1) == true);
 
     Player p2("Moshe", 100, 5, 2, 10, new Responsible());
@@ -101,8 +109,19 @@ void test_Behavior(){
     assert(b2.buyPotion(p2) == false);
     assert(b2.getName() == "Responsible");
 
-    p2.getHealthPointsAsObject().damage(1);
+    p2.getHealthPoints().damage(1);
     assert(b2.buyPotion(p2) == true);
+}
+
+void test_Jobs(){
+    Warrior w("Moshe", 100, 5, 2, 10, new Responsible());
+    Sorcerer s("Itzik", 100, 5, 2, 10, new Responsible());
+
+    w.applySolarEclipse();
+    assert(w.getForce() == 1);
+
+    s.applySolarEclipse();
+    assert(s.getForce() == 3);
 }
 
 int main(){
@@ -110,4 +129,5 @@ int main(){
     run_test(test_CoinPile, "CoinPile");
     run_test(test_Player, "Player");
     run_test(test_Behavior, "Behavior");
+    run_test(test_Jobs, "Jobs");
 }

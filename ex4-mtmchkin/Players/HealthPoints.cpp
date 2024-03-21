@@ -40,3 +40,7 @@ void HealthPoints::damage(int hp){
 bool HealthPoints::healthMaxed() const{
     return m_hp == m_maxHP;
 }
+
+HealthPoints::operator int() const{
+    return m_hp;
+}

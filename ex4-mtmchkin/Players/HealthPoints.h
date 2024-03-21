@@ -14,4 +14,6 @@ public:
     void heal(int hp);
     void damage(int hp);
     bool healthMaxed() const;
+
+    operator int() const;
 };

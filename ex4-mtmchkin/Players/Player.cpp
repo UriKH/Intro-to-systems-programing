@@ -26,8 +26,12 @@ std::string Player::getName() const{
     return m_name;
 }
 
-int Player::getHealthPoints() const{
-    return m_hp.getCurrentHP();
+const HealthPoints& Player::getHealthPoints() const{
+    return m_hp;
+}
+
+HealthPoints& Player::getHealthPoints(){
+    return m_hp;
 }
 
 int Player::getLevel() const{
@@ -38,16 +42,20 @@ int Player::getForce() const {
     return m_force;
 }
 
-int Player::getCoins() const{
-    return m_coins.getCoins();
+const CoinPile& Player::getCoins() const{
+    return m_coins;
+}
+
+CoinPile& Player::getCoins(){
+    return m_coins;
 }
 
 Behavior& Player::getBehavior(){
     return *m_behavior;
 }
 
-CoinPile& Player::getCoinPile(){
-    return m_coins;
+const Behavior& Player::getBehavior() const{
+    return *m_behavior;
 }
 
 void Player::buff(int buff){
@@ -70,14 +78,6 @@ void Player::debuff(int debuff){
 
 void Player::levelUp(){
     m_level += 1;
-}
-
-HealthPoints& Player::getHealthPointsAsObject(){
-    return m_hp;
-}
-
-const HealthPoints& Player::getHealthPointsAsObject() const{
-    return m_hp;
 }
 
 std::string Player::getDescription() const{

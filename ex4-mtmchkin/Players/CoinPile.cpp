@@ -29,3 +29,7 @@ void CoinPile::add(int amount){
 int CoinPile::getCoins() const{
     return m_coins;
 }
+
+CoinPile::operator int() const{
+    return m_coins;
+}

@@ -9,14 +9,14 @@ std::string Behavior::getName() const{
 }
 
 
-Responsible::Responsible(const std::string& name) : Behavior(name){}
+Responsible::Responsible() : Behavior("Responsible"){}
 
 bool Responsible::buyPotion(const Player& player) const{
-    return !player.getHealthPointsAsObject().healthMaxed();
+    return !player.getHealthPoints().healthMaxed();
 }
 
 
-RiskTaking::RiskTaking(const std::string& name) : Behavior(name){}
+RiskTaking::RiskTaking() : Behavior("RiskTaking"){}
 
 bool RiskTaking::buyPotion(const Player& player) const{
     return player.getHealthPoints() < 50;

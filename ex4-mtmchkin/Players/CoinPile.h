@@ -10,4 +10,6 @@ public:
     bool pay(int);
     void add(int);
     int getCoins() const;
+    
+    operator int() const;
 };
