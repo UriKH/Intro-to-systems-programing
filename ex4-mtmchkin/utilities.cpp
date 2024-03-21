@@ -93,7 +93,6 @@ void printNoWinners() {
     cout << "Better luck next time!" << endl;
 }
 
-
 string getEncounterWonMessage(const Player& player, int loot) {
     return player.getName() + " won the encounter, gained " + to_string(loot) + " coins and leveled up!";
 }

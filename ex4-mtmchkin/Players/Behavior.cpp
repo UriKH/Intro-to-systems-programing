@@ -1,7 +1,6 @@
 #include "Behavior.h"
 #include "Player.h"
 
-
 Behavior::Behavior(const std::string& name) : m_name(name){}
 
 std::string Behavior::getName() const{

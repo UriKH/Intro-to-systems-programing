@@ -1,6 +1,7 @@
 #include "Warrior.h"
 #include "Sorcerer.h"
 #include "Player.h"
+#include "LeadBoard.h"
 
 #include <iostream>
 #include <assert.h>
@@ -124,10 +125,54 @@ void test_Jobs(){
     assert(s.getForce() == 3);
 }
 
+void test_LeadBoard(){
+    LeadBoard b, b2;
+    Player* p1, * p2, * p3, * p4, * p5, * p6, * p7, * p8, * p9, * p10;
+
+    p1 = new Player("AMoshe1", 100, 2, 1, 10, new RiskTaking());
+    p2 = new Player("Moshe2", 100, 2, 1, 10, new RiskTaking());
+    p3 = new Player("Moshe3", 100, 2, 1, 10, new RiskTaking());
+    p4 = new Player("Moshe4", 100, 4, 1, 10, new RiskTaking());
+    p5 = new Player("Moshe5", 100, 7, 1, 10, new RiskTaking());
+    p6 = new Player("Moshe6", 100, 7, 2, 10, new RiskTaking());
+    p7 = new Player("Moshe7", 100, 7, 3, 10, new RiskTaking());
+    p8 = new Player("Moshe8", 100, 7, 4, 11, new RiskTaking());
+    p9 = new Player("Moshe9", 100, 7, 4, 12, new RiskTaking());
+    p10 = new Player("Moshe10", 100, 7, 4, 13, new RiskTaking());
+    b2.insert(p10);
+    b2.insert(p9);
+    b2.insert(p8);
+    b2.insert(p7);
+    b2.insert(p6);
+    b2.insert(p5);
+    b2.insert(p4);
+    b2.insert(p3);
+    b2.insert(p2);
+    b2.insert(p1);
+
+    b.insert(p6);
+    b.insert(p2);
+    b.insert(p4);
+    b.insert(p8);
+    b.insert(p1);
+    b.insert(p7);
+    b.insert(p5);
+    b.insert(p9);
+    b.insert(p3);
+    b.insert(p10);
+
+    b.refresh();
+
+    for (size_t i = 0; i < b.getPlayers().size(); i++){
+        assert(b.getPlayers()[i] == b2.getPlayers()[i]);
+    }
+}
+
 int main(){
     run_test(test_HP, "HealthPoints");
     run_test(test_CoinPile, "CoinPile");
     run_test(test_Player, "Player");
     run_test(test_Behavior, "Behavior");
     run_test(test_Jobs, "Jobs");
+    run_test(test_LeadBoard, "LeadBoard");
 }
