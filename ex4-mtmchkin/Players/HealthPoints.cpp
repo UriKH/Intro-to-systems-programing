@@ -1,9 +1,11 @@
 #include "HealthPoints.h"
 #include <stdexcept>
 
+using std::invalid_argument;
+
 HealthPoints::HealthPoints(int maxHP): m_hp(maxHP), m_maxHP(maxHP){
     if (maxHP <= MIN_HP){
-        throw std::invalid_argument("Maximum HP must be positive");
+        throw invalid_argument("Maximum HP must be positive");
     }
 }
 
@@ -17,7 +19,7 @@ bool HealthPoints::isAlive() const{
 
 void HealthPoints::heal(int hp){
     if (hp < 0){
-        throw std::invalid_argument("Can not add negative health points");
+        throw invalid_argument("Can not add negative health points");
     }
 
     m_hp += hp;
@@ -28,7 +30,7 @@ void HealthPoints::heal(int hp){
 
 void HealthPoints::damage(int hp){
     if (hp < 0){
-        throw std::invalid_argument("Can not apply negative damage");
+        throw invalid_argument("Can not apply negative damage");
     }
 
     m_hp -= hp;
