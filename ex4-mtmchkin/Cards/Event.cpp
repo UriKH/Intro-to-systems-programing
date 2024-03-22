@@ -4,6 +4,6 @@ string Event::getDescription() const{
     return m_name;
 }
 
-void Event::playCard(Player player) const{
+void Event::playCard(const Player& player) const{
     
 }

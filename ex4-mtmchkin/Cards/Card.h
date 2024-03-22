@@ -3,8 +3,6 @@
 #include "../Players/Player.h"
 #include <string>
 
-using std::string; 
-
 class Card {
 public:
 
@@ -14,11 +12,11 @@ public:
      * 
      * @return - the description of the card
     */
-    virtual string getDescription() const;
+    virtual std::string getDescription() const;
     
     /**
      * Play the card for "player"
      * 
     */
-    virtual void playCard(Player player) const;
+    virtual void playCard(const Player& player) const;
 };
