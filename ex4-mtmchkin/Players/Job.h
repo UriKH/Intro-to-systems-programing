@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <utility>
 #include "Player.h"
 #include "Card.h"
 
@@ -18,10 +19,11 @@ public:
     virtual std::string getDescription() const override;
     virtual std::string getJobName() const;
 
+    static functionality getFunctionality(const Job&, const Card&);
+    static void addFunctionality(const std::string&, const Card&, Job::functionality);
+    static void addFunctionality(const std::string&, std::vector<std::pair<Card&, Job::functionality>>);
     static void initializeMap(const std::map<std::string, functionality>&);
     static std::map<std::string, functionality> getDefaultFunctionlity();
-    static void addFunctionality(const Job&, const Card&, Job::functionality);
-    static functionality getFunctionality(const Job&, const Card&);
 private:
     static functionalityMap& getfunctionalityMap();
 };

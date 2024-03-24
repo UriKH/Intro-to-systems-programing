@@ -175,7 +175,18 @@ void test_LeadBoard(){
     }
 }
 
+void applySolarEclipse(Player& p){
+    p.buff(1);
+}
+
+void INIT_FUNCTIONALITY(){
+    Job::initializeMap(Job::getDefaultFunctionlity());
+    Job::addFunctionality("Sorcerer", SolarEclipse(), applySolarEclipse);
+}
+
 int main(){
+    INIT_FUNCTIONALITY();
+
     run_test(test_HP, "HealthPoints");
     run_test(test_CoinPile, "CoinPile");
     run_test(test_Player, "Player");

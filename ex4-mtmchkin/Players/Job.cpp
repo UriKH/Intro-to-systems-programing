@@ -15,7 +15,6 @@ using std::map;
 
 Job::Job(const string& name, int hp, int level, int force, int coins, shared_ptr<Behavior> behavior, const string& jobTitle)
     : Player(name, hp, level, force, coins, behavior), m_jobTitle(jobTitle){
-    initializeMap(getDefaultFunctionlity());
 }
 
 std::string Job::getJobName() const{
@@ -48,8 +47,12 @@ Job::functionalityMap& Job::getfunctionalityMap(){
     return funcMap;
 }
 
-void Job::addFunctionality(const Job& job, const Card& card, Job::functionality applyFunction){
-    if (job.getJobName() == JOB_NAME){
+void Job::addFunctionality(const std::string& jobName, const Card& card, Job::functionality applyFunction){
+    if (getfunctionalityMap()[card.getName()][jobName] != nullptr){
+        return;
+    }
+    
+    if (jobName == JOB_NAME){
         throw std::logic_error("Cannot change default function calles after initialization");
     }
 
@@ -57,7 +60,14 @@ void Job::addFunctionality(const Job& job, const Card& card, Job::functionality 
         throw std::invalid_argument("Card of type \'" + card.getName() + "\' is not recognized in game");
     }
 
-    getfunctionalityMap()[card.getName()][job.getJobName()] = applyFunction;
+    getfunctionalityMap()[card.getName()][jobName] = applyFunction;
+}
+
+// TODO: this might not be legal!!!!!
+void Job::addFunctionality(const std::string& jobName, std::vector<std::pair<Card&, Job::functionality>> functions){
+    for (auto p : functions){
+        addFunctionality(jobName, p.first, p.second);
+    }
 }
 
 Job::functionality Job::getFunctionality(const Job& job, const Card& card){    
