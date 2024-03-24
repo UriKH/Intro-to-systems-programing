@@ -2,6 +2,7 @@
 #include "Sorcerer.h"
 #include "Player.h"
 #include "LeadBoard.h"
+#include "Event.h"
 
 #include <iostream>
 #include <assert.h>
@@ -116,14 +117,18 @@ void test_Behavior(){
     assert(b2.buyPotion(p2) == true);
 }
 
+void func(Player& p){
+    return;
+}
+
 void test_Jobs(){
     Warrior w("Moshe", 100, 5, 2, 10, std::make_shared<Responsible>());
     Sorcerer s("Itzik", 100, 5, 2, 10, std::make_shared<Responsible>());
 
-    w.applySolarEclipse();
+    Job::getFunctionality(w, SolarEclipse())(w);
     assert(w.getForce() == 1);
 
-    s.applySolarEclipse();
+    Job::getFunctionality(s, SolarEclipse())(s);
     assert(s.getForce() == 3);
 }
 

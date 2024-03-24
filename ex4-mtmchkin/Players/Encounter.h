@@ -21,7 +21,8 @@ public:
     int getLoot() const;
     int getPower() const;
     int getDamage() const;
+    virtual std::string getName() const override;
 
     Encounter(const string name, const int power, const int loot, const int damage, const int size) :
-     m_name(name), m_power(power), m_loot(loot), m_damage(damage), m_size(size){};
+        m_name(name), m_power(power), m_loot(loot), m_damage(damage), m_size(size){};
 };

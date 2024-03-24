@@ -9,8 +9,9 @@ protected:
     std::string m_name;
 public:
     explicit Behavior(const std::string& name);
-    virtual bool buyPotion(const Player&) const = 0;
     virtual std::string getName() const;
+
+    virtual bool buyPotion(const Player&) const = 0;
 };
 
 class Responsible : public Behavior{

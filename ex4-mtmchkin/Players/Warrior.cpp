@@ -6,3 +6,7 @@ Warrior::Warrior(const std::string& name, int hp, int level, int force, int coin
 int Warrior::calculateCombatPower() const{
     return getForce() + 2 * getLevel();
 }
+
+std::string Warrior::getJobName() const{
+    return "Warrior";
+}

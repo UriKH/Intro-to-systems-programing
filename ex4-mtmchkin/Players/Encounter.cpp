@@ -18,3 +18,7 @@ int Encounter::getPower() const{
 int Encounter::getDamage() const{
     return m_damage;
 }
+
+std::string Encounter::getName() const{
+    return m_name;
+}
