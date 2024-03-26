@@ -35,13 +35,7 @@ void Job::initializeMap(CardPlayerActionMap functions){
     }
 
     CardPlayerActionMap& funcMap = getfunctionalityMap();
-    // for (auto it = functions.begin(); it != functions.end(); ++it){
-    //     for (auto it2 = funcMap[it->first].begin(); it2 != funcMap[it->first].end(); ++it2){
-    //         funcMap[it->first][it2->first] = it2->second;
-    //     }
-    // }
     funcMap = functions;
-
     called = true;
 }
 
@@ -53,7 +47,7 @@ Job::CardPlayerActionMap& Job::getfunctionalityMap(){
 
     if (funcMap.size() == 0 && !called){
         called = true;
-        initializeMap(getDefaultFunctionlity());
+        initializeMap(getDefaultActions());
     }
     return funcMap;
 }
@@ -71,17 +65,17 @@ Job::PlayerAction Job::getPlayerAction(const Job& job, const Card& card){
     throw ActionNotFound(card.getName(), job.getJobName());
 }
 
-int DefaultApplyEncounter(Player& p, const Card* card){
+int defaultApplyEncounter(Player& p, const Card* card){
     // TODO: some fight function
     return 0;
 }
 
-int DefaultApplySolarEclipse(Player& p, const Card* card = nullptr){
+int defaultApplySolarEclipse(Player& p, const Card* card = nullptr){
     p.debuff(1);
     return -1;
 }
 
-int DefaultApplyPotionsMerchant(Player& p, const Card* card = nullptr){
+int defaultApplyPotionsMerchant(Player& p, const Card* card = nullptr){
     int counter = 0;
     while (p.getBehavior().buyPotion(p)){
         if (p.getCoins().pay(5)){
@@ -92,14 +86,13 @@ int DefaultApplyPotionsMerchant(Player& p, const Card* card = nullptr){
     return counter;
 }
 
-Job::CardPlayerActionMap Job::getDefaultFunctionlity(){
+Job::CardPlayerActionMap Job::getDefaultActions(){
     Job::CardPlayerActionMap defaultFunctionlity;
-    // defaultFunctionlity[JOB_NAME] = std::map<std::string, Job::PlayerAction>();
-    defaultFunctionlity[Giant().getName()][JOB_NAME] = DefaultApplyEncounter;
-    defaultFunctionlity[Goblin().getName()][JOB_NAME] = DefaultApplyEncounter;
-    defaultFunctionlity[Gang().getName()][JOB_NAME] = DefaultApplyEncounter;
-    defaultFunctionlity[SolarEclipse().getName()][JOB_NAME] = DefaultApplySolarEclipse;
-    defaultFunctionlity[PotionsMerchant().getName()][JOB_NAME] = DefaultApplyPotionsMerchant;
+    defaultFunctionlity["Giant"][JOB_NAME] = defaultApplyEncounter;
+    defaultFunctionlity["Goblin"][JOB_NAME] = defaultApplyEncounter;
+    defaultFunctionlity["Gang"][JOB_NAME] = defaultApplyEncounter;
+    defaultFunctionlity["SolarEclipse"][JOB_NAME] = defaultApplySolarEclipse;
+    defaultFunctionlity["PotionsMerchant"][JOB_NAME] = defaultApplyPotionsMerchant;
     return defaultFunctionlity;
 }
 

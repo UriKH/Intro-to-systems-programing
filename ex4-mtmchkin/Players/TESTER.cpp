@@ -181,7 +181,7 @@ int applySolarEclipse(Player& p, const Card* c){
 }
 
 void INIT_FUNCTIONALITY(){
-    Job::CardPlayerActionMap temp = Job::getDefaultFunctionlity();
+    Job::CardPlayerActionMap temp = Job::getDefaultActions();
     temp[SolarEclipse().getName()]["Sorcerer"] = applySolarEclipse;
     Job::initializeMap(temp);
 }

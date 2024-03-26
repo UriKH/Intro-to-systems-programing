@@ -63,8 +63,16 @@ public:
     */
     static void initializeMap(CardPlayerActionMap defaultActions);
 
-    static CardPlayerActionMap getDefaultFunctionlity();
-        
+    /**
+     * Gets the default actions for known cards
+     * @returns the default actions
+    */
+    static CardPlayerActionMap getDefaultActions();
+
+    /**
+     * Action not found error class representing error that occures when a wanted
+     * PlayerAction could not be found
+    */
     class ActionNotFound : public std::exception{
         std::string m_message;
     public:
@@ -72,6 +80,10 @@ public:
         const char* what() const noexcept override;
     };
 
+    /**
+     * Invalid initialitaion error class representing error that occures
+     * when trying to initialize the Action map more than once
+    */
     class InvalidInitialization : public std::exception{
     public:
         const char* what() const noexcept override;

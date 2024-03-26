@@ -21,15 +21,3 @@ const std::shared_ptr<Player> LeaderBoard::getTop(){
 const std::vector<shared_ptr<Player>>& LeaderBoard::getPlayers(){
     return m_players;
 }
-
-// bool comparePlayers(const shared_ptr<Player> player1, const shared_ptr<Player> player2){
-//     if (player1->getLevel() != player2->getLevel()){
-//         return player1->getLevel() > player2->getLevel();
-//     }
-
-//     if (player1->getCoins() != player2->getCoins()){
-//         return player1->getCoins() > player2->getCoins();
-//     }
-
-//     return player1->getName() > player2->getName();
-// }
