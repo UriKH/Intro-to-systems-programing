@@ -25,86 +25,86 @@ public:
 
     /**
      * getter for the name of the player
-     * @return - the player's name
+     * @return the player's name
     */
     virtual std::string getName() const;
 
     /**
      * getter for the player's health points
-     * @return - HealthPoints represenation of the player
+     * @return HealthPoints represenation of the player
     */
     virtual const HealthPoints& getHealthPoints() const;
 
     /**
      * getter for the player's health points
-     * @return - HealthPoints represenation of the player
+     * @return HealthPoints represenation of the player
     */
     virtual HealthPoints& getHealthPoints();
 
     /**
      * getter for the player's coins
-     * @return - Coin pile represenation of the player's coins
+     * @return Coin pile represenation of the player's coins
     */
     virtual const CoinPile& getCoins() const;
 
     /**
      * getter for the player's coins
-     * @return - Coin pile represenation of the player's coins
+     * @return Coin pile represenation of the player's coins
     */
     virtual CoinPile& getCoins();
 
     /**
      * getter for the player's behavior type
-     * @return - the player's behavior
+     * @return the player's behavior
     */
     virtual const Behavior& getBehavior() const;
 
     /**
      * getter for the player's behavior type
-     * @return - the player's behavior
+     * @return the player's behavior
     */
     virtual Behavior& getBehavior();
 
     /**
      * getter for the player's level
-     * @return - the player's behavior
+     * @return the player's behavior
     */
     virtual int getLevel() const;
 
     /**
      * getter for the player's force
-     * @return - the player's force
+     * @return the player's force
     */
     virtual int getForce() const;
 
     /**
      * creates a string representaion of the player
-     * @return - the player's string representation
+     * @return the player's string representation
     */
     virtual std::string getDescription() const;
 
     /**
      * check if the player has maximum level
-     * @return - true if player is maxed out else false
+     * @return true if player is maxed out else false
     */
     virtual bool isMaxedOut() const;
     // virtual bool isKnockedOut() const;
 
     /**
      * buff player by some amount
-     * @param force - amount of force to buff the player by
+     * @param force amount of force to buff the player by
     */
     virtual void buff(int);
 
     /**
      * debuff player by some amount
-     * @param force - amount of force to debuff the player by
+     * @param force amount of force to debuff the player by
     */
     virtual void debuff(int);
 
     /**
      * Level up player by some amount
-     * @param levels - amount of levels to level up by
+     * @param levels amount of levels to level up by
     */
     virtual void levelUp(int);
 };

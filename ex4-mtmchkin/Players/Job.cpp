@@ -17,21 +17,6 @@ Job::Job(const string& name, int hp, int level, int force, int coins, shared_ptr
     : Player(name, hp, level, force, coins, behavior), m_jobTitle(jobTitle){
 }
 
-std::string Job::getJobName() const{
-    return JOB_NAME;
-}
-
-void Job::initializeMap(const std::map<std::string, functionality>& functions){
-    functionalityMap& funcMap = getfunctionalityMap();
-    if (funcMap.size() > 0){
-        return;
-    }
-    
-    for (auto it = functions.begin(); it != functions.end(); ++it){
-        funcMap[it->first][JOB_NAME] = it->second;
-    }
-}
-
 int Job::calculateCombatPower() const{
     return getForce() + getLevel();
 }
@@ -42,60 +27,61 @@ string Job::getDescription() const{
     return ss.str();
 }
 
-Job::functionalityMap& Job::getfunctionalityMap(){
-    static Job::functionalityMap funcMap;
+void Job::initializeMap(CardPlayerActionMap functions){
+    static bool called = false;
+
+    if (called){
+        throw Job::InvalidInitialization();
+    }
+
+    CardPlayerActionMap& funcMap = getfunctionalityMap();
+    // for (auto it = functions.begin(); it != functions.end(); ++it){
+    //     for (auto it2 = funcMap[it->first].begin(); it2 != funcMap[it->first].end(); ++it2){
+    //         funcMap[it->first][it2->first] = it2->second;
+    //     }
+    // }
+    funcMap = functions;
+
+    called = true;
+}
+
+Job::CardPlayerActionMap& Job::getfunctionalityMap(){
+    static Job::CardPlayerActionMap funcMap;
+
+    // prevents infinite re-calling from initializeMsp
+    static bool called = false;
+
+    if (funcMap.size() == 0 && !called){
+        called = true;
+        initializeMap(getDefaultFunctionlity());
+    }
     return funcMap;
 }
 
-void Job::addFunctionality(const std::string& jobName, const Card& card, Job::functionality applyFunction){
-    if (getfunctionalityMap()[card.getName()][jobName] != nullptr){
-        return;
-    }
-    
-    if (jobName == JOB_NAME){
-        throw std::logic_error("Cannot change default function calles after initialization");
-    }
-
-    if (getfunctionalityMap().find(card.getName()) == getfunctionalityMap().end()){
-        throw std::invalid_argument("Card of type \'" + card.getName() + "\' is not recognized in game");
-    }
-
-    getfunctionalityMap()[card.getName()][jobName] = applyFunction;
-}
-
-// TODO: this might not be legal!!!!!
-void Job::addFunctionality(const std::string& jobName, std::vector<std::pair<Card&, Job::functionality>> functions){
-    for (auto p : functions){
-        addFunctionality(jobName, p.first, p.second);
-    }
-}
-
-Job::functionality Job::getFunctionality(const Job& job, const Card& card){    
+Job::PlayerAction Job::getPlayerAction(const Job& job, const Card& card){    
     auto& cardFunctions = getfunctionalityMap()[card.getName()];
-    auto it = cardFunctions.find(job.getJobName());
 
-    if (it != cardFunctions.end()){
+    if (cardFunctions.find(job.getJobName()) != cardFunctions.end()){
         return cardFunctions[job.getJobName()];
     }
-    else if (cardFunctions[JOB_NAME] != nullptr){
+    else if (cardFunctions.find(JOB_NAME) != cardFunctions.end()){
         return cardFunctions[JOB_NAME];
     }
 
-    throw std::invalid_argument("No implementation of card \'" + card.getName()
-        + "\' found for default and job \'" + job.getJobName() + "\'");
+    throw ActionNotFound(card.getName(), job.getJobName());
 }
 
-int DefaultApplyEncounter(Player& p){
+int DefaultApplyEncounter(Player& p, const Card* card){
     // TODO: some fight function
     return 0;
 }
 
-int DefaultApplySolarEclipse(Player& p){
+int DefaultApplySolarEclipse(Player& p, const Card* card = nullptr){
     p.debuff(1);
     return -1;
 }
 
-int DefaultApplyPotionsMerchant(Player& p){
+int DefaultApplyPotionsMerchant(Player& p, const Card* card = nullptr){
     int counter = 0;
     while (p.getBehavior().buyPotion(p)){
         if (p.getCoins().pay(5)){
@@ -106,12 +92,26 @@ int DefaultApplyPotionsMerchant(Player& p){
     return counter;
 }
 
-std::map<std::string, Job::functionality> Job::getDefaultFunctionlity(){
-    std::map<std::string, Job::functionality> defaultFunctionlity;
-    defaultFunctionlity[Giant().getName()] = DefaultApplyEncounter;
-    defaultFunctionlity[Goblin().getName()] = DefaultApplyEncounter;
-    defaultFunctionlity[Gang().getName()] = DefaultApplyEncounter;
-    defaultFunctionlity[SolarEclipse().getName()] = DefaultApplySolarEclipse;
-    defaultFunctionlity[PotionsMerchant().getName()] = DefaultApplyPotionsMerchant;
+Job::CardPlayerActionMap Job::getDefaultFunctionlity(){
+    Job::CardPlayerActionMap defaultFunctionlity;
+    // defaultFunctionlity[JOB_NAME] = std::map<std::string, Job::PlayerAction>();
+    defaultFunctionlity[Giant().getName()][JOB_NAME] = DefaultApplyEncounter;
+    defaultFunctionlity[Goblin().getName()][JOB_NAME] = DefaultApplyEncounter;
+    defaultFunctionlity[Gang().getName()][JOB_NAME] = DefaultApplyEncounter;
+    defaultFunctionlity[SolarEclipse().getName()][JOB_NAME] = DefaultApplySolarEclipse;
+    defaultFunctionlity[PotionsMerchant().getName()][JOB_NAME] = DefaultApplyPotionsMerchant;
     return defaultFunctionlity;
+}
+
+Job::ActionNotFound::ActionNotFound(const std::string& cardName, const std::string& jobName){
+    m_message = "No implementation of card \'" + cardName + "\' found for job \'" + jobName
+        + "\' nor default implementation found";
+}
+
+const char* Job::ActionNotFound::what() const noexcept{
+    return m_message.c_str();
+}
+
+const char* Job::InvalidInitialization::what() const noexcept{
+    return "Cannot reset actions after first initialization";
 }

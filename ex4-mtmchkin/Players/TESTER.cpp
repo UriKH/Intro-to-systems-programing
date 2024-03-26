@@ -1,7 +1,7 @@
 #include "Warrior.h"
 #include "Sorcerer.h"
 #include "Player.h"
-#include "LeadBoard.h"
+#include "LeaderBoard.h"
 #include "Event.h"
 
 #include <iostream>
@@ -125,10 +125,12 @@ void test_Jobs(){
     Warrior w("Moshe", 100, 5, 2, 10, std::make_shared<Responsible>());
     Sorcerer s("Itzik", 100, 5, 2, 10, std::make_shared<Responsible>());
 
-    Job::getFunctionality(w, SolarEclipse())(w);
+    Job::PlayerAction p = Job::getPlayerAction(w, SolarEclipse());
+    p(w, nullptr);
     assert(w.getForce() == 1);
 
-    Job::getFunctionality(s, SolarEclipse())(s);
+    Job::PlayerAction p2 = Job::getPlayerAction(s, SolarEclipse());
+    p2(s, nullptr);
     assert(s.getForce() == 3);
 }
 
@@ -168,21 +170,20 @@ void test_LeadBoard(){
     b.insert(p3);
     b.insert(p10);
 
-    b.refresh();
-
     for (size_t i = 0; i < b.getPlayers().size(); i++){
         assert(b.getPlayers()[i] == b2.getPlayers()[i]);
     }
 }
 
-int applySolarEclipse(Player& p){
+int applySolarEclipse(Player& p, const Card* c){
     p.buff(1);
     return 1;
 }
 
 void INIT_FUNCTIONALITY(){
-    Job::initializeMap(Job::getDefaultFunctionlity());
-    Job::addFunctionality("Sorcerer", SolarEclipse(), applySolarEclipse);
+    Job::CardPlayerActionMap temp = Job::getDefaultFunctionlity();
+    temp[SolarEclipse().getName()]["Sorcerer"] = applySolarEclipse;
+    Job::initializeMap(temp);
 }
 
 int main(){

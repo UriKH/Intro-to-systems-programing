@@ -3,6 +3,8 @@
 #include "Event.h"
 #include "utilities.h"
 
+#include <memory>
+
 using std::shared_ptr;
 using std::vector;
 using std::string;

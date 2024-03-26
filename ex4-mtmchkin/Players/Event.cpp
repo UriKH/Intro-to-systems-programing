@@ -7,7 +7,7 @@ string Event::getDescription() const{
 }
 
 int Event::playCard(const Player& player) const{
-    
+    return 1;
 }
 
 std::string Event::getName() const{

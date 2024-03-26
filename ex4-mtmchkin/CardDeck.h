@@ -10,7 +10,7 @@
 
 class CardDeck{
 private:
-    std::deque<std::unique_ptr<Card>> m_cardDeck;
+    std::deque<std::shared_ptr<Card>> m_cardDeck;
 public:
     void insertBack(const Card& card);
     Card& drawCard();

@@ -5,6 +5,7 @@ string Encounter::getDescription() const{
 }
 
 int Encounter::playCard(const Player& player) const{
+    return 1;
 }
 
 int Encounter::getLoot() const{
