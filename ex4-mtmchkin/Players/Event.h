@@ -9,7 +9,7 @@ protected:
 public:
     Event(const std::string&);
     string getDescription() const override;
-    void playCard(const Player& player) const override;
+    int playCard(const Player& player) const override;
     std::string getName() const override;
 };
 

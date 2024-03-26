@@ -6,8 +6,9 @@
 #include <vector>
 #include <queue>
 
-#include "Players/Player.h"
-#include "Cards/Card.h"
+#include "Player.h"
+#include "LeadBoard.h"
+#include "CardDeck.h"
 
 using std::string;
 using std::shared_ptr;
@@ -17,6 +18,9 @@ using std::queue;
 class Mtmchkin{
 private:
     int m_turnIndex;
+    std::vector<std::shared_ptr<Player>> m_players;
+    LeadBoard m_leaderBoard;
+    CardDeck m_deck;
 
     /**
      * Playes a single turn for a player
@@ -51,7 +55,7 @@ public:
      * @return - Mtmchkin object with the given deck and players
      *
     */
-    Mtmchkin(const string& deckPath, const string& playersPath);
+    Mtmchkin(const std::string& deckPath, const std::string& playersPath);
 
     /**
      * Plays the entire game

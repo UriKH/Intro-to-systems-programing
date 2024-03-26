@@ -43,7 +43,7 @@ int Player::getLevel() const{
     return m_level;
 }
 
-int Player::getForce() const {
+int Player::getForce() const{
     return m_force;
 }
 
@@ -62,6 +62,14 @@ Behavior& Player::getBehavior(){
 const Behavior& Player::getBehavior() const{
     return *m_behavior;
 }
+
+bool Player::isMaxedOut() const{
+    return getLevel() == MAX_LEVEL;
+}
+
+// bool Player::isKnockedOut() const{
+//     return !m_hp.isAlive();
+// }
 
 void Player::buff(int buff){
     if (buff < 0){

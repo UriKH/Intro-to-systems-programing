@@ -4,7 +4,7 @@ string Encounter::getDescription() const{
     return string();
 }
 
-void Encounter::playCard(const Player& player) const{
+int Encounter::playCard(const Player& player) const{
 }
 
 int Encounter::getLoot() const{

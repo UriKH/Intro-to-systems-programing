@@ -85,20 +85,25 @@ Job::functionality Job::getFunctionality(const Job& job, const Card& card){
         + "\' found for default and job \'" + job.getJobName() + "\'");
 }
 
-void DefaultApplyEncounter(Player& p){
+int DefaultApplyEncounter(Player& p){
     // TODO: some fight function
+    return 0;
 }
 
-void DefaultApplySolarEclipse(Player& p){
+int DefaultApplySolarEclipse(Player& p){
     p.debuff(1);
+    return -1;
 }
 
-void DefaultApplyPotionsMerchant(Player& p){
+int DefaultApplyPotionsMerchant(Player& p){
+    int counter = 0;
     while (p.getBehavior().buyPotion(p)){
         if (p.getCoins().pay(5)){
             p.getHealthPoints().heal(10);
+            counter++;
         }
     }
+    return counter;
 }
 
 std::map<std::string, Job::functionality> Job::getDefaultFunctionlity(){

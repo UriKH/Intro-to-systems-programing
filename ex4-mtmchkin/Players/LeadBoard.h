@@ -11,5 +11,6 @@ public:
 
     void refresh();
     void insert(const std::shared_ptr<Player> player);
-    std::vector<std::shared_ptr<Player>> getPlayers();
+    const std::shared_ptr<Player> getTop() const;
+    const std::vector<std::shared_ptr<Player>>& getPlayers() const;
 };

@@ -14,7 +14,6 @@ bool Responsible::buyPotion(const Player& player) const{
     return !player.getHealthPoints().healthMaxed();
 }
 
-
 RiskTaking::RiskTaking() : Behavior("RiskTaking"){}
 
 bool RiskTaking::buyPotion(const Player& player) const{

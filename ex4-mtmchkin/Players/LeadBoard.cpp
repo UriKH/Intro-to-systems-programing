@@ -24,6 +24,10 @@ void LeadBoard::insert(const shared_ptr<Player> player){
     m_players.push_back(player);
 }
 
-std::vector<shared_ptr<Player>> LeadBoard::getPlayers(){
+const std::shared_ptr<Player> LeadBoard::getTop() const{
+    return m_players[m_players.size() - 1];
+}
+
+const std::vector<shared_ptr<Player>>& LeadBoard::getPlayers() const{
     return m_players;
 }

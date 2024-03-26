@@ -175,8 +175,9 @@ void test_LeadBoard(){
     }
 }
 
-void applySolarEclipse(Player& p){
+int applySolarEclipse(Player& p){
     p.buff(1);
+    return 1;
 }
 
 void INIT_FUNCTIONALITY(){

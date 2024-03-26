@@ -32,9 +32,11 @@ public:
     virtual Behavior& getBehavior();
     virtual int getLevel() const;
     virtual int getForce() const;
-
     virtual std::string getDescription() const;
 
+    virtual bool isMaxedOut() const;
+    // virtual bool isKnockedOut() const;
+    
     virtual void buff(int);
     virtual void debuff(int);
     virtual void levelUp();

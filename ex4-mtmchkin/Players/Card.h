@@ -16,7 +16,7 @@ public:
      * Play the card for "player"
      * 
     */
-    virtual void playCard(const Player& player) const = 0;
+    virtual int playCard(const Player& player) const = 0;
 
     virtual std::string getName() const = 0;
 };

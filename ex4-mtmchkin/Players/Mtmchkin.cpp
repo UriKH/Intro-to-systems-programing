@@ -1,0 +1,109 @@
+
+#include "Mtmchkin.h"
+#include "Event.h"
+
+#include "utilities.h"
+
+using std::shared_ptr;
+using std::vector;
+
+Mtmchkin::Mtmchkin(const string& deckPath, const string& playersPath) {
+
+    /*===== TODO: Open and read cards file =====*/
+    
+    /*==========================================*/
+
+    /*===== TODO: Open and Read players file =====*/
+
+    /*============================================*/
+
+    this->m_turnIndex = 1;
+}
+
+void Mtmchkin::playTurn(Player& player) {
+    /**
+     * Steps to implement (there may be more, depending on your design):
+     * 1. Draw a card from the deck
+     * 2. Print the turn details with "printTurnDetails"
+     * 3. Play the card
+     * 4. Print the turn outcome with "printTurnOutcome"
+    */
+    Card& drawnCard = m_deck.drawCard();
+
+    printTurnDetails(m_turnIndex, player, drawnCard);
+
+    int result = drawnCard.playCard(player);
+    m_deck.insertBack(drawnCard);
+
+    if (drawnCard.getName() == SolarEclipse().getName()){
+        printTurnOutcome(getSolarEclipseMessage(player, result));
+    }
+    else if (drawnCard.getName() == PotionsMerchant().getName()){
+        printTurnOutcome(getPotionsPurchaseMessage(player, result));
+    }
+    else{
+        if (result < 0){
+            printTurnOutcome(getEncounterLostMessage(player, result));
+        }
+        else{
+            printTurnOutcome(getEncounterWonMessage(player, result));
+        }
+    }
+
+    m_turnIndex++;
+}
+
+void Mtmchkin::playRound() {
+    printRoundStart();
+
+    for (auto player : m_players){
+        playTurn(*player);
+    }
+
+    printRoundEnd();
+    printLeaderBoardMessage();
+    
+    const vector<shared_ptr<Player>>& leaderBoard = m_leaderBoard.getPlayers();
+    for (int i = 1; i <= leaderBoard.size(); i++){
+        printLeaderBoardEntry(i, *leaderBoard[i-1]);
+    }
+    
+    printBarrier();
+    m_leaderBoard.refresh();
+}
+
+bool Mtmchkin::isGameOver() const{
+    if (m_leaderBoard.getTop()->isMaxedOut()){
+        return true;
+    }
+
+    for (auto player : m_players){
+        if (player->getHealthPoints().isAlive()){
+            return false;
+        }
+    }
+    return true;
+}
+
+void Mtmchkin::play() {
+    printStartMessage();
+    for (int i = 1; i <= m_players.size(); i++){
+        printStartPlayerEntry(i, *m_players[i-1]);
+    }
+
+    printBarrier();
+
+    while (!isGameOver()) {
+        playRound();
+    }
+
+    printGameOver();
+
+    Player& top = *m_leaderBoard.getTop();
+    if (top.isMaxedOut()){
+        printWinner(top);
+    }
+    else{
+        printNoWinners();
+    }
+}

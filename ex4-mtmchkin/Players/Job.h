@@ -12,7 +12,7 @@ protected:
     std::string m_jobTitle;
     Job(const std::string& name, int hp, int level, int force, int coins, std::shared_ptr<Behavior> behavior, const std::string& jobTitle);
 public:
-    typedef void (*functionality)(Player&);
+    typedef int (*functionality)(Player&);
     typedef std::map<std::string, std::map<std::string, functionality>> functionalityMap;
 
     virtual int calculateCombatPower() const;
