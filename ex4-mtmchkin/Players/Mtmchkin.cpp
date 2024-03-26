@@ -1,13 +1,13 @@
 
 #include "Mtmchkin.h"
 #include "Event.h"
-
 #include "utilities.h"
 
 using std::shared_ptr;
 using std::vector;
+using std::string;
 
-Mtmchkin::Mtmchkin(const string& deckPath, const string& playersPath) {
+Mtmchkin::Mtmchkin(const string& deckPath, const string& playersPath){
 
     /*===== TODO: Open and read cards file =====*/
     
@@ -69,7 +69,6 @@ void Mtmchkin::playRound() {
     }
     
     printBarrier();
-    m_leaderBoard.refresh();
 }
 
 bool Mtmchkin::isGameOver() const{

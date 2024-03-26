@@ -89,8 +89,14 @@ void Player::debuff(int debuff){
     }
 }
 
-void Player::levelUp(){
-    m_level += 1;
+void Player::levelUp(int levels){
+    if (levels < 0){
+        throw invalid_argument("level-up amount get positive values  only");
+    }
+    m_level += levels;
+    if (m_level > MAX_LEVEL){
+        m_level = MAX_LEVEL;
+    }
 }
 
 string Player::getDescription() const{

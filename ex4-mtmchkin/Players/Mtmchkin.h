@@ -7,19 +7,14 @@
 #include <queue>
 
 #include "Player.h"
-#include "LeadBoard.h"
+#include "LeaderBoard.h"
 #include "CardDeck.h"
-
-using std::string;
-using std::shared_ptr;
-using std::vector;
-using std::queue;
 
 class Mtmchkin{
 private:
     int m_turnIndex;
     std::vector<std::shared_ptr<Player>> m_players;
-    LeadBoard m_leaderBoard;
+    LeaderBoard m_leaderBoard;
     CardDeck m_deck;
 
     /**

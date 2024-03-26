@@ -133,7 +133,7 @@ void test_Jobs(){
 }
 
 void test_LeadBoard(){
-    LeadBoard b, b2;
+    LeaderBoard b, b2;
     std::shared_ptr<Player> p1, p2, p3, p4, p5, p6, p7, p8, p9, p10;
 
     p1 = std::make_shared<Player>("AMoshe1", 100, 2, 1, 10, std::make_shared<RiskTaking>());
@@ -193,5 +193,5 @@ int main(){
     run_test(test_Player, "Player");
     run_test(test_Behavior, "Behavior");
     run_test(test_Jobs, "Jobs");
-    run_test(test_LeadBoard, "LeadBoard");
+    run_test(test_LeadBoard, "LeaderBoard");
 }
