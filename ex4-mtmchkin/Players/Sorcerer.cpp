@@ -4,6 +4,6 @@ Sorcerer::Sorcerer(const std::string& name, int hp, int level, int force, int co
     : Job(name, hp, level, force, coins, behavior, "Sorcerer"){
 }
 
-std::string Sorcerer::getJobName() const{
-    return "Sorcerer";
+void Sorcerer::applySolarEclipse(){
+    buff(1);
 }

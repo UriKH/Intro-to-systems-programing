@@ -124,12 +124,10 @@ void test_Jobs(){
     Warrior w("Moshe", 100, 5, 2, 10, std::make_shared<Responsible>());
     Sorcerer s("Itzik", 100, 5, 2, 10, std::make_shared<Responsible>());
 
-    Job::PlayerAction p = Job::getPlayerAction(w, SolarEclipse());
-    p(w, nullptr);
+    w.applySolarEclipse();
     assert(w.getForce() == 1);
 
-    Job::PlayerAction p2 = Job::getPlayerAction(s, SolarEclipse());
-    p2(s, nullptr);
+    s.applySolarEclipse();
     assert(s.getForce() == 3);
 }
 
@@ -179,15 +177,7 @@ int applySolarEclipse(Player& p, const Card* c){
     return 1;
 }
 
-void INIT_FUNCTIONALITY(){
-    Job::CardPlayerActionMap temp = Job::getDefaultActions();
-    temp[SolarEclipse().getName()]["Sorcerer"] = applySolarEclipse;
-    Job::initializeMap(temp);
-}
-
 int main(){
-    INIT_FUNCTIONALITY();
-
     run_test(test_HP, "HealthPoints");
     run_test(test_CoinPile, "CoinPile");
     run_test(test_Player, "Player");

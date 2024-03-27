@@ -20,34 +20,33 @@ private:
     /**
      * Playes a single turn for a player
      * 
-     * @param player - the player to play the turn for
+     * @param player the player to play the turn for
      * 
-     * @return - void
+     * @return void
     */
     void playTurn(Player& player);
 
     /**
      * Plays a single round of the game
      * 
-     * @return - void
+     * @return void
     */
     void playRound();
 
     /**
      * Checks if the game is over
      * 
-     * @return - true if the game is over, false otherwise
+     * @return true if the game is over, false otherwise
     */
     bool isGameOver() const;
-
 public:
     /**
      * Constructor of Mtmchkin class
      * 
-     * @param deckPath - path to the deck file
-     * @param playersPath - path to the players file
+     * @param deckPath path to the deck file
+     * @param playersPath path to the players file
      * 
-     * @return - Mtmchkin object with the given deck and players
+     * @return Mtmchkin object with the given deck and players
      *
     */
     Mtmchkin(const std::string& deckPath, const std::string& playersPath);
@@ -55,7 +54,7 @@ public:
     /**
      * Plays the entire game
      * 
-     * @return - void
+     * @return void
     */
     void play();
 };
