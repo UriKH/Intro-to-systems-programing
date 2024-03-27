@@ -2,8 +2,9 @@
 
 #include "Encounter.h"
 
-//TODO
-
+/**
+ * Class representation of the goblin monster card
+*/
 class Goblin : public Encounter{
 private:
     static const int GOBLIN_POWER = 5;
@@ -13,6 +14,9 @@ public:
     Goblin() : Encounter("Goblin", GOBLIN_POWER, GOBLIN_LOOT, GOBLIN_DAMAGE, DEFAULT_SIZE){}
 };
 
+/**
+ * Class representation of a giant monster card
+*/
 class Giant : public Encounter{
 private:
     static const int GIANT_POWER = 12;
@@ -22,6 +26,9 @@ public:
     Giant() : Encounter("Giant", GIANT_POWER, GIANT_LOOT, GIANT_DAMAGE, DEFAULT_SIZE){}
 };
 
+/**
+ * Class representation of the dragon monster card
+*/
 class Dragon : public Encounter{
 private:
     const int DRAGON_POWER = 17;
@@ -31,8 +38,17 @@ public:
     Dragon() : Encounter("Dragon", DRAGON_POWER, DRAGON_LOOT, DRAGON_DAMAGE, DEFAULT_SIZE){}
 };
 
+/**
+ * Class representation of the gang monster card.
+ * Gang will conatain the stats of a group of other monsters.
+*/
 class Gang : public Encounter{
 public:
     Gang() : Encounter("Gang", 0, 0, 0, 0){}
-    void pushBack(const Encounter& monster); //gets a monster (not gang!), and adds it to the vector
+
+    /**
+     * Add a new monster to the gang
+     * @param monster the new monster to add to the gang
+    */
+    void pushBack(const Encounter& monster);
 };

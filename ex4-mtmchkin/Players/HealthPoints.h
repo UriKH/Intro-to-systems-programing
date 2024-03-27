@@ -2,6 +2,9 @@
 
 // TODO
 
+/**
+ * Representation of the 
+*/
 class HealthPoints{
     int m_hp;
     int m_maxHP;
