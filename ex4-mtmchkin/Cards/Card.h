@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Player.h"
+#include "../Players/Player.h"
 #include <string>
 
 class Card {

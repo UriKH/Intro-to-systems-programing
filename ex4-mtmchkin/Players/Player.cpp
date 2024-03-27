@@ -28,7 +28,7 @@ Player::Player(const string& name, int hp, int level, int force, int coins, shar
         throw invalid_argument("Behavior must not be nullptr");
     }
 
-    if (checkName(name)){
+    if (!checkName(name)){
         throw invalid_argument("Name must contain letters only and must not be longer than" + std::to_string(MAX_NAME_SIZE) + "characters");
     }
 

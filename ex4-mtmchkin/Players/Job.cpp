@@ -1,7 +1,5 @@
 #include "Job.h"
-#include "Event.h"
-#include "Encounter.h"
-#include "Monsters.h"
+#include "../Cards/Card.h"
 #include <sstream>
 #include <stdexcept>
 

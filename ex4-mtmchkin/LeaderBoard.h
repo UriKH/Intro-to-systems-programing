@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <memory>
-#include "Player.h"
+#include "Players/Player.h"
 
 class LeaderBoard{
 public:

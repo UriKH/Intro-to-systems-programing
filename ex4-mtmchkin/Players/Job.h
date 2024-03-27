@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 #include "Player.h"
-#include "Card.h"
+#include "../Cards/Card.h"
 
 class Job : public Player{
 protected:

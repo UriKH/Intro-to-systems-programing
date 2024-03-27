@@ -1,8 +1,6 @@
-#include "Warrior.h"
-#include "Sorcerer.h"
-#include "Player.h"
+#include "Cards/cardIncludes.h"
+#include "Players/playerIncludes.h"
 #include "LeaderBoard.h"
-#include "Event.h"
 
 #include <iostream>
 #include <assert.h>
@@ -139,16 +137,16 @@ void test_LeadBoard(){
     LeaderBoard b, b2;
     std::shared_ptr<Player> p1, p2, p3, p4, p5, p6, p7, p8, p9, p10;
 
-    p1 = std::make_shared<Player>("AMoshe1", 100, 2, 1, 10, std::make_shared<RiskTaking>());
-    p2 = std::make_shared<Player>("Moshe2", 100, 2, 1, 10, std::make_shared<RiskTaking>());
-    p3 = std::make_shared<Player>("Moshe3", 100, 2, 1, 10, std::make_shared<RiskTaking>());
-    p4 = std::make_shared<Player>("Moshe4", 100, 4, 1, 10, std::make_shared<RiskTaking>());
-    p5 = std::make_shared<Player>("Moshe5", 100, 7, 1, 10, std::make_shared<RiskTaking>());
-    p6 = std::make_shared<Player>("Moshe6", 100, 7, 2, 10, std::make_shared<RiskTaking>());
-    p7 = std::make_shared<Player>("Moshe7", 100, 7, 3, 10, std::make_shared<RiskTaking>());
-    p8 = std::make_shared<Player>("Moshe8", 100, 7, 4, 11, std::make_shared<RiskTaking>());
-    p9 = std::make_shared<Player>("Moshe9", 100, 7, 4, 12, std::make_shared<RiskTaking>());
-    p10 = std::make_shared<Player>("Moshe10", 100, 7, 4, 13, std::make_shared<RiskTaking>());
+    p1 = std::make_shared<Player>("AMoshea", 100, 2, 1, 10, std::make_shared<RiskTaking>());
+    p2 = std::make_shared<Player>("Mosheb", 100, 2, 1, 10, std::make_shared<RiskTaking>());
+    p3 = std::make_shared<Player>("Moshec", 100, 2, 1, 10, std::make_shared<RiskTaking>());
+    p4 = std::make_shared<Player>("Moshed", 100, 4, 1, 10, std::make_shared<RiskTaking>());
+    p5 = std::make_shared<Player>("Moshee", 100, 7, 1, 10, std::make_shared<RiskTaking>());
+    p6 = std::make_shared<Player>("Moshef", 100, 7, 2, 10, std::make_shared<RiskTaking>());
+    p7 = std::make_shared<Player>("Mosheg", 100, 7, 3, 10, std::make_shared<RiskTaking>());
+    p8 = std::make_shared<Player>("Mosheh", 100, 7, 4, 11, std::make_shared<RiskTaking>());
+    p9 = std::make_shared<Player>("Moshei", 100, 7, 4, 12, std::make_shared<RiskTaking>());
+    p10 = std::make_shared<Player>("Moshej", 100, 7, 4, 13, std::make_shared<RiskTaking>());
     b2.insert(p10);
     b2.insert(p9);
     b2.insert(p8);
