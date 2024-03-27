@@ -2,6 +2,8 @@
 
 #include "Encounter.h"
 
+//TODO
+
 class Goblin : public Encounter{
 private:
     static const int GOBLIN_POWER = 5;

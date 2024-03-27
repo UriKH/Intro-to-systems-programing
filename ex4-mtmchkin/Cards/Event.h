@@ -3,7 +3,9 @@
 
 using std::string;
 
-class Event : public Card {
+// TODO
+
+class Event : public Card{
 protected:
     string m_name;
 public:

@@ -4,6 +4,8 @@
 
 using std::string;
 
+// TODO
+
 class Encounter : public Card{
 protected:
     static const int DEFAULT_SIZE = 1;

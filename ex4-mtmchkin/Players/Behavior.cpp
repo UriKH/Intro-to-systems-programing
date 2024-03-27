@@ -7,7 +7,6 @@ std::string Behavior::getName() const{
     return m_name;
 }
 
-
 Responsible::Responsible() : Behavior("Responsible"){}
 
 bool Responsible::buyPotion(const Player& player) const{

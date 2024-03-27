@@ -1,5 +1,7 @@
 #pragma once
 
+// TODO
+
 class HealthPoints{
     int m_hp;
     int m_maxHP;
