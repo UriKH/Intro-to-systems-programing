@@ -3,7 +3,7 @@
 #include "../Players/Player.h"
 #include <string>
 
-class Card {
+class Card{
 public:
     /**
      * Gets the description of the card

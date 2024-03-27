@@ -6,7 +6,7 @@
 #include <vector>
 #include <queue>
 
-#include "Player.h"
+#include "Players/Player.h"
 #include "LeaderBoard.h"
 #include "CardDeck.h"
 

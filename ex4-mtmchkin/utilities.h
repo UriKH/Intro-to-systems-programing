@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "Player.h"
-#include "Card.h"
+#include "Players/Player.h"
+#include "Cards/Card.h"
 
 using std::string;
 

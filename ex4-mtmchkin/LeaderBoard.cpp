@@ -14,7 +14,7 @@ void LeaderBoard::insert(const shared_ptr<Player> player){
     std::sort(m_players.begin(), m_players.end(), m_sortingMethod);
 }
 
-const std::shared_ptr<Player> LeaderBoard::getTop(){
+const std::shared_ptr<Player> LeaderBoard::getTop() const{
     return m_players[m_players.size() - 1];
 }
 

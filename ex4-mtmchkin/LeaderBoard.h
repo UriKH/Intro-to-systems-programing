@@ -44,7 +44,7 @@ public:
      * gets the player at the currently winning player
      * @returns the top player
     */
-    const std::shared_ptr<Player> getTop();
+    const std::shared_ptr<Player> getTop() const;
 
     /**
      * gets all the players from the leader board

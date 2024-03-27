@@ -1,7 +1,7 @@
 
 #include "Mtmchkin.h"
-#include "Event.h"
 #include "utilities.h"
+#include "Cards/Event.h"
 
 #include <memory>
 
@@ -30,17 +30,17 @@ void Mtmchkin::playTurn(Player& player) {
      * 3. Play the card
      * 4. Print the turn outcome with "printTurnOutcome"
     */
-    Card& drawnCard = m_deck.drawCard();
+    std::shared_ptr<Card> drawnCard = m_deck.drawCard();
 
-    printTurnDetails(m_turnIndex, player, drawnCard);
+    printTurnDetails(m_turnIndex, player, *drawnCard);
 
-    int result = drawnCard.playCard(player);
+    int result = drawnCard->playCard(player);
     m_deck.insertBack(drawnCard);
 
-    if (drawnCard.getName() == SolarEclipse().getName()){
+    if (drawnCard->getName() == SolarEclipse().getName()){
         printTurnOutcome(getSolarEclipseMessage(player, result));
     }
-    else if (drawnCard.getName() == PotionsMerchant().getName()){
+    else if (drawnCard->getName() == PotionsMerchant().getName()){
         printTurnOutcome(getPotionsPurchaseMessage(player, result));
     }
     else{
@@ -66,7 +66,7 @@ void Mtmchkin::playRound() {
     printLeaderBoardMessage();
     
     const vector<shared_ptr<Player>>& leaderBoard = m_leaderBoard.getPlayers();
-    for (int i = 1; i <= leaderBoard.size(); i++){
+    for (size_t i = 1; i <= leaderBoard.size(); i++){
         printLeaderBoardEntry(i, *leaderBoard[i-1]);
     }
     
@@ -88,7 +88,7 @@ bool Mtmchkin::isGameOver() const{
 
 void Mtmchkin::play() {
     printStartMessage();
-    for (int i = 1; i <= m_players.size(); i++){
+    for (size_t i = 1; i <= m_players.size(); i++){
         printStartPlayerEntry(i, *m_players[i-1]);
     }
 
