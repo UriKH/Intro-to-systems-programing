@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Players/Player.h"
+#include "Player.h"
 #include <string>
 
 class Card {
@@ -20,3 +20,4 @@ public:
 
     virtual std::string getName() const = 0;
 };
+

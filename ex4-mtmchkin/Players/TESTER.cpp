@@ -94,6 +94,7 @@ void test_CoinPile(){
 void test_Player(){
     Player p("Moshe", 100, 5, 2, 10, std::make_shared<RiskTaking>());
     TEST_ERROR_CATCHING(Player p1("Moshasnjcsakjcsajcanksncjae", 100, 5, 2, 10, std::make_shared<RiskTaking>()), const std::invalid_argument&, true)
+    TEST_ERROR_CATCHING(Player p1("M e", 100, 5, 2, 10, std::make_shared<RiskTaking>()), const std::invalid_argument&, true)
     TEST_ERROR_CATCHING(Player p1("a", 100, 5, 2, 10, nullptr), const std::invalid_argument&, true)
 
     assert(p.getCoins() == 10);

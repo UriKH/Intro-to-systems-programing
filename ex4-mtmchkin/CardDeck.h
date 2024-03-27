@@ -1,10 +1,7 @@
 #pragma once
 
 #include "Card.h"
-#include "Gang.h"
-#include "Giant.h"
-#include "Dragon.h"
-#include "Goblin.h"
+#include "Monsters.h"
 #include <deque>
 #include <memory>
 

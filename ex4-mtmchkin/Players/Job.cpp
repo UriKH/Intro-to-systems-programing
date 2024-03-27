@@ -1,9 +1,7 @@
 #include "Job.h"
 #include "Event.h"
 #include "Encounter.h"
-#include "Giant.h"
-#include "Gang.h"
-#include "Goblin.h"
+#include "Monsters.h"
 #include <sstream>
 #include <stdexcept>
 

@@ -3,19 +3,33 @@
 #include <string>
 #include <sstream>
 #include <stdexcept>
+#include <cctype>
 
 using std::string;
 using std::shared_ptr;
 using std::invalid_argument;
 
+bool checkName(const std::string& name){
+    if (name.size() > Player::MAX_NAME_SIZE){
+        return false;
+    }
+
+    for (char letter : name){
+        if (!std::isalpha(letter)){
+            return false;
+        }
+    }
+    return true;
+}
+
 Player::Player(const string& name, int hp, int level, int force, int coins, shared_ptr<Behavior> behavior)
     : m_name(name), m_hp(HealthPoints(hp)), m_level(level), m_force(force), m_coins(CoinPile(coins)), m_behavior(behavior){
     if (m_behavior == nullptr){
-        throw invalid_argument("behavior must not be nullptr");
+        throw invalid_argument("Behavior must not be nullptr");
     }
 
-    if (name.size() > MAX_NAME_SIZE){
-        throw invalid_argument("Name is longer than " + std::to_string(MAX_NAME_SIZE) + "characters");
+    if (checkName(name)){
+        throw invalid_argument("Name must contain letters only and must not be longer than" + std::to_string(MAX_NAME_SIZE) + "characters");
     }
 
     if (m_level > MAX_LEVEL || m_level < MIN_LEVEL){

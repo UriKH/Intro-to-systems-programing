@@ -15,12 +15,12 @@ private:
     int m_force;
     CoinPile m_coins;
     std::shared_ptr<Behavior> m_behavior = nullptr;
-
+public:
     static const int MAX_NAME_SIZE = 15;
     static const int MIN_FORCE = 1;
     static const int MIN_LEVEL = 1;
     static const int MAX_LEVEL = 10;
-public:
+
     Player(const std::string& name, int maxHP, int level, int force, int coins, std::shared_ptr<Behavior> behavior);
 
     /**

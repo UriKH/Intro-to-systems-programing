@@ -1,4 +1,4 @@
-#include "Gang.h"
+#include "Monsters.h"
 
 void Gang::pushBack(const Encounter& monster){
     m_size++;
