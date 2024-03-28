@@ -11,8 +11,8 @@ int Job::calculateCombatPower() const{
     return getForce() + getLevel();
 }
 
-void Job::applyEncounter(){
-    // TODO: some fight function
+void Job::applyEncounter(const Card&){
+
 }
 
 void Job::applySolarEclipse(){

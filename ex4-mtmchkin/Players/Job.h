@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 #include "Player.h"
+#include "Card.h"
 
 //TODO
 
@@ -22,7 +23,7 @@ public:
     /**
          * Applies the solar eclipse card on the Player
         */
-    virtual void applyEncounter();
+    virtual void applyEncounter(const Card&);
 
     /**
      * Applies the solar eclipse card on the Player

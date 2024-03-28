@@ -50,5 +50,5 @@ public:
      * Add a new monster to the gang
      * @param monster the new monster to add to the gang
     */
-    void pushBack(const Encounter& monster);
+    void pushBack(const std::shared_ptr<Encounter> monster);
 };

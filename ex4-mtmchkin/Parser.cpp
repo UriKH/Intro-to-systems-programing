@@ -36,10 +36,10 @@ bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Player>>& pl
     std::shared_ptr<Player> player;
     std::shared_ptr<Behavior> behavior;
     if (behaviorName == RiskTaking().getName()){
-        behavior = std::shared_ptr<RiskTaking>();
+        behavior = std::shared_ptr<RiskTaking>(new RiskTaking());
     }
     else if (behaviorName == Responsible().getName()){
-        behavior = std::shared_ptr<Responsible>();
+        behavior = std::shared_ptr<Responsible>(new Responsible());
     }
     else{
         return false;
@@ -47,10 +47,10 @@ bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Player>>& pl
 
     
     if (jobName == "Sorcerer"){
-        player = std::shared_ptr<Sorcerer>(new Sorcerer(name, behavior));
+        player = std::shared_ptr<Player>(new Sorcerer(name, behavior));
     }
-    else if (jobName == "Warriror"){
-        player = std::shared_ptr<Warrior>(new Warrior(name, behavior));
+    else if (jobName == "Warrior"){
+        player = std::shared_ptr<Player>(new Warrior(name, behavior));
     }
     else{
         return false;
@@ -80,7 +80,7 @@ void Parser::parseCards(const std::string& fileName, CardDeck &cardDeck){
 }
 
 bool parseGang(std::ifstream& source, CardDeck& cardDeck) {
-    std::unique_ptr<Gang> gang;
+    std::shared_ptr<Gang> gang(new Gang());
     int size;
     if (!(source >> size)) {
         return false;
@@ -99,46 +99,38 @@ bool parseGang(std::ifstream& source, CardDeck& cardDeck) {
             size += nestedSize - 1;
         }
         else if (memberWord == "Giant"){
-            Giant giant;
-            gang->pushBack(giant);
+            gang->pushBack(std::shared_ptr<Encounter>(new Giant()));
         }
-        else if(memberWord == "Dragon"){
-            Dragon dragon;
-            gang->pushBack(dragon);
+        else if (memberWord == "Dragon"){
+            gang->pushBack(std::shared_ptr<Encounter>(new Dragon()));
         }
-        else if(memberWord == "Goblin"){
-            Dragon dragon;
-            gang->pushBack(dragon);
+        else if (memberWord == "Goblin"){
+            gang->pushBack(std::shared_ptr<Encounter>(new Goblin()));
         }
         else {
             return false;
         }
         size--;
     }
-    cardDeck.insertBack(std::move(gang));
+    cardDeck.insertBack(gang);
     return true;
 }
 
 bool addCard(const std::string& word, CardDeck& cardDeck){
     if(word == "Giant"){
-        std::unique_ptr<Giant> giant;
-        cardDeck.insertBack(std::move(giant));
+        cardDeck.insertBack(std::shared_ptr<Card>(new Giant()));
     }
     else if(word == "Dragon"){
-        std::unique_ptr<Dragon> dragon;
-        cardDeck.insertBack(std::move(dragon));
+        cardDeck.insertBack(std::shared_ptr<Card>(new Dragon()));
     }
     else if(word == "Goblin"){
-        std::unique_ptr<Goblin> goblin;
-        cardDeck.insertBack(std::move(goblin));
+        cardDeck.insertBack(std::shared_ptr<Card>(new Goblin()));
     }
     else if(word == "SolarEclipse"){
-        std::unique_ptr<SolarEclipse> solarEclipse;
-        cardDeck.insertBack(std::move(solarEclipse));
+        cardDeck.insertBack(std::shared_ptr<Card>(new SolarEclipse()));
     }
     else if(word == "PotionsMerchant"){
-        std::unique_ptr<PotionsMerchant> potionsMerchant;
-        cardDeck.insertBack(std::move(potionsMerchant));
+        cardDeck.insertBack(std::shared_ptr<Card>(new PotionsMerchant()));
     }
     else {
         return false;
