@@ -3,3 +3,5 @@
 .exe
 .json
 ex3/test_queue.exe
+.idea/
+ex5 encryptor/__pycache__
