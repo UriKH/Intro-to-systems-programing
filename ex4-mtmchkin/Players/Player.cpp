@@ -22,7 +22,7 @@ bool Player::checkName(const std::string& name){
     return true;
 }
 
-Player::Player(const string& name, int hp, int level, int force, int coins, shared_ptr<Behavior> behavior)
+Player::Player(const string& name, int hp, int level, int force, int coins, std::shared_ptr<Behavior> behavior)
     : m_name(name), m_hp(HealthPoints(hp)), m_level(level), m_force(force), m_coins(CoinPile(coins)), m_behavior(behavior){
     if (m_behavior == nullptr){
         throw invalid_argument("Behavior must not be nullptr");

@@ -4,7 +4,7 @@
 using std::shared_ptr;
 using std::string;
 
-Job::Job(const string& name, int hp, int level, int force, int coins, shared_ptr<Behavior> behavior, const string& jobTitle)
+Job::Job(const string& name, int hp, int level, int force, int coins, std::shared_ptr<Behavior> behavior, const string& jobTitle)
     : Player(name, hp, level, force, coins, behavior), m_jobTitle(jobTitle){}
 
 int Job::calculateCombatPower() const{

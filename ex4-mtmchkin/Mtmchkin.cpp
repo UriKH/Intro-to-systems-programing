@@ -2,6 +2,7 @@
 #include "Mtmchkin.h"
 #include "utilities.h"
 #include "Cards/Event.h"
+#include "Parser.h"
 
 #include <memory>
 
@@ -10,15 +11,9 @@ using std::vector;
 using std::string;
 
 Mtmchkin::Mtmchkin(const string& deckPath, const string& playersPath){
-
-    /*===== TODO: Open and read cards file =====*/
-    
-    /*==========================================*/
-
-    /*===== TODO: Open and Read players file =====*/
-
-    /*============================================*/
-
+    Parser::parseCards(deckPath, m_deck);
+    Parser::parsePlayers(playersPath, m_players);
+    m_leaderBoard = LeaderBoard(m_players);
     this->m_turnIndex = 1;
 }
 

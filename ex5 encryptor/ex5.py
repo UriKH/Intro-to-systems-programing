@@ -41,7 +41,7 @@ class Cipher(ABC):
         Gets the name of the encryption method
         :return: name of the method
         """
-        return cls.m_name
+        pass
 
 
 class CaesarCipher(Cipher):

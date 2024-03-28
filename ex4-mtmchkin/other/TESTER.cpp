@@ -121,8 +121,8 @@ void func(Player& p){
 }
 
 void test_Jobs(){
-    Warrior w("Moshe", 100, 5, 2, 10, std::make_shared<Responsible>());
-    Sorcerer s("Itzik", 100, 5, 2, 10, std::make_shared<Responsible>());
+    Warrior w("Moshe", std::make_shared<Responsible>());
+    Sorcerer s("Itzik", std::make_shared<Responsible>());
 
     w.applySolarEclipse();
     assert(w.getForce() == 1);
