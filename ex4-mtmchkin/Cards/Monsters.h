@@ -44,7 +44,7 @@ public:
 */
 class Gang : public Encounter{
 public:
-    Gang() : Encounter("Gang", 0, 0, 0, 0){}
+    Gang(int size) : Encounter("Gang", 0, 0, 0, size){}
 
     /**
      * Add a new monster to the gang

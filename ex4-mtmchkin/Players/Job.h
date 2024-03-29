@@ -25,7 +25,7 @@ public:
     /**
      * Applies the solar eclipse card on the Player
     */
-    virtual int applyEncounter(const Encounter&);
+    virtual int applyEncounter(const Encounter& monster);
 
     /**
      * Applies the solar eclipse card on the Player

@@ -22,12 +22,15 @@ void Parser::parsePlayers(const std::string& fileName, std::vector<std::shared_p
         playersCounter++;
     }
 
-    if(playersCounter > 6 && playersCounter < 2){
+    if(playersCounter > 6 || playersCounter < 2){
         throw InvalidPlayersFile();
     }
 }
 
 bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Job>>& players, const std::string& name){
+    if(!Player::checkName(name)){
+        return false;
+    }
 
     std::string jobName, behaviorName;
     source >> std::skipws >> jobName;
@@ -35,6 +38,7 @@ bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Job>>& playe
 
     std::shared_ptr<Job> player;
     std::shared_ptr<Behavior> behavior;
+    
     if (behaviorName == RiskTaking().getName()){
         behavior = std::shared_ptr<RiskTaking>(new RiskTaking());
     }
@@ -67,6 +71,7 @@ void Parser::parseCards(const std::string& fileName, CardDeck &cardDeck){
     }
 
     std::string word;
+    int cardsCounter = 0;
     while (source >> std::skipws >> word) {
         if (word == "Gang") {
             if (!parseGang(source, cardDeck)){
@@ -76,15 +81,20 @@ void Parser::parseCards(const std::string& fileName, CardDeck &cardDeck){
         else if (!addCard(word, cardDeck)){
             throw InvalidCardsFile();
         }
+        cardsCounter++;
+    }
+    if(cardsCounter < 2){
+        throw InvalidCardsFile();
     }
 }
 
 bool parseGang(std::ifstream& source, CardDeck& cardDeck) {
-    std::unique_ptr<Gang> gang(new Gang());
     int size;
     if (!(source >> size)) {
         return false;
     }
+
+    std::unique_ptr<Gang> gang(new Gang(size));
 
     while (size > 0) {
         std::string memberWord;
