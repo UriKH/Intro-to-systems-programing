@@ -8,8 +8,8 @@
 
 class CardDeck{
 private:
-    std::queue<std::shared_ptr<Card>> m_cardDeck;
+    std::queue<std::unique_ptr<Card>> m_cardDeck;
 public:
-    void insertBack(std::shared_ptr<Card> card);
-    const std::shared_ptr<Card> drawCard();
+    void insertCard(std::unique_ptr<Card> card);
+    std::unique_ptr<Card> drawCard();
 };

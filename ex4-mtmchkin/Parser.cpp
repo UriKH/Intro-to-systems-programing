@@ -80,7 +80,7 @@ void Parser::parseCards(const std::string& fileName, CardDeck &cardDeck){
 }
 
 bool parseGang(std::ifstream& source, CardDeck& cardDeck) {
-    std::shared_ptr<Gang> gang(new Gang());
+    std::unique_ptr<Gang> gang(new Gang());
     int size;
     if (!(source >> size)) {
         return false;
@@ -99,38 +99,39 @@ bool parseGang(std::ifstream& source, CardDeck& cardDeck) {
             size += nestedSize - 1;
         }
         else if (memberWord == "Giant"){
-            gang->pushBack(std::shared_ptr<Encounter>(new Giant()));
+            gang->pushBack(std::unique_ptr<Encounter>(new Giant()));
         }
         else if (memberWord == "Dragon"){
-            gang->pushBack(std::shared_ptr<Encounter>(new Dragon()));
+            gang->pushBack(std::unique_ptr<Encounter>(new Dragon()));
         }
         else if (memberWord == "Goblin"){
-            gang->pushBack(std::shared_ptr<Encounter>(new Goblin()));
+            gang->pushBack(std::unique_ptr<Encounter>(new Goblin()));
         }
         else {
             return false;
         }
         size--;
     }
-    cardDeck.insertBack(gang);
+
+    cardDeck.insertCard(std::move(gang));
     return true;
 }
 
 bool addCard(const std::string& word, CardDeck& cardDeck){
     if(word == "Giant"){
-        cardDeck.insertBack(std::shared_ptr<Card>(new Giant()));
+        cardDeck.insertCard(std::unique_ptr<Card>(new Giant()));
     }
     else if(word == "Dragon"){
-        cardDeck.insertBack(std::shared_ptr<Card>(new Dragon()));
+        cardDeck.insertCard(std::unique_ptr<Card>(new Dragon()));
     }
     else if(word == "Goblin"){
-        cardDeck.insertBack(std::shared_ptr<Card>(new Goblin()));
+        cardDeck.insertCard(std::unique_ptr<Card>(new Goblin()));
     }
     else if(word == "SolarEclipse"){
-        cardDeck.insertBack(std::shared_ptr<Card>(new SolarEclipse()));
+        cardDeck.insertCard(std::unique_ptr<Card>(new SolarEclipse()));
     }
     else if(word == "PotionsMerchant"){
-        cardDeck.insertBack(std::shared_ptr<Card>(new PotionsMerchant()));
+        cardDeck.insertCard(std::unique_ptr<Card>(new PotionsMerchant()));
     }
     else {
         return false;

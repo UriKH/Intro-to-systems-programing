@@ -17,20 +17,13 @@ Mtmchkin::Mtmchkin(const string& deckPath, const string& playersPath){
     this->m_turnIndex = 1;
 }
 
+#include <iostream>
+
 void Mtmchkin::playTurn(Job& player){
-    /**
-     * Steps to implement (there may be more, depending on your design):
-     * 1. Draw a card from the deck
-     * 2. Print the turn details with "printTurnDetails"
-     * 3. Play the card
-     * 4. Print the turn outcome with "printTurnOutcome"
-    */
-    std::shared_ptr<Card> drawnCard = m_deck.drawCard();
+    std::unique_ptr<Card> drawnCard = m_deck.drawCard();
 
     printTurnDetails(m_turnIndex, player, *drawnCard);
-
     int result = drawnCard->playCard(player);
-    m_deck.insertBack(drawnCard);
 
     if (drawnCard->getName() == SolarEclipse().getName()){
         printTurnOutcome(getSolarEclipseMessage(player, result));
@@ -46,7 +39,8 @@ void Mtmchkin::playTurn(Job& player){
             printTurnOutcome(getEncounterWonMessage(player, result));
         }
     }
-
+    
+    m_deck.insertCard(std::move(drawnCard));
     m_turnIndex++;
 }
 

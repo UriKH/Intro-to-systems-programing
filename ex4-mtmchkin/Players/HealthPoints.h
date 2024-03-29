@@ -20,5 +20,8 @@ public:
     void damage(int hp);
     bool healthMaxed() const;
 
+    // HealthPoints& operator+=(const int);
+    // HealthPoints& operator-=(const int);
+
     operator int() const;
 };
