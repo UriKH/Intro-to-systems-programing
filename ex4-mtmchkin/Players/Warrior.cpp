@@ -10,7 +10,7 @@ int Warrior::calculateCombatPower() const{
 }
 
 int Warrior::applyEncounter(const Encounter& monster){
-    if (calculateCombatPower() < monster.getPower()){
+    if (calculateCombatPower() <= monster.getPower()){
         getHealthPoints() -= monster.getDamage();
         return -monster.getDamage();
     }

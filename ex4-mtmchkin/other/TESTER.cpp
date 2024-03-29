@@ -43,13 +43,13 @@ void test_HP(){
 
     assert(hp == 100);
     assert(hp.healthMaxed() == true);
-    assert(hp.isAlive() == true);
+    assert(hp > HealthPoints::MIN_HP == true);
 
     // damage
     hp -= 50;
     assert(hp == 50);
     assert(hp.healthMaxed() == false);
-    assert(hp.isAlive() == true);
+    assert(hp > HealthPoints::MIN_HP == true);
 
     // heal
     hp += 100;
@@ -58,7 +58,7 @@ void test_HP(){
 
     // kill
     hp -= 1000;
-    assert(hp.isAlive() == false);
+    assert(hp > HealthPoints::MIN_HP == false);
     assert(hp == 0);
 
     // int convertion operator

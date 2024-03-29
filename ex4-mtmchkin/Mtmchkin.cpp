@@ -48,7 +48,7 @@ void Mtmchkin::playRound() {
     printRoundStart();
 
     for (auto player : m_players){
-        if (player->getHealthPoints().isAlive()){
+        if (player->getHealthPoints() > HealthPoints::MIN_HP){
             playTurn(*player);
         }
     }
@@ -70,7 +70,7 @@ bool Mtmchkin::isGameOver(){
     }
 
     for (auto player : m_players){
-        if (player->getHealthPoints().isAlive()){
+        if (player->getHealthPoints() > HealthPoints::MIN_HP){
             return false;
         }
     }

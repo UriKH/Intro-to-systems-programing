@@ -9,10 +9,6 @@ HealthPoints::HealthPoints(int maxHP): m_hp(maxHP), m_maxHP(maxHP){
     }
 }
 
-bool HealthPoints::isAlive() const{
-    return m_hp != MIN_HP;
-}
-
 bool HealthPoints::healthMaxed() const{
     return m_hp == m_maxHP;
 }

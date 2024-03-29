@@ -132,4 +132,6 @@ public:
     virtual void levelUp(int);
 
     static bool checkName(const std::string&);
+
+    bool healthMaxed() const;
 };

@@ -13,7 +13,7 @@ int Job::calculateCombatPower() const{
 }
 
 int Job::applyEncounter(const Encounter& monster){
-    if (calculateCombatPower() < monster.getPower()){
+    if (calculateCombatPower() <= monster.getPower()){
         getHealthPoints() -= monster.getDamage();
         return -monster.getDamage();
     }

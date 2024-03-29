@@ -18,7 +18,6 @@ public:
 
     explicit HealthPoints(int maxHP = DEFUALT_MAX_HP);
 
-    bool isAlive() const;
     bool healthMaxed() const;
 
     HealthPoints& operator+=(const int);

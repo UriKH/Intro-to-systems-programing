@@ -81,10 +81,6 @@ bool Player::isMaxedOut() const{
     return getLevel() == MAX_LEVEL;
 }
 
-// bool Player::isKnockedOut() const{
-//     return !m_hp.isAlive();
-// }
-
 void Player::buff(int buff){
     if (buff < 0){
         throw invalid_argument("buff gets only positive values");
@@ -117,4 +113,8 @@ string Player::getDescription() const{
     std::stringstream ss;
     ss << m_name << " with " << m_behavior->getName() << " behavior (level " << m_level << ", force " << m_force << ")";
     return ss.str();
+}
+
+bool Player::healthMaxed() const{
+    return m_hp.healthMaxed();
 }
