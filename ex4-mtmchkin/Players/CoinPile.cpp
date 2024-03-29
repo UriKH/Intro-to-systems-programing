@@ -7,29 +7,44 @@ CoinPile::CoinPile(int coins) : m_coins(coins){
     }
 }
 
-bool CoinPile::pay(int amount){
-    if (amount < 0){
-        throw std::invalid_argument("Can not pay negative prices");
-    }
-
-    if (m_coins - amount < MIN_COINS){
-        return false;
-    }
-    m_coins -= amount;
-    return true;
-}
-
-void CoinPile::add(int amount){
-    if (amount < 0){
-        throw std::invalid_argument("Can not add negative amount");
-    }
-    m_coins += amount;
-}
-
-int CoinPile::getCoins() const{
-    return m_coins;
-}
-
 CoinPile::operator int() const{
     return m_coins;
+}
+
+
+CoinPile& CoinPile::operator+=(const int amount){
+    m_coins += amount;
+    if (m_coins < MIN_COINS){
+        m_coins = MIN_COINS;
+    }
+    return *this;
+}
+
+CoinPile& CoinPile::operator -= (const int amount){
+    *this += -amount;
+    return *this;
+}
+
+bool operator==(const CoinPile& hp, const CoinPile& other){
+    return hp.m_coins == other.m_coins;
+}
+
+bool operator!=(const CoinPile& hp, const CoinPile& other){
+    return !(hp == other);
+}
+
+bool operator<(const CoinPile& hp, const CoinPile& other){
+    return hp.m_coins < other.m_coins;
+}
+
+bool operator>(const CoinPile& pile, const CoinPile& other){
+    return !(pile < other) && pile != other;
+}
+
+bool operator<=(const CoinPile& pile, const CoinPile& other){
+    return !(pile > other);
+}
+
+bool operator>=(const CoinPile& pile, const CoinPile& other){
+    return !(pile < other);
 }

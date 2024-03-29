@@ -39,7 +39,7 @@ void Mtmchkin::playTurn(Job& player){
             printTurnOutcome(getEncounterWonMessage(player, result));
         }
     }
-    
+
     m_deck.insertCard(std::move(drawnCard));
     m_turnIndex++;
 }

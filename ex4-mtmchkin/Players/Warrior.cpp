@@ -11,10 +11,10 @@ int Warrior::calculateCombatPower() const{
 
 int Warrior::applyEncounter(const Encounter& monster){
     if (calculateCombatPower() < monster.getPower()){
-        getHealthPoints().damage(monster.getDamage());
+        getHealthPoints() -= monster.getDamage();
         return -monster.getDamage();
     }
-    getCoins().add(monster.getLoot());
+    getCoins() += monster.getLoot();
     levelUp(1);
     return monster.getLoot();
 }

@@ -1,4 +1,3 @@
 Change:
-    2. use unique ptr on cards
     3. make HP white class
     4. document all!

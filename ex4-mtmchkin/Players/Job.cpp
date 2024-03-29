@@ -14,10 +14,10 @@ int Job::calculateCombatPower() const{
 
 int Job::applyEncounter(const Encounter& monster){
     if (calculateCombatPower() < monster.getPower()){
-        getHealthPoints().damage(monster.getDamage());
+        getHealthPoints() -= monster.getDamage();
         return -monster.getDamage();
     }
-    getCoins().add(monster.getLoot());
+    getCoins() += monster.getLoot();
     levelUp(1);
     return monster.getLoot();
 }
@@ -30,8 +30,8 @@ int Job::applySolarEclipse(){
 int Job::applyPotionsMerchant(){
     int counter = 0;
     while (getBehavior().buyPotion(*this)){
-        if (getCoins().pay(5)){
-            getHealthPoints().heal(10);
+        if (getCoins() -= 5){
+            getHealthPoints() += 10;
             counter++;
         }
         else{

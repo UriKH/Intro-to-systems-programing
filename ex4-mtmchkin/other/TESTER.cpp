@@ -41,25 +41,25 @@ void test_HP(){
     TEST_ERROR_CATCHING(HealthPoints fail(-1), const std::invalid_argument&, true)
     TEST_ERROR_CATCHING(HealthPoints fail(0), const std::invalid_argument&, true)
 
-    assert(hp.getCurrentHP() == 100);
+    assert(hp == 100);
     assert(hp.healthMaxed() == true);
     assert(hp.isAlive() == true);
 
     // damage
-    hp.damage(50);
-    assert(hp.getCurrentHP() == 50);
+    hp -= 50;
+    assert(hp == 50);
     assert(hp.healthMaxed() == false);
     assert(hp.isAlive() == true);
 
     // heal
-    hp.heal(100);
-    assert(hp.getCurrentHP() == 100);
+    hp += 100;
+    assert(hp == 100);
     assert(hp.healthMaxed() == true);
 
     // kill
-    hp.damage(1000);
+    hp -= 1000;
     assert(hp.isAlive() == false);
-    assert(hp.getCurrentHP() == 0);
+    assert(hp == 0);
 
     // int convertion operator
     int coins = hp;
@@ -70,19 +70,19 @@ void test_CoinPile(){
     TEST_ERROR_CATCHING(CoinPile fail(-1), const std::invalid_argument&, true)
 
     CoinPile p1;
-    assert(p1.getCoins() == 0);
+    assert(p1 == 0);
 
     // add
-    p1.add(10);
-    assert(p1.getCoins() == 10);
+    p1 += 10;
+    assert(p1 == 10);
 
     // pay
-    assert(p1.pay(6) == true);
-    assert(p1.getCoins() == 4);
-    assert(p1.pay(4) == true);
-    assert(p1.getCoins() == 0);
-    assert(p1.pay(0) == true);
-    assert(p1.pay(1) == false);
+    assert(p1 -= 6 == true);
+    assert(p1 == 4);
+    assert(p1 -= 4 == true);
+    assert(p1 == 0);
+    assert(p1 -= 0 == true);
+    assert(p1 -= 1 == false);
 
     // int convertion operator
     int coins = p1;
@@ -104,7 +104,7 @@ void test_Behavior(){
     assert(b1.buyPotion(p1) == false);
     assert(b1.getName() == "RiskTaking");
 
-    p1.getHealthPoints().damage(51);
+    p1.getHealthPoints() -= 51;
     assert(b1.buyPotion(p1) == true);
 
     Player p2("Moshe", 100, 5, 2, 10, std::make_shared<Responsible>());
@@ -112,7 +112,7 @@ void test_Behavior(){
     assert(b2.buyPotion(p2) == false);
     assert(b2.getName() == "Responsible");
 
-    p2.getHealthPoints().damage(1);
+    p2.getHealthPoints() -= 1;
     assert(b2.buyPotion(p2) == true);
 }
 

@@ -9,34 +9,8 @@ HealthPoints::HealthPoints(int maxHP): m_hp(maxHP), m_maxHP(maxHP){
     }
 }
 
-int HealthPoints::getCurrentHP() const{
-    return m_hp;
-}
-
 bool HealthPoints::isAlive() const{
     return m_hp != MIN_HP;
-}
-
-void HealthPoints::heal(int hp){
-    if (hp < 0){
-        throw invalid_argument("Can not add negative health points");
-    }
-
-    m_hp += hp;
-    if (m_hp > MAX_HP){
-        m_hp = MAX_HP;
-    }
-}
-
-void HealthPoints::damage(int hp){
-    if (hp < 0){
-        throw invalid_argument("Can not apply negative damage");
-    }
-
-    m_hp -= hp;
-    if (m_hp < MIN_HP){
-        m_hp = MIN_HP;
-    }
 }
 
 bool HealthPoints::healthMaxed() const{
@@ -45,4 +19,44 @@ bool HealthPoints::healthMaxed() const{
 
 HealthPoints::operator int() const{
     return m_hp;
+}
+
+HealthPoints& HealthPoints::operator+=(const int hp){
+    m_hp += hp;
+    if (m_hp > m_maxHP){
+        m_hp = m_maxHP;
+    }
+    else if (m_hp < MIN_HP){
+        m_hp = MIN_HP;
+    }
+    return *this;
+}
+
+HealthPoints& HealthPoints::operator-=(const int hp){
+    *this += -hp;
+    return *this;
+}
+
+bool operator==(const HealthPoints& hp, const HealthPoints& other){
+    return hp.m_hp == other.m_hp;
+}
+
+bool operator!=(const HealthPoints& hp, const HealthPoints& other){
+    return !(hp == other);
+}
+
+bool operator<(const HealthPoints& hp, const HealthPoints& other){
+    return hp.m_hp < other.m_hp;
+}
+
+bool operator>(const HealthPoints& hp, const HealthPoints& other){
+    return !(hp < other) && hp != other;
+}
+
+bool operator<=(const HealthPoints& hp, const HealthPoints& other){
+    return !(hp > other);
+}
+
+bool operator>=(const HealthPoints& hp, const HealthPoints& other){
+    return !(hp < other);
 }

@@ -9,19 +9,24 @@ class HealthPoints{
     int m_hp;
     int m_maxHP;
 
-    static const int MAX_HP = 100;
-    static const int MIN_HP = 0;
-public:
-    explicit HealthPoints(int maxHP = MAX_HP);
+    static const int DEFUALT_MAX_HP = 100;
 
-    int getCurrentHP() const;
+    friend bool operator<(const HealthPoints&, const HealthPoints&);
+    friend bool operator==(const HealthPoints&, const HealthPoints&);
+public:
+    static const int MIN_HP = 0;
+
+    explicit HealthPoints(int maxHP = DEFUALT_MAX_HP);
+
     bool isAlive() const;
-    void heal(int hp);
-    void damage(int hp);
     bool healthMaxed() const;
 
-    // HealthPoints& operator+=(const int);
-    // HealthPoints& operator-=(const int);
-
+    HealthPoints& operator+=(const int);
+    HealthPoints& operator-=(const int);
     operator int() const;
 };
+
+bool operator!=(const HealthPoints&, const HealthPoints&);
+bool operator<=(const HealthPoints&, const HealthPoints&);
+bool operator>(const HealthPoints&, const HealthPoints&);
+bool operator>=(const HealthPoints&, const HealthPoints&);
