@@ -30,7 +30,8 @@ int Job::applySolarEclipse(){
 int Job::applyPotionsMerchant(){
     int counter = 0;
     while (getBehavior().buyPotion(*this)){
-        if (getCoins() -= 5){
+        if (getCoins() >= 5){
+            getCoins() -= 5;
             getHealthPoints() += 10;
             counter++;
         }

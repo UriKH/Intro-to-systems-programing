@@ -93,6 +93,9 @@ bool parseGang(std::ifstream& source, CardDeck& cardDeck) {
     if (!(source >> size)) {
         return false;
     }
+    if(size < 2){
+        return false;
+    }
 
     std::unique_ptr<Gang> gang(new Gang(size));
 
@@ -104,6 +107,9 @@ bool parseGang(std::ifstream& source, CardDeck& cardDeck) {
         if (memberWord == "Gang") {
             int nestedSize;
             if (!(source >> nestedSize)) {
+                return false;
+            }
+            if(nestedSize < 2){
                 return false;
             }
             size += nestedSize;

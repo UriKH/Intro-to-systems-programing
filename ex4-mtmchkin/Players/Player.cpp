@@ -10,7 +10,7 @@ using std::shared_ptr;
 using std::invalid_argument;
 
 bool Player::checkName(const std::string& name){
-    if (name.size() > MAX_NAME_SIZE){
+    if (name.size() > MAX_NAME_SIZE || name.size() < MIN_NAME_SIZE){
         return false;
     }
 

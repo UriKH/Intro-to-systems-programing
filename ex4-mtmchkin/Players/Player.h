@@ -17,6 +17,7 @@ private:
     std::shared_ptr<Behavior> m_behavior = nullptr;
 
     static const int MAX_NAME_SIZE = 15;
+    static const int MIN_NAME_SIZE = 3;
     static const int MIN_FORCE = 1;
     static const int MIN_LEVEL = 1;
     static const int MAX_LEVEL = 10;
