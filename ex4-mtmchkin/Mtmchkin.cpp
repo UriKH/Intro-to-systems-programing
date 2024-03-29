@@ -19,7 +19,7 @@ Mtmchkin::Mtmchkin(const string& deckPath, const string& playersPath){
 
 #include <iostream>
 
-void Mtmchkin::playTurn(Job& player){
+void Mtmchkin::playTurn(Player& player){
     std::unique_ptr<Card> drawnCard = m_deck.drawCard();
 
     printTurnDetails(m_turnIndex, player, *drawnCard);
@@ -56,7 +56,7 @@ void Mtmchkin::playRound() {
     printRoundEnd();
     printLeaderBoardMessage();
     
-    const vector<shared_ptr<Job>>& leaderBoard = m_leaderBoard.getPlayers();
+    const vector<shared_ptr<Player>>& leaderBoard = m_leaderBoard.getPlayers();
     for (size_t i = 1; i <= leaderBoard.size(); i++){
         printLeaderBoardEntry(i, *leaderBoard[i-1]);
     }
@@ -91,7 +91,7 @@ void Mtmchkin::play() {
 
     printGameOver();
 
-    Job& top = *m_leaderBoard.getTop();
+    Player& top = *m_leaderBoard.getTop();
     if (top.isMaxedOut()){
         printWinner(top);
     }

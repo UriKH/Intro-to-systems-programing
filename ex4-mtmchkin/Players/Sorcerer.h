@@ -1,5 +1,6 @@
 #pragma once
 #include "Job.h"
+#include "Player.h"
 
 /**
  * Representation of a player of type sorcerer
@@ -12,10 +13,10 @@ public:
      * @param name the name of the player
      * @param behavior the behavior type of the player
     */
-    Sorcerer(const std::string& name, std::shared_ptr<Behavior> behavior);
+    Sorcerer();
 
     /**
      * Applies the solar eclipse card on the sorcerer
     */
-    virtual int applySolarEclipse() override;
+    virtual int applySolarEclipse(Player&) override;
 };

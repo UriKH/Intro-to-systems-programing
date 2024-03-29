@@ -13,7 +13,7 @@
 class Mtmchkin{
 private:
     int m_turnIndex;
-    std::vector<std::shared_ptr<Job>> m_players;
+    std::vector<std::shared_ptr<Player>> m_players;
     LeaderBoard m_leaderBoard;
     CardDeck m_deck;
 
@@ -24,7 +24,7 @@ private:
      * 
      * @return void
     */
-    void playTurn(Job& player);
+    void playTurn(Player& player);
 
     /**
      * Plays a single round of the game

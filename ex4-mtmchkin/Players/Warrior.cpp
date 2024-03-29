@@ -2,19 +2,18 @@
 #include "../Cards/Encounter.h"
 #include <iostream>
 
-Warrior::Warrior(const std::string& name, std::shared_ptr<Behavior> behavior)
-    : Job(name, 100, 1, 5, 10, behavior, "Warrior"){}
+Warrior::Warrior() : Job("Warrior"){}
 
-int Warrior::calculateCombatPower() const{
-    return 2 * getForce() + getLevel();
+int Warrior::calculateCombatPower(Player& player) const{
+    return 2 * player.getForce() + player.getLevel();
 }
 
-int Warrior::applyEncounter(const Encounter& monster){
-    if (calculateCombatPower() <= monster.getPower()){
-        getHealthPoints() -= monster.getDamage();
+int Warrior::applyEncounter(Player& player, const Encounter& monster){
+    if (calculateCombatPower(player) <= monster.getPower()){
+        player.getHealthPoints() -= monster.getDamage();
         return -monster.getDamage();
     }
-    getCoins() += monster.getLoot();
-    levelUp(1);
+    player.getCoins() += monster.getLoot();
+    player.levelUp(1);
     return monster.getLoot();
 }

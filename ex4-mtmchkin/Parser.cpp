@@ -3,11 +3,11 @@
 
 using std::ifstream;
 
-bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Job>>& players, const std::string& name);
+bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Player>>& players, const std::string& name);
 bool parseGang(std::ifstream& source, CardDeck& cardDeck);
 bool addCard(const std::string& word, CardDeck& cardDeck);
 
-void Parser::parsePlayers(const std::string& fileName, std::vector<std::shared_ptr<Job>>& players){
+void Parser::parsePlayers(const std::string& fileName, std::vector<std::shared_ptr<Player>>& players){
     ifstream source(fileName);
     if(!source){    
         throw InvalidPlayersFile();
@@ -27,7 +27,7 @@ void Parser::parsePlayers(const std::string& fileName, std::vector<std::shared_p
     }
 }
 
-bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Job>>& players, const std::string& name){
+bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Player>>& players, const std::string& name){
     if(!Player::checkName(name)){
         return false;
     }
@@ -36,29 +36,31 @@ bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Job>>& playe
     source >> std::skipws >> jobName;
     source >> std::skipws >> behaviorName;
 
-    std::shared_ptr<Job> player;
-    std::shared_ptr<Behavior> behavior;
+    std::shared_ptr<Player> player;
+    std::unique_ptr<Behavior> behavior;
     
     if (behaviorName == RiskTaking().getName()){
-        behavior = std::shared_ptr<RiskTaking>(new RiskTaking());
+        behavior = std::unique_ptr<RiskTaking>(new RiskTaking());
     }
     else if (behaviorName == Responsible().getName()){
-        behavior = std::shared_ptr<Responsible>(new Responsible());
+        behavior = std::unique_ptr<Responsible>(new Responsible());
     }
     else{
         return false;
     }
 
-    
+    std::unique_ptr<Job> job;
     if (jobName == "Sorcerer"){
-        player = std::shared_ptr<Job>(new Sorcerer(name, behavior));
+        job = std::unique_ptr<Job>(new Sorcerer());
     }
     else if (jobName == "Warrior"){
-        player = std::shared_ptr<Job>(new Warrior(name, behavior));
+        job = std::unique_ptr<Job>(new Warrior());
     }
     else{
         return false;
     }
+
+    player = std::shared_ptr<Player>(new Player(name, 100, 1, 5, 10, std::move(behavior), std::move(job)));
 
     players.push_back(player);
     return true;

@@ -22,8 +22,8 @@ bool Player::checkName(const std::string& name){
     return true;
 }
 
-Player::Player(const string& name, int hp, int level, int force, int coins, std::shared_ptr<Behavior> behavior)
-    : m_name(name), m_hp(HealthPoints(hp)), m_level(level), m_force(force), m_coins(CoinPile(coins)), m_behavior(behavior){
+Player::Player(const string& name, int hp, int level, int force, int coins, std::unique_ptr<Behavior> behavior, std::unique_ptr<Job> job)
+    : m_name(name), m_hp(HealthPoints(hp)), m_level(level), m_force(force), m_coins(CoinPile(coins)), m_behavior(std::move(behavior)), m_job(std::move(job)){
     if (m_behavior == nullptr){
         throw invalid_argument("Behavior must not be nullptr");
     }
@@ -37,7 +37,7 @@ Player::Player(const string& name, int hp, int level, int force, int coins, std:
     }
 
     if (m_force < MIN_FORCE){
-        m_force = MIN_FORCE;
+        m_force = MIN_DEFAULT_FORCE;
     }
 }
 
@@ -117,4 +117,8 @@ string Player::getDescription() const{
 
 bool Player::healthMaxed() const{
     return m_hp.healthMaxed();
+}
+
+Job& Player::getJob() const{
+    return *m_job;
 }

@@ -7,8 +7,8 @@ std::string Encounter::getDescription() const{
     return description.str();
 }
 
-int Encounter::playCard(Job& player) const{
-    return player.applyEncounter(*this);
+int Encounter::playCard(Player& player) const{
+    return player.getJob().applyEncounter(player, *this);
 }
 
 int Encounter::getLoot() const{

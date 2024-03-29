@@ -12,14 +12,14 @@ public:
      * @param name the name of the player
      * @param behavior the behavior type of the player
     */
-    Warrior(const std::string& name, std::shared_ptr<Behavior> behavior);
+    Warrior();
 
     /**
      * Calculates the combat power of the warrior
      *
      * @return the combat power
     */
-    virtual int calculateCombatPower() const override;
+    virtual int calculateCombatPower(Player& player) const override;
 
-    int applyEncounter(const Encounter& monster) override;
+    int applyEncounter(Player& player, const Encounter& monster) override;
 };

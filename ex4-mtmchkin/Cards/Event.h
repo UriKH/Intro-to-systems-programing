@@ -19,8 +19,8 @@ class SolarEclipse : public Event{
 public:
     SolarEclipse() : Event("SolarEclipse"){}
 
-    int playCard(Job& player) const override{
-        return player.applySolarEclipse();
+    int playCard(Player& player) const override{
+        return player.getJob().applySolarEclipse(player);
     }
 };
 
@@ -28,7 +28,7 @@ class PotionsMerchant : public Event{
 public:
     PotionsMerchant() : Event("PotionsMerchant"){}
 
-    int playCard(Job& player) const override{
-        return player.applyPotionsMerchant();
+    int playCard(Player& player) const override{
+        return player.getJob().applyPotionsMerchant(player);
     }
 };

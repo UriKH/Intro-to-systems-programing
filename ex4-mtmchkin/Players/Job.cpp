@@ -1,38 +1,38 @@
 #include "Job.h"
+#include "Player.h"
 #include "../Cards/Encounter.h"
 #include <sstream>
 
 using std::shared_ptr;
 using std::string;
 
-Job::Job(const string& name, int hp, int level, int force, int coins, std::shared_ptr<Behavior> behavior, const string& jobTitle)
-    : Player(name, hp, level, force, coins, behavior), m_jobTitle(jobTitle){}
+Job::Job(const string& jobTitle) : m_jobTitle(jobTitle){}
 
-int Job::calculateCombatPower() const{
-    return getForce() + getLevel();
+int Job::calculateCombatPower(Player& player) const{
+    return player.getForce() + player.getLevel();
 }
 
-int Job::applyEncounter(const Encounter& monster){
-    if (calculateCombatPower() <= monster.getPower()){
-        getHealthPoints() -= monster.getDamage();
+int Job::applyEncounter(Player& player, const Encounter& monster){
+    if (calculateCombatPower(player) <= monster.getPower()){
+        player.getHealthPoints() -= monster.getDamage();
         return -monster.getDamage();
     }
-    getCoins() += monster.getLoot();
-    levelUp(1);
+    player.getCoins() += monster.getLoot();
+    player.levelUp(1);
     return monster.getLoot();
 }
 
-int Job::applySolarEclipse(){
-    debuff(1);
+int Job::applySolarEclipse(Player& player){
+    player.debuff(1);
     return -1;
 }
 
-int Job::applyPotionsMerchant(){
+int Job::applyPotionsMerchant(Player& player){
     int counter = 0;
-    while (getBehavior().buyPotion(*this)){
-        if (getCoins() >= 5){
-            getCoins() -= 5;
-            getHealthPoints() += 10;
+    while (player.getBehavior().buyPotion(player)){
+        if (player.getCoins() >= 5){
+            player.getCoins() -= 5;
+            player.getHealthPoints() += 10;
             counter++;
         }
         else{
@@ -42,8 +42,8 @@ int Job::applyPotionsMerchant(){
     return counter;
 }
 
-string Job::getDescription() const{
-    std::stringstream ss;
-    ss << getName() << ", " << m_jobTitle << " with " << getBehavior().getName() << " behavior (level " << getLevel() << ", force " << getForce() << ")";
-    return ss.str();
-}
+// string Job::getDescription(Player& player) const{
+//     std::stringstream ss;
+//     ss << getName() << ", " << m_jobTitle << " with " << getBehavior().getName() << " behavior (level " << getLevel() << ", force " << getForce() << ")";
+//     return ss.str();
+// }

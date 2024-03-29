@@ -6,6 +6,7 @@
 #include "HealthPoints.h"
 #include "CoinPile.h"
 #include "Behavior.h"
+#include "Job.h"
 
 class Player{
 private:
@@ -14,11 +15,13 @@ private:
     int m_level;
     int m_force;
     CoinPile m_coins;
-    std::shared_ptr<Behavior> m_behavior = nullptr;
+    std::unique_ptr<Behavior> m_behavior = nullptr;
+    std::unique_ptr<Job> m_job = nullptr;
 
     static const int MAX_NAME_SIZE = 15;
     static const int MIN_NAME_SIZE = 3;
-    static const int MIN_FORCE = 1;
+    static const int MIN_FORCE = 0;
+    static const int MIN_DEFAULT_FORCE = 1;
     static const int MIN_LEVEL = 1;
     static const int MAX_LEVEL = 10;
 public:
@@ -32,7 +35,7 @@ public:
      * @param coins starting coins amount
      * @param behavior the behavior type of the player
     */
-    Player(const std::string& name, int maxHP, int level, int force, int coins, std::shared_ptr<Behavior> behavior);
+    Player(const std::string& name, int maxHP, int level, int force, int coins, std::unique_ptr<Behavior> behavior, std::unique_ptr<Job> job);
 
     /**
      * getter for the name of the player
@@ -135,4 +138,6 @@ public:
     static bool checkName(const std::string&);
 
     bool healthMaxed() const;
+
+    virtual Job& getJob() const;
 };

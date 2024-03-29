@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Players/Job.h"
+#include "../Players/Player.h"
 #include <string>
 
 class Card{
@@ -16,7 +16,7 @@ public:
      * Play the card for "player"
      * 
     */
-    virtual int playCard(Job& player) const = 0;
+    virtual int playCard(Player& player) const = 0;
 
     virtual std::string getName() const = 0;
 };

@@ -18,7 +18,7 @@ protected:
 
 public:
     string getDescription() const override;
-    int playCard(Job& player) const override;
+    int playCard(Player& player) const override;
 
     int getLoot() const;
     int getPower() const;
