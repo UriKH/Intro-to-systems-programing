@@ -6,7 +6,7 @@ string Event::getDescription() const{
     return m_name;
 }
 
-int Event::playCard(const Player& player) const{
+int Event::playCard(Job& player) const{
     return 1;
 }
 

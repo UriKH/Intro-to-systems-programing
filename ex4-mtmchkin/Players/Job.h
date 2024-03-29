@@ -3,7 +3,9 @@
 #include <string>
 #include <memory>
 #include "Player.h"
-#include "Card.h"
+#include "../Cards/Encounter.h"
+
+// class Encounter;
 
 //TODO
 
@@ -21,19 +23,19 @@ public:
     virtual int calculateCombatPower() const;
 
     /**
-         * Applies the solar eclipse card on the Player
-        */
-    virtual void applyEncounter(const Card&);
+     * Applies the solar eclipse card on the Player
+    */
+    virtual int applyEncounter(const Encounter&);
 
     /**
      * Applies the solar eclipse card on the Player
     */
-    virtual void applySolarEclipse();
+    virtual int applySolarEclipse();
 
     /**
      * Applies the solar eclipse card on the Player
     */
-    virtual void applyPotionsMerchant();
+    virtual int applyPotionsMerchant();
 
     /**
      * creates a string representaion of the player

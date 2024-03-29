@@ -4,8 +4,8 @@ string Encounter::getDescription() const{
     return string();
 }
 
-int Encounter::playCard(const Player& player) const{
-    return;
+int Encounter::playCard(Job& player) const{
+    return player.applyEncounter(*this);
 }
 
 int Encounter::getLoot() const{
