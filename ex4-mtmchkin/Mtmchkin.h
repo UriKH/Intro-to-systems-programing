@@ -13,7 +13,7 @@
 class Mtmchkin{
 private:
     int m_turnIndex;
-    std::vector<std::shared_ptr<Player>> m_players;
+    std::vector<std::shared_ptr<Job>> m_players;
     LeaderBoard m_leaderBoard;
     CardDeck m_deck;
 
@@ -24,7 +24,7 @@ private:
      * 
      * @return void
     */
-    void playTurn(Player& player);
+    void playTurn(Job& player);
 
     /**
      * Plays a single round of the game
@@ -38,7 +38,7 @@ private:
      * 
      * @return true if the game is over, false otherwise
     */
-    bool isGameOver() const;
+    bool isGameOver();
 public:
     /**
      * Constructor of Mtmchkin class

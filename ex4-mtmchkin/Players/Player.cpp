@@ -115,6 +115,6 @@ void Player::levelUp(int levels){
 
 string Player::getDescription() const{
     std::stringstream ss;
-    ss << m_name << " with" << m_behavior->getName() << " behavior (level " << m_level << ", force " << m_force << ")";
+    ss << m_name << " with " << m_behavior->getName() << " behavior (level " << m_level << ", force " << m_force << ")";
     return ss.str();
 }

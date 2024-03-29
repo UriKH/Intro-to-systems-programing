@@ -6,10 +6,6 @@ string Event::getDescription() const{
     return m_name;
 }
 
-int Event::playCard(Job& player) const{
-    return 1;
-}
-
 std::string Event::getName() const{
     return m_name;
 }

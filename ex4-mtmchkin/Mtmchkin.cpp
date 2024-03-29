@@ -17,7 +17,7 @@ Mtmchkin::Mtmchkin(const string& deckPath, const string& playersPath){
     this->m_turnIndex = 1;
 }
 
-void Mtmchkin::playTurn(Player& player) {
+void Mtmchkin::playTurn(Job& player){
     /**
      * Steps to implement (there may be more, depending on your design):
      * 1. Draw a card from the deck
@@ -40,7 +40,7 @@ void Mtmchkin::playTurn(Player& player) {
     }
     else{
         if (result < 0){
-            printTurnOutcome(getEncounterLostMessage(player, result));
+            printTurnOutcome(getEncounterLostMessage(player, -result));
         }
         else{
             printTurnOutcome(getEncounterWonMessage(player, result));
@@ -54,13 +54,15 @@ void Mtmchkin::playRound() {
     printRoundStart();
 
     for (auto player : m_players){
-        playTurn(*player);
+        if (player->getHealthPoints().isAlive()){
+            playTurn(*player);
+        }
     }
 
     printRoundEnd();
     printLeaderBoardMessage();
     
-    const vector<shared_ptr<Player>>& leaderBoard = m_leaderBoard.getPlayers();
+    const vector<shared_ptr<Job>>& leaderBoard = m_leaderBoard.getPlayers();
     for (size_t i = 1; i <= leaderBoard.size(); i++){
         printLeaderBoardEntry(i, *leaderBoard[i-1]);
     }
@@ -68,7 +70,7 @@ void Mtmchkin::playRound() {
     printBarrier();
 }
 
-bool Mtmchkin::isGameOver() const{
+bool Mtmchkin::isGameOver(){
     if (m_leaderBoard.getTop()->isMaxedOut()){
         return true;
     }
@@ -95,7 +97,7 @@ void Mtmchkin::play() {
 
     printGameOver();
 
-    Player& top = *m_leaderBoard.getTop();
+    Job& top = *m_leaderBoard.getTop();
     if (top.isMaxedOut()){
         printWinner(top);
     }

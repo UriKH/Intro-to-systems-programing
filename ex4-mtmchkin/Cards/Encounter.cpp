@@ -1,7 +1,10 @@
 #include "Encounter.h"
+#include <sstream>
 
-string Encounter::getDescription() const{
-    return string();
+std::string Encounter::getDescription() const{
+    std::stringstream description;
+    description << m_name << " (power " << m_power << ", loot " << m_loot << ", damage " << m_damage << ")";
+    return description.str();
 }
 
 int Encounter::playCard(Job& player) const{

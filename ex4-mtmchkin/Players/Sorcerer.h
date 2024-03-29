@@ -17,5 +17,5 @@ public:
     /**
      * Applies the solar eclipse card on the sorcerer
     */
-    void applySolarEclipse() override;
+    virtual int applySolarEclipse() override;
 };

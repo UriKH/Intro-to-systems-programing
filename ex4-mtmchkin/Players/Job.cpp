@@ -1,5 +1,5 @@
 #include "Job.h"
-// #include "../Cards/Encounter.h"
+#include "../Cards/Encounter.h"
 #include <sstream>
 
 using std::shared_ptr;
@@ -15,7 +15,7 @@ int Job::calculateCombatPower() const{
 int Job::applyEncounter(const Encounter& monster){
     if (calculateCombatPower() < monster.getPower()){
         getHealthPoints().damage(monster.getDamage());
-        return monster.getDamage();
+        return -monster.getDamage();
     }
     getCoins().add(monster.getLoot());
     levelUp(1);
@@ -43,6 +43,6 @@ int Job::applyPotionsMerchant(){
 
 string Job::getDescription() const{
     std::stringstream ss;
-    ss << getName() << ", " << m_jobTitle << " with" << getBehavior().getName() << " behavior (level " << getLevel() << ", force " << getForce() << ")";
+    ss << getName() << ", " << m_jobTitle << " with " << getBehavior().getName() << " behavior (level " << getLevel() << ", force " << getForce() << ")";
     return ss.str();
 }

@@ -3,11 +3,11 @@
 
 using std::ifstream;
 
-bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Player>>& players, const std::string& name);
+bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Job>>& players, const std::string& name);
 bool parseGang(std::ifstream& source, CardDeck& cardDeck);
 bool addCard(const std::string& word, CardDeck& cardDeck);
 
-void Parser::parsePlayers(const std::string& fileName, std::vector<std::shared_ptr<Player>>& players){
+void Parser::parsePlayers(const std::string& fileName, std::vector<std::shared_ptr<Job>>& players){
     ifstream source(fileName);
     if(!source){    
         throw InvalidPlayersFile();
@@ -27,13 +27,13 @@ void Parser::parsePlayers(const std::string& fileName, std::vector<std::shared_p
     }
 }
 
-bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Player>>& players, const std::string& name){
+bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Job>>& players, const std::string& name){
 
     std::string jobName, behaviorName;
     source >> std::skipws >> jobName;
     source >> std::skipws >> behaviorName;
 
-    std::shared_ptr<Player> player;
+    std::shared_ptr<Job> player;
     std::shared_ptr<Behavior> behavior;
     if (behaviorName == RiskTaking().getName()){
         behavior = std::shared_ptr<RiskTaking>(new RiskTaking());
@@ -47,10 +47,10 @@ bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Player>>& pl
 
     
     if (jobName == "Sorcerer"){
-        player = std::shared_ptr<Player>(new Sorcerer(name, behavior));
+        player = std::shared_ptr<Job>(new Sorcerer(name, behavior));
     }
     else if (jobName == "Warrior"){
-        player = std::shared_ptr<Player>(new Warrior(name, behavior));
+        player = std::shared_ptr<Job>(new Warrior(name, behavior));
     }
     else{
         return false;

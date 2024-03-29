@@ -20,4 +20,6 @@ public:
      * @return the combat power
     */
     virtual int calculateCombatPower() const override;
+
+    int applyEncounter(const Encounter& monster) override;
 };

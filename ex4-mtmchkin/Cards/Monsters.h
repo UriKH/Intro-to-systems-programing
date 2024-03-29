@@ -51,4 +51,7 @@ public:
      * @param monster the new monster to add to the gang
     */
     void pushBack(const std::shared_ptr<Encounter> monster);
+
+    string getDescription() const override;
+
 };

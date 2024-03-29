@@ -3,9 +3,9 @@
 #include <string>
 #include <memory>
 #include "Player.h"
-#include "../Cards/Encounter.h"
+// #include "../Cards/Encounter.h"
 
-// class Encounter;
+class Encounter;
 
 //TODO
 

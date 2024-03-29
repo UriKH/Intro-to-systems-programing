@@ -2,10 +2,10 @@
 
 #include <vector>
 #include <memory>
-#include "Players/Player.h"
+#include "Players/Job.h"
 
 class LeaderBoard{
-    std::vector<std::shared_ptr<Player>> m_players;
+    std::vector<std::shared_ptr<Job>> m_players;
 public:
     LeaderBoard() = default;
 
@@ -15,26 +15,26 @@ public:
      * @param players list of players in the leadboard
      * @param method the sorting method to sort the leader board by
     */
-    LeaderBoard(const std::vector<std::shared_ptr<Player>>& players);
+    LeaderBoard(const std::vector<std::shared_ptr<Job>>& players);
 
     /**
      * insert a new player into the leader board
      *
      * @param player the new player to add
     */
-    void insert(const std::shared_ptr<Player> player);
+    void insert(const std::shared_ptr<Job> player);
 
     /**
      * gets the player at the currently winning player
      *
      * @returns the top player
     */
-    const std::shared_ptr<Player> getTop() const;
+    const std::shared_ptr<Job> getTop();
 
     /**
      * gets all the players from the leader board
      *
      * @returns a list of the players sorted by place
     */
-    const std::vector<std::shared_ptr<Player>>& getPlayers();
+    const std::vector<std::shared_ptr<Job>>& getPlayers();
 };
