@@ -3,13 +3,30 @@ import json
 import os
 
 
+def get_abc_length() -> int:
+    """
+    Calculates the length of the abc
+    :return: the length of the abc
+    """
+    return ord('z') - ord('a') + 1
+
+
+def simplify_key(key: int, abc_length: int):
+    """
+    Simplifies the key to a none negative small number
+    :param key: the key to simplify
+    :return: the simplified key
+    """
+    return key % abc_length if key > 0 else abc_length - ((-key) % abc_length)
+
+
 class Cipher(ABC):
     """
     Class representation of a general cipher
     """
 
     @abstractmethod
-    def __init__(self, name: str, key):
+    def __init__(self, key):
         """
         Creates a cipher
         :param name: the name of the encryption method
@@ -35,24 +52,16 @@ class Cipher(ABC):
         """
         pass
 
-    @classmethod
-    def get_name(cls) -> str:
-        """
-        Gets the name of the encryption method
-        :return: name of the method
-        """
-        pass
-
 
 class CaesarCipher(Cipher):
     """
     Caesar cipher encryption method
     """
-    ABC_LENGTH = ord('z') - ord('a') + 1
 
     def __init__(self, key: int):
-        super().__init__('Caesar', key)
-        self.m_shortened_key = CaesarCipher.simplify_key(key)
+        super().__init__(key)
+        self.m_abc_length = get_abc_length()
+        self.m_shortened_key = simplify_key(key, self.m_abc_length)
 
     def encrypt(self, message: str) -> str:
         encrypted = ''
@@ -63,7 +72,7 @@ class CaesarCipher(Cipher):
                 continue
 
             upper_lower = ord('A') if letter.isupper() else ord('a')
-            letter_index = (ord(letter) - upper_lower + self.m_shortened_key) % self.ABC_LENGTH
+            letter_index = (ord(letter) - upper_lower + self.m_shortened_key) % self.m_abc_length
             letter_index += upper_lower
             encrypted += chr(letter_index)
         return encrypted
@@ -78,25 +87,20 @@ class CaesarCipher(Cipher):
         :param delta: a value to shift the key by
         """
         self.m_key += delta
-        self.m_shortened_key = CaesarCipher.simplify_key(self.m_key)
-
-    @classmethod
-    def simplify_key(cls, key: int):
-        """
-        Simplifies the key to a none negative small number
-        :param key: the key to simplify
-        :return: the simplified key
-        """
-        return key % cls.ABC_LENGTH if key > 0 else cls.ABC_LENGTH - ((-key) % cls.ABC_LENGTH)
-
-    @classmethod
-    def get_name(cls) -> str:
-        return "Caesar"
+        self.m_shortened_key = simplify_key(self.m_key, self.m_abc_length)
 
 
 class VigenereCipher(Cipher):
-    def __init__(self, key_list: list):
-        super().__init__('Vigenere', key_list)
+    """
+    Vigenere cipher encryption method
+    """
+
+    def __init__(self, key_list: list[int]):
+        """
+        Creates a Vigenere cipher encryption
+        :param key_list: a list of values as key
+        """
+        super().__init__(key_list)
         self.m_key = key_list.copy()
 
     def encrypt(self, message: str):
@@ -116,16 +120,6 @@ class VigenereCipher(Cipher):
         reversed_key = [-key for key in self.m_key]
         return VigenereCipher(reversed_key).encrypt(message)
 
-    @classmethod
-    def get_name(cls) -> str:
-        return "Vigenere"
-
-
-# def print_cipher(message: str, cipher: Cipher):
-#     print(f'original: {message}\n'
-#           f'encrypted: {cipher.encrypt(message)}\n'
-#           f'decrypted: {cipher.decrypt(cipher.encrypt(message))}\n')
-
 
 def loadEncryptionSystem(dir_path: str, plaintext_suffix: str):
     with open(os.path.join(dir_path, 'config.json'), 'r') as jsonFile:
@@ -133,12 +127,12 @@ def loadEncryptionSystem(dir_path: str, plaintext_suffix: str):
 
     configurations['encrypt'] = bool(configurations['encrypt'])
 
-    if configurations['type'] == CaesarCipher.get_name():
+    if configurations['type'] == "Caesar":
         configurations['type'] = CaesarCipher(configurations['key'])
-    elif configurations['type'] == VigenereCipher.get_name():
+    elif configurations['type'] == "Vigenere":
         configurations['type'] = VigenereCipher(configurations['key'])
     else:
-        raise ValueError(f'encryption type must be: {CaesarCipher.get_name()} or {VigenereCipher.get_name()}')
+        raise ValueError(f'encryption type unknown')
 
     for filename in os.listdir(dir_path):
         current_file_path = os.path.join(dir_path, filename)
