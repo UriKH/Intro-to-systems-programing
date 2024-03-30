@@ -1,5 +1,4 @@
 #include "Sorcerer.h"
-// #include "SorcererConfig.h"
 
 Sorcerer::Sorcerer()
     : Job("Sorcerer"){

@@ -9,6 +9,8 @@ using std::string;
 using std::shared_ptr;
 using std::invalid_argument;
 
+using namespace Configurations::Player;
+
 bool Player::checkName(const std::string& name){
     if (name.size() > MAX_NAME_SIZE || name.size() < MIN_NAME_SIZE){
         return false;
@@ -22,7 +24,7 @@ bool Player::checkName(const std::string& name){
     return true;
 }
 
-Player::Player(const string& name, int hp, int level, int force, int coins, std::unique_ptr<Behavior> behavior, std::unique_ptr<Job> job)
+Player::Player(const string& name, std::unique_ptr<Behavior> behavior, std::unique_ptr<Job> job, int hp, int level, int force, int coins)
     : m_name(name), m_hp(HealthPoints(hp)), m_level(level), m_force(force), m_coins(CoinPile(coins)), m_behavior(std::move(behavior)), m_job(std::move(job)){
     if (m_behavior == nullptr){
         throw invalid_argument("Behavior must not be nullptr");
@@ -116,7 +118,7 @@ string Player::getDescription() const{
 }
 
 bool Player::healthMaxed() const{
-    return m_hp.healthMaxed();
+    return m_hp == MAX_HP;
 }
 
 Job& Player::getJob() const{

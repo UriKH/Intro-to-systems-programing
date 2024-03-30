@@ -1,10 +1,5 @@
 #pragma once
 
-// TODO
-
-/**
- * Representation of the 
-*/
 class HealthPoints{
     int m_hp;
     int m_maxHP;
@@ -16,9 +11,12 @@ class HealthPoints{
 public:
     static const int MIN_HP = 0;
 
+    /**
+     * Create a healthpoints handler with given maximum HP
+     *
+     * @param maxHP maximum HP available
+    */
     explicit HealthPoints(int maxHP = DEFUALT_MAX_HP);
-
-    bool healthMaxed() const;
 
     HealthPoints& operator+=(const int);
     HealthPoints& operator-=(const int);

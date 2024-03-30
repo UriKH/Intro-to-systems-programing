@@ -12,7 +12,7 @@ public:
      * @param name the name of the player
      * @param behavior the behavior type of the player
     */
-    Warrior();
+    explicit Warrior();
 
     /**
      * Calculates the combat power of the warrior
@@ -21,5 +21,12 @@ public:
     */
     virtual int calculateCombatPower(Player& player) const override;
 
-    int applyEncounter(Player& player, const Encounter& monster) override;
+    /**
+     * Applies the solar eclipse card on the Player
+     *
+     * @param player The player to apply the card
+     * @param monster The monster stats the player encounters
+     * @return the damage dealt if player lost and the loot the player found if battle won
+    */
+    virtual int applyEncounter(Player& player, const Encounter& monster) override;
 };

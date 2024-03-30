@@ -9,10 +9,6 @@ HealthPoints::HealthPoints(int maxHP): m_hp(maxHP), m_maxHP(maxHP){
     }
 }
 
-bool HealthPoints::healthMaxed() const{
-    return m_hp == m_maxHP;
-}
-
 HealthPoints::operator int() const{
     return m_hp;
 }

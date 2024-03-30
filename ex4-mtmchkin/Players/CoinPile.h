@@ -1,7 +1,5 @@
 #pragma once
 
-// TODO
-
 class CoinPile{
     int m_coins;
 
@@ -10,6 +8,11 @@ class CoinPile{
     friend bool operator<(const CoinPile&, const CoinPile&);
     friend bool operator==(const CoinPile&, const CoinPile&);
 public:
+    /**
+     * Create a coin pile with given starting amount of coins
+     *
+     * @param coins a starting amount of coins
+    */
     explicit CoinPile(int coins = MIN_COINS);
 
     CoinPile& operator+=(const int);

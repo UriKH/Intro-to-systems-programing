@@ -1,7 +1,12 @@
 #include "Parser.h"
 #include "Players/playerIncludes.h"
+#include "Players/Job.h"
+#include "gameConfig.h"
 
 using std::ifstream;
+
+using namespace Configurations::Setup;
+using namespace Configurations::Card;
 
 bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Player>>& players, const std::string& name);
 bool parseGang(std::ifstream& source, CardDeck& cardDeck);
@@ -22,7 +27,7 @@ void Parser::parsePlayers(const std::string& fileName, std::vector<std::shared_p
         playersCounter++;
     }
 
-    if(playersCounter > 6 || playersCounter < 2){
+    if(playersCounter > MAX_PLAYERS || playersCounter < MIN_PLAYERS){
         throw InvalidPlayersFile();
     }
 }
@@ -60,7 +65,7 @@ bool parsePlayer(std::ifstream& source, std::vector<std::shared_ptr<Player>>& pl
         return false;
     }
 
-    player = std::shared_ptr<Player>(new Player(name, 100, 1, 5, 10, std::move(behavior), std::move(job)));
+    player = std::shared_ptr<Player>(new Player(name, std::move(behavior), std::move(job)));
 
     players.push_back(player);
     return true;
@@ -85,7 +90,7 @@ void Parser::parseCards(const std::string& fileName, CardDeck &cardDeck){
         }
         cardsCounter++;
     }
-    if(cardsCounter < 2){
+    if(cardsCounter < MIN_CARDS){
         throw InvalidCardsFile();
     }
 }
@@ -95,7 +100,7 @@ bool parseGang(std::ifstream& source, CardDeck& cardDeck) {
     if (!(source >> size)) {
         return false;
     }
-    if(size < 2){
+    if (size < MIN_MONSTERS_IN_GANG){
         return false;
     }
 
@@ -111,7 +116,7 @@ bool parseGang(std::ifstream& source, CardDeck& cardDeck) {
             if (!(source >> nestedSize)) {
                 return false;
             }
-            if(nestedSize < 2){
+            if (nestedSize < MIN_MONSTERS_IN_GANG){
                 return false;
             }
             size += nestedSize;

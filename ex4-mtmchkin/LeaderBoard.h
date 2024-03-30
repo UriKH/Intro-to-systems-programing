@@ -4,6 +4,7 @@
 #include <memory>
 #include "Players/Player.h"
 
+
 class LeaderBoard{
     std::vector<std::shared_ptr<Player>> m_players;
 public:
@@ -13,7 +14,6 @@ public:
      * Constructor of LeaderBoard
      *
      * @param players list of players in the leadboard
-     * @param method the sorting method to sort the leader board by
     */
     LeaderBoard(const std::vector<std::shared_ptr<Player>>& players);
 

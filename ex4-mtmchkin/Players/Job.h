@@ -17,29 +17,33 @@ public:
     /**
      * Calculates the combat power of the warrior
      *
+     * @param player The player to apply the card
      * @return the combat power
     */
-    virtual int calculateCombatPower(Player&) const;
+    virtual int calculateCombatPower(Player& player) const;
 
     /**
      * Applies the solar eclipse card on the Player
-    */
-    virtual int applyEncounter(Player&, const Encounter& monster);
-
-    /**
-     * Applies the solar eclipse card on the Player
-    */
-    virtual int applySolarEclipse(Player&);
-
-    /**
-     * Applies the solar eclipse card on the Player
-    */
-    virtual int applyPotionsMerchant(Player&);
-
-    /**
-     * creates a string representaion of the player
      *
-     * @return the player's string representation
+     * @param player The player to apply the card
+     * @param monster The monster stats the player encounters
+     * @return the damage dealt if player lost and the loot the player found if battle won
     */
-    // virtual std::string getDescription() const override;
+    virtual int applyEncounter(Player& player, const Encounter& monster);
+
+    /**
+     * Applies the solar eclipse card on the Player
+     *
+     * @param player The player to apply the card
+     * @return the amount of force given to the player (may be negative)
+    */
+    virtual int applySolarEclipse(Player& player);
+
+    /**
+     * Applies the solar eclipse card on the Player
+     *
+     * @param player The player to apply the card
+     * @return the amount of potions bought
+    */
+    virtual int applyPotionsMerchant(Player& player);
 };

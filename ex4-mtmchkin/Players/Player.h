@@ -7,6 +7,7 @@
 #include "CoinPile.h"
 #include "Behavior.h"
 #include "Job.h"
+#include "../gameConfig.h"
 
 class Player{
 private:
@@ -17,13 +18,6 @@ private:
     CoinPile m_coins;
     std::unique_ptr<Behavior> m_behavior = nullptr;
     std::unique_ptr<Job> m_job = nullptr;
-
-    static const int MAX_NAME_SIZE = 15;
-    static const int MIN_NAME_SIZE = 3;
-    static const int MIN_FORCE = 0;
-    static const int MIN_DEFAULT_FORCE = 1;
-    static const int MIN_LEVEL = 1;
-    static const int MAX_LEVEL = 10;
 public:
     /**
      * Constructor of Player
@@ -35,7 +29,11 @@ public:
      * @param coins starting coins amount
      * @param behavior the behavior type of the player
     */
-    Player(const std::string& name, int maxHP, int level, int force, int coins, std::unique_ptr<Behavior> behavior, std::unique_ptr<Job> job);
+    Player(const std::string& name, std::unique_ptr<Behavior> behavior, std::unique_ptr<Job> job,
+        int maxHP = Configurations::Player::MAX_HP,
+        int level = Configurations::Player::STARTING_LEVEL,
+        int force = Configurations::Player::STARTING_FORCE,
+        int coins = Configurations::Player::STARTING_COINS);
 
     /**
      * getter for the name of the player
@@ -101,6 +99,11 @@ public:
     virtual int getForce() const;
 
     /**
+     * Gets the player's job name
+    */
+    virtual Job& getJob() const;
+
+    /**
      * creates a string representaion of the player
      *
      * @return the player's string representation
@@ -135,9 +138,18 @@ public:
     */
     virtual void levelUp(int);
 
-    static bool checkName(const std::string&);
+    /**
+     * Check if the players name is valid
+     *
+     * @param name The player's name
+     * @return ture if name is valid else false
+    */
+    static bool checkName(const std::string& name);
 
+    /**
+     * Check if the player's health is full
+     *
+     * @return true if the player's HP is maximal else false
+    */
     bool healthMaxed() const;
-
-    virtual Job& getJob() const;
 };
