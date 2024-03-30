@@ -3,21 +3,36 @@ import json
 import os
 
 
-def get_abc_length() -> int:
+def get_abc_map() -> dict:
     """
     Calculates the length of the abc
     :return: the length of the abc
     """
-    return ord('z') - ord('a') + 1
+    return {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7, 'i': 8, 'j': 9, 'k': 10, 'l': 11, 'm': 12,
+            'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17, 's': 18, 't': 19, 'u': 20, 'v': 21, 'w': 22, 'x': 23, 'y': 24,
+            'z': 25}
 
 
-def simplify_key(key: int, abc_length: int):
+def simplify_key(key: int, abc_length: int) -> int:
     """
     Simplifies the key to a none negative small number
     :param key: the key to simplify
+    :param abc_length: the length of the abc
     :return: the simplified key
     """
     return key % abc_length if key > 0 else abc_length - ((-key) % abc_length)
+
+
+def calculate_new_char(alphabet: dict, char: chr, shift: int) -> chr:
+    """
+    Calculate the new char based on the shift
+    :param alphabet: the alphabet to encrypt by
+    :param char: the character to shift
+    :param shift: the shift of the alphabet by Caesar cipher
+    :return: the new character
+    """
+    swap = [k for k, _ in alphabet.items()]
+    return swap[(alphabet[char] + shift) % len(alphabet)]
 
 
 class Cipher(ABC):
@@ -26,13 +41,16 @@ class Cipher(ABC):
     """
 
     @abstractmethod
-    def __init__(self, key):
+    def __init__(self, key: list | int):
         """
         Creates a cipher
-        :param name: the name of the encryption method
         :param key: the encryption key
         """
-        self.m_key = key
+        self.m_abc = get_abc_map()
+        if type(key) is list:
+            self.m_key = [CaesarCipher(value) for value in key]
+        elif type(key) is int:
+            self.m_key = simplify_key(key, len(self.m_abc))
 
     @abstractmethod
     def encrypt(self, message: str) -> str:
@@ -60,25 +78,26 @@ class CaesarCipher(Cipher):
 
     def __init__(self, key: int):
         super().__init__(key)
-        self.m_abc_length = get_abc_length()
-        self.m_shortened_key = simplify_key(key, self.m_abc_length)
 
     def encrypt(self, message: str) -> str:
         encrypted = ''
+        is_upper_case = False
 
         for letter in message:
             if not letter.isalpha():
                 encrypted += letter
                 continue
 
-            upper_lower = ord('A') if letter.isupper() else ord('a')
-            letter_index = (ord(letter) - upper_lower + self.m_shortened_key) % self.m_abc_length
-            letter_index += upper_lower
-            encrypted += chr(letter_index)
+            if letter.isupper():
+                is_upper_case = True
+
+            letter = calculate_new_char(self.m_abc, letter.lower(), self.m_key)
+            encrypted += letter.upper() if is_upper_case else letter
+            is_upper_case = False
         return encrypted
 
     def decrypt(self, message: str) -> str:
-        temp_decrypt = CaesarCipher(-self.m_shortened_key)
+        temp_decrypt = CaesarCipher(-self.m_key)
         return temp_decrypt.encrypt(message)
 
     def key_shift(self, delta: int) -> None:
@@ -86,8 +105,7 @@ class CaesarCipher(Cipher):
         Shifts the key by some delta
         :param delta: a value to shift the key by
         """
-        self.m_key += delta
-        self.m_shortened_key = simplify_key(self.m_key, self.m_abc_length)
+        self.m_key = simplify_key(self.m_key + delta, len(self.m_abc))
 
 
 class VigenereCipher(Cipher):
@@ -101,10 +119,10 @@ class VigenereCipher(Cipher):
         :param key_list: a list of values as key
         """
         super().__init__(key_list)
-        self.m_key = key_list.copy()
+        self.m_key_raw = key_list.copy()
 
     def encrypt(self, message: str):
-        caesar_key = [CaesarCipher(key) for key in self.m_key]
+        # caesar_key = [CaesarCipher(key) for key in self.m_key]
         encrypted = ''
 
         space_counter = 0
@@ -113,11 +131,11 @@ class VigenereCipher(Cipher):
                 space_counter += 1
                 encrypted += letter
                 continue
-            encrypted += caesar_key[(i - space_counter) % len(caesar_key)].encrypt(letter)
+            encrypted += self.m_key[(i - space_counter) % len(self.m_key)].encrypt(letter)
         return encrypted
 
     def decrypt(self, message: str):
-        reversed_key = [-key for key in self.m_key]
+        reversed_key = [-key for key in self.m_key_raw]
         return VigenereCipher(reversed_key).encrypt(message)
 
 
