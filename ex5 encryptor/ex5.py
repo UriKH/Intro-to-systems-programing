@@ -142,8 +142,6 @@ def loadEncryptionSystem(dir_path: str, plaintext_suffix: str):
     with open(os.path.join(dir_path, 'config.json'), 'r') as jsonFile:
         configurations = json.load(jsonFile)
 
-    configurations['encrypt'] = bool(configurations['encrypt'])
-
     if configurations['type'] == "Caesar":
         configurations['type'] = CaesarCipher(configurations['key'])
     elif configurations['type'] == "Vigenere":
@@ -163,7 +161,7 @@ def loadEncryptionSystem(dir_path: str, plaintext_suffix: str):
         with open(current_file_path, 'r') as file:
             file_data = file.read()
 
-        if configurations['encrypt']:
+        if configurations['encrypt'] == 'True':
             data = configurations['type'].encrypt(file_data)
             new_file_path = '.'.join(path_pieces[:-1]) + '.enc'
         else:
