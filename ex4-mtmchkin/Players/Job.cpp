@@ -23,9 +23,11 @@ int Job::applyEncounter(Player& player, const Encounter& monster){
 }
 
 int Job::applySolarEclipse(Player& player){
-    int beforeForce = player.getForce();
+    if (player.getForce() == Configurations::Player::MIN_FORCE){
+        return 0;
+    }
     player.debuff(1);
-    return player.getForce() - beforeForce;
+    return -1;
 }
 
 int Job::applyPotionsMerchant(Player& player){
