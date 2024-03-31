@@ -9,6 +9,8 @@
 #include "Job.h"
 #include "../gameConfig.h"
 
+using std::string;
+
 class Player{
 private:
     std::string m_name;
