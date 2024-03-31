@@ -42,8 +42,6 @@ int Job::applyPotionsMerchant(Player& player){
     return counter;
 }
 
-// string Job::getDescription(Player& player) const{
-//     std::stringstream ss;
-//     ss << getName() << ", " << m_jobTitle << " with " << getBehavior().getName() << " behavior (level " << getLevel() << ", force " << getForce() << ")";
-//     return ss.str();
-// }
+std::string Job::getName() const{
+    return m_jobTitle;
+}

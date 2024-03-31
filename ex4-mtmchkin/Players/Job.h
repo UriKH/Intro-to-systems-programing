@@ -46,4 +46,11 @@ public:
      * @return the amount of potions bought
     */
     virtual int applyPotionsMerchant(Player& player);
+
+    /**
+     * Gets the name of the job
+     *
+     * @param the name of the job
+    */
+    virtual std::string getName() const;
 };
