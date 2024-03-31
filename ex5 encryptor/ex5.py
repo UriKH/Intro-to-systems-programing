@@ -138,6 +138,7 @@ class VigenereCipher(Cipher):
 
 
 def loadEncryptionSystem(dir_path: str, plaintext_suffix: str):
+    # open configurations file
     with open(os.path.join(dir_path, 'config.json'), 'r') as jsonFile:
         configurations = json.load(jsonFile)
 
@@ -150,6 +151,7 @@ def loadEncryptionSystem(dir_path: str, plaintext_suffix: str):
     else:
         raise ValueError(f'encryption type unknown')
 
+    # encrypt or decrypt every relevant file in the dir
     for filename in os.listdir(dir_path):
         current_file_path = os.path.join(dir_path, filename)
         path_pieces = current_file_path.split('.')
