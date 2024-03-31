@@ -8,7 +8,7 @@ def get_abc_map() -> dict:
     Creates an abc to letter index map
     :return: the mapped abc
     """
-    return {char: i for i, char in enumerate(list('abcdefghijklmnopqrstuvwxyz'))}
+    return {char: i for i, char in enumerate('a b c d e f g h i j k l m n o p q r s t u v w x y z'.split())}
 
 
 def simplify_key(key: int, abc_length: int) -> int:
