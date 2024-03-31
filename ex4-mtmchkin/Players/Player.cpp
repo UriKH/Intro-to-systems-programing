@@ -90,16 +90,15 @@ void Player::buff(int buff){
     m_force += buff;
 }
 
-int Player::debuff(int debuff){
+void Player::debuff(int debuff){
     if (debuff < 0){
         throw invalid_argument("debuff gets only positive values");
     }
-    int before = m_force;
+    
     m_force -= debuff;
     if (m_force < MIN_FORCE){
         m_force = MIN_FORCE;
     }
-    return before - m_force;
 }
 
 void Player::levelUp(int levels){
