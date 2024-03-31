@@ -23,9 +23,9 @@ int Job::applyEncounter(Player& player, const Encounter& monster){
 }
 
 int Job::applySolarEclipse(Player& player){
-    int beforeHP = player.getHealthPoints();
+    int beforeForce = player.getForce();
     player.debuff(1);
-    return beforeHP - player.getHealthPoints();
+    return player.getForce() - beforeForce;
 }
 
 int Job::applyPotionsMerchant(Player& player){
