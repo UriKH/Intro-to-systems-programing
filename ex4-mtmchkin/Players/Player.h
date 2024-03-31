@@ -128,8 +128,9 @@ public:
      * debuff player by some amount
      *
      * @param force amount of force to debuff the player by
+     * @return the change in the amount of force
     */
-    virtual void debuff(int);
+    virtual int debuff(int);
 
     /**
      * Level up player by some amount
