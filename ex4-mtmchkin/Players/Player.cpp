@@ -98,9 +98,8 @@ int Player::debuff(int debuff){
     m_force -= debuff;
     if (m_force < MIN_FORCE){
         m_force = MIN_FORCE;
-        return before;
     }
-    return m_force - before;
+    return before - m_force;
 }
 
 void Player::levelUp(int levels){

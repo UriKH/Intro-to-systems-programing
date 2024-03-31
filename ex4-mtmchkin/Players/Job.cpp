@@ -23,8 +23,7 @@ int Job::applyEncounter(Player& player, const Encounter& monster){
 }
 
 int Job::applySolarEclipse(Player& player){
-    player.debuff(1);
-    return -1;
+    return player.debuff(1);
 }
 
 int Job::applyPotionsMerchant(Player& player){
