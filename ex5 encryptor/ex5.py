@@ -5,10 +5,10 @@ import os
 
 def get_abc_map():
     """
-    Creates an abc to letter index map
-    :return: the mapped abc
+    Creates a list of the abc
+    :return: a list of the abc
     """
-    return {char: i for i, char in enumerate(list('abcdefghijklmnopqrstuvwxyz'))}
+    return list('abcdefghijklmnopqrstuvwxyz')
 
 
 def simplify_key(key, abc_length):
@@ -19,18 +19,6 @@ def simplify_key(key, abc_length):
     :return: the simplified key
     """
     return key % abc_length if key > 0 else abc_length - ((-key) % abc_length)
-
-
-def calculate_new_char(alphabet, char, shift):
-    """
-    Calculate the new char based on the shift
-    :param alphabet: the alphabet to encrypt by
-    :param char: the character to shift
-    :param shift: the shift of the alphabet by Caesar cipher
-    :return: the new character
-    """
-    swap = [k for k, _ in alphabet.items()]
-    return swap[(alphabet[char] + shift) % len(alphabet)]
 
 
 class Cipher(ABC):
@@ -78,24 +66,22 @@ class CaesarCipher(Cipher):
 
     def encrypt(self, message):
         encrypted = ''
-        is_upper_case = False
 
         for letter in message:
             if not letter.isalpha():
                 encrypted += letter
                 continue
 
+            is_upper_case = False
             if letter.isupper():
                 is_upper_case = True
 
-            letter = calculate_new_char(self.m_abc, letter.lower(), self.m_key)
+            letter = self.m_abc[(self.m_abc.index(letter.lower()) + self.m_key) % len(self.m_abc)]
             encrypted += letter.upper() if is_upper_case else letter
-            is_upper_case = False
         return encrypted
 
     def decrypt(self, message):
-        temp_decrypt = CaesarCipher(-self.m_key)
-        return temp_decrypt.encrypt(message)
+        return CaesarCipher(-self.m_key).encrypt(message)
 
     def key_shift(self, delta) -> None:
         """
@@ -119,16 +105,15 @@ class VigenereCipher(Cipher):
         self.m_key_raw = key_list.copy()
 
     def encrypt(self, message):
-        # caesar_key = [CaesarCipher(key) for key in self.m_key]
         encrypted = ''
+        non_alpha_counter = 0
 
-        space_counter = 0
         for i, letter in enumerate(message):
             if not letter.isalpha():
-                space_counter += 1
+                non_alpha_counter += 1
                 encrypted += letter
                 continue
-            encrypted += self.m_key[(i - space_counter) % len(self.m_key)].encrypt(letter)
+            encrypted += self.m_key[(i - non_alpha_counter) % len(self.m_key)].encrypt(letter)
         return encrypted
 
     def decrypt(self, message):
@@ -141,6 +126,7 @@ def loadEncryptionSystem(dir_path, plaintext_suffix):
     with open(os.path.join(dir_path, 'config.json'), 'r') as jsonFile:
         configurations = json.load(jsonFile)
 
+    configurations['encrypt'] = bool(configurations['encrypt'])
     if configurations['type'] == "Vigenere":
         configurations['type'] = VigenereCipher(configurations['key'])
     else:
@@ -149,21 +135,26 @@ def loadEncryptionSystem(dir_path, plaintext_suffix):
     # encrypt or decrypt every relevant file in the dir
     for filename in os.listdir(dir_path):
         current_file_path = os.path.join(dir_path, filename)
-        path_pieces = current_file_path.split('.')
+        dot_index = current_file_path[::-1].find('.')
 
-        if not ((path_pieces[-1] == plaintext_suffix and configurations['encrypt'])
-                or (path_pieces[-1] == 'enc' and not configurations['encrypt'])):
+        # in case no suffix found
+        if dot_index == -1:
+            continue
+
+        dot_index = -1 * dot_index - 1
+        if not ((current_file_path[dot_index + 1:] == plaintext_suffix and configurations['encrypt'])
+                or (current_file_path[dot_index + 1:] == 'enc' and not configurations['encrypt'])):
             continue
 
         with open(current_file_path, 'r') as file:
             file_data = file.read()
 
-        if configurations['encrypt'] == 'True':
+        if configurations['encrypt']:
             data = configurations['type'].encrypt(file_data)
-            new_file_path = '.'.join(path_pieces[:-1]) + '.enc'
+            new_file_path = current_file_path[:dot_index] + '.enc'
         else:
             data = configurations['type'].decrypt(file_data)
-            new_file_path = '.'.join(path_pieces[:-1]) + f'.{plaintext_suffix}'
+            new_file_path = current_file_path[:dot_index] + f'.{plaintext_suffix}'
 
         with open(new_file_path, 'w') as file:
             file.write(data)
