@@ -137,19 +137,14 @@ def loadEncryptionSystem(dir_path, plaintext_suffix):
         configurations['type'] = VigenereCipher(configurations['key'])
     else:
         configurations['type'] = CaesarCipher(configurations['key'])
-    
+
     # encrypt or decrypt every relevant file in the dir
     for filename in os.listdir(dir_path):
         current_file_path = os.path.join(dir_path, filename)
-        dot_index = current_file_path[::-1].find('.')
+        root, extension = os.path.splitext(current_file_path)
 
-        # in case no suffix found
-        if dot_index == -1:
-            continue
-
-        dot_index = -1 * dot_index - 1
-        if not ((current_file_path[dot_index + 1:] == plaintext_suffix and configurations['encrypt'])
-                or (current_file_path[dot_index + 1:] == 'enc' and not configurations['encrypt'])):
+        if not ((extension == plaintext_suffix and configurations['encrypt'])
+                or (extension == 'enc' and not configurations['encrypt'])):
             continue
 
         with open(current_file_path, 'r') as file:
@@ -157,10 +152,10 @@ def loadEncryptionSystem(dir_path, plaintext_suffix):
 
         if configurations['encrypt']:
             data = configurations['type'].encrypt(file_data)
-            new_file_path = current_file_path[:dot_index] + '.enc'
+            new_file_path = root + '.enc'
         else:
             data = configurations['type'].decrypt(file_data)
-            new_file_path = current_file_path[:dot_index] + f'.{plaintext_suffix}'
+            new_file_path = root + f'.{plaintext_suffix}'
 
         with open(new_file_path, 'w') as file:
             file.write(data)
