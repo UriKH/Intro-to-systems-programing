@@ -132,6 +132,7 @@ def loadEncryptionSystem(dir_path, plaintext_suffix):
         for filename in os.listdir(dir_path):
             current_file_path = os.path.join(dir_path, filename)
             root, extension = os.path.splitext(current_file_path)
+            extension = extension.split('.')[-1]
 
             if not ((extension == plaintext_suffix and configurations['encrypt'])
                     or (extension == 'enc' and not configurations['encrypt'])):
