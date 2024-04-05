@@ -132,30 +132,30 @@ def loadEncryptionSystem(dir_path, plaintext_suffix):
     with open(os.path.join(dir_path, 'config.json'), 'r') as jsonFile:
         configurations = json.load(jsonFile)
 
-    configurations['encrypt'] = bool(configurations['encrypt'])
-    if configurations['type'] == "Vigenere":
-        configurations['type'] = VigenereCipher(configurations['key'])
-    else:
-        configurations['type'] = CaesarCipher(configurations['key'])
-
-    # encrypt or decrypt every relevant file in the dir
-    for filename in os.listdir(dir_path):
-        current_file_path = os.path.join(dir_path, filename)
-        root, extension = os.path.splitext(current_file_path)
-
-        if not ((extension == plaintext_suffix and configurations['encrypt'])
-                or (extension == 'enc' and not configurations['encrypt'])):
-            continue
-
-        with open(current_file_path, 'r') as file:
-            file_data = file.read()
-
-        if configurations['encrypt']:
-            data = configurations['type'].encrypt(file_data)
-            new_file_path = root + '.enc'
+        configurations['encrypt'] = bool(configurations['encrypt'])
+        if configurations['type'] == "Vigenere":
+            configurations['type'] = VigenereCipher(configurations['key'])
         else:
-            data = configurations['type'].decrypt(file_data)
-            new_file_path = root + f'.{plaintext_suffix}'
+            configurations['type'] = CaesarCipher(configurations['key'])
 
-        with open(new_file_path, 'w') as file:
-            file.write(data)
+        # encrypt or decrypt every relevant file in the dir
+        for filename in os.listdir(dir_path):
+            current_file_path = os.path.join(dir_path, filename)
+            root, extension = os.path.splitext(current_file_path)
+
+            if not ((extension == plaintext_suffix and configurations['encrypt'])
+                    or (extension == 'enc' and not configurations['encrypt'])):
+                continue
+
+            with open(current_file_path, 'r') as file:
+                file_data = file.read()
+
+                if configurations['encrypt']:
+                    data = configurations['type'].encrypt(file_data)
+                    new_file_path = root + '.enc'
+                else:
+                    data = configurations['type'].decrypt(file_data)
+                    new_file_path = root + f'.{plaintext_suffix}'
+
+                with open(new_file_path, 'w') as file:
+                    file.write(data)
