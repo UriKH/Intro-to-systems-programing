@@ -12,18 +12,8 @@ def get_abc():
     """
     return list('abcdefghijklmnopqrstuvwxyz')
 
-
-def simplify_key(key):
-    """
-    Simplifies the key to a none negative small number
-    :param key: the key to simplify
-    :return: the simplified key
-    """
-    abc_length = len(get_abc())
-    return key % abc_length if key > 0 else abc_length - ((-key) % abc_length)
-
-
 # ________________________________________ An Abstract Cipher Class ________________________________________
+
 
 class Cipher(ABC):
     """
@@ -68,7 +58,7 @@ class CaesarCipher(Cipher):
 
     def __init__(self, key):
         abc_map = get_abc()
-        super().__init__(simplify_key(key), abc_map)
+        super().__init__(key, abc_map)
 
     def encrypt(self, message):
         encrypted = ''
@@ -94,7 +84,7 @@ class CaesarCipher(Cipher):
         Shifts the key by some delta
         :param delta: a value to shift the key by
         """
-        self.m_key = simplify_key(self.m_key + delta)
+        self.m_key += delta
 
 
 class VigenereCipher(Cipher):
@@ -157,5 +147,5 @@ def loadEncryptionSystem(dir_path, plaintext_suffix):
                     data = configurations['type'].decrypt(file_data)
                     new_file_path = root + f'.{plaintext_suffix}'
 
-                with open(new_file_path, 'w') as file:
-                    file.write(data)
+                with open(new_file_path, 'w') as new_file:
+                    new_file.write(data)
