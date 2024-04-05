@@ -3,7 +3,7 @@ import json
 import os
 
 
-# ________________________________________ Utility Functions ________________________________________
+# ________________________________________ Utility Function ________________________________________
 
 def get_abc():
     """
@@ -12,55 +12,24 @@ def get_abc():
     """
     return list('abcdefghijklmnopqrstuvwxyz')
 
-# ________________________________________ An Abstract Cipher Class ________________________________________
 
+# ________________________________________ Implementation ________________________________________
 
-class Cipher(ABC):
+class CaesarCipher:
     """
-    Class representation of a general cipher
+    Caesar cipher encryption method
     """
 
-    @abstractmethod
-    def __init__(self, key, abc_map):
-        """
-        Creates a cipher
-        :param key: the encryption key
-        :param abc_map: letter to index mapping dictionary 
-        """
-        self.m_abc = abc_map
+    def __init__(self, key):
+        self.m_abc = get_abc()
         self.m_key = key
-    
-    @abstractmethod
+
     def encrypt(self, message):
         """
         Encrypt a message using the key
         :param message: a message to encrypt
         :return: the encrypted message
         """
-        pass
-
-    @abstractmethod
-    def decrypt(self, message):
-        """
-        Decrypts a message using the key
-        :param message: a message to decrypt
-        :return: the decrypted message
-        """
-        pass
-
-
-# ________________________________________ Implementation ________________________________________
-
-class CaesarCipher(Cipher):
-    """
-    Caesar cipher encryption method
-    """
-
-    def __init__(self, key):
-        abc_map = get_abc()
-        super().__init__(key, abc_map)
-
-    def encrypt(self, message):
         encrypted = ''
 
         for letter in message:
@@ -77,9 +46,14 @@ class CaesarCipher(Cipher):
         return encrypted
 
     def decrypt(self, message):
+        """
+        Decrypts a message using the key
+        :param message: a message to decrypt
+        :return: the decrypted message
+        """
         return CaesarCipher(-self.m_key).encrypt(message)
 
-    def key_shift(self, delta) -> None:
+    def key_shift(self, delta):
         """
         Shifts the key by some delta
         :param delta: a value to shift the key by
@@ -87,7 +61,7 @@ class CaesarCipher(Cipher):
         self.m_key += delta
 
 
-class VigenereCipher(Cipher):
+class VigenereCipher:
     """
     Vigenere cipher encryption method
     """
@@ -97,10 +71,16 @@ class VigenereCipher(Cipher):
         Creates a Vigenere cipher encryption
         :param key_list: a list of values as key
         """
-        super().__init__([CaesarCipher(value) for value in key_list], get_abc())
+        self.m_abc = get_abc()
+        self.m_key = [CaesarCipher(value) for value in key_list]
         self.m_key_raw = key_list.copy()
 
     def encrypt(self, message):
+        """
+        Encrypt a message using the key
+        :param message: a message to encrypt
+        :return: the encrypted message
+        """
         encrypted = ''
         non_alpha_counter = 0
 
@@ -113,6 +93,11 @@ class VigenereCipher(Cipher):
         return encrypted
 
     def decrypt(self, message):
+        """
+        Decrypts a message using the key
+        :param message: a message to decrypt
+        :return: the decrypted message
+        """
         reversed_key = [-key for key in self.m_key_raw]
         return VigenereCipher(reversed_key).encrypt(message)
 
