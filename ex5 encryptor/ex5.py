@@ -3,7 +3,9 @@ import json
 import os
 
 
-def get_abc_map():
+# ________________________________________ Utility Functions ________________________________________
+
+def get_abc():
     """
     Creates a list of the abc
     :return: a list of the abc
@@ -11,15 +13,17 @@ def get_abc_map():
     return list('abcdefghijklmnopqrstuvwxyz')
 
 
-def simplify_key(key, abc_length):
+def simplify_key(key):
     """
     Simplifies the key to a none negative small number
     :param key: the key to simplify
-    :param abc_length: the length of the abc
     :return: the simplified key
     """
+    abc_length = len(get_abc())
     return key % abc_length if key > 0 else abc_length - ((-key) % abc_length)
 
+
+# ________________________________________ An Abstract Cipher Class ________________________________________
 
 class Cipher(ABC):
     """
@@ -55,14 +59,16 @@ class Cipher(ABC):
         pass
 
 
+# ________________________________________ Implementation ________________________________________
+
 class CaesarCipher(Cipher):
     """
     Caesar cipher encryption method
     """
 
     def __init__(self, key):
-        abc_map = get_abc_map()
-        super().__init__(simplify_key(key, len(abc_map)), abc_map)
+        abc_map = get_abc()
+        super().__init__(simplify_key(key), abc_map)
 
     def encrypt(self, message):
         encrypted = ''
@@ -88,7 +94,7 @@ class CaesarCipher(Cipher):
         Shifts the key by some delta
         :param delta: a value to shift the key by
         """
-        self.m_key = simplify_key(self.m_key + delta, len(self.m_abc))
+        self.m_key = simplify_key(self.m_key + delta)
 
 
 class VigenereCipher(Cipher):
@@ -101,7 +107,7 @@ class VigenereCipher(Cipher):
         Creates a Vigenere cipher encryption
         :param key_list: a list of values as key
         """
-        super().__init__([CaesarCipher(value) for value in key_list], get_abc_map())
+        super().__init__([CaesarCipher(value) for value in key_list], get_abc())
         self.m_key_raw = key_list.copy()
 
     def encrypt(self, message):
